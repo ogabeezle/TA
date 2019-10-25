@@ -1,0 +1,1388 @@
+\chapter{DESAIN}
+\label{sec:desain}
+Pada bab ini akan dijelaskan desain algoritma yang akan digunakan untuk menyelesaikan permasalahan.
+
+\section{Desain Umum Sistem}
+Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari algoritma yang dirancang. Sistem akan diawali dengan menerima masukan berupa nilai $ T $ yang menyatakan banyaknya kasus uji. $ T $ baris selanjutnya berisi nilai dari $ N $ dan $ P $. Nilai masukan ini mengikuti batasan pada subbab \ref{sec:batasan_masalah}. Setelah menerima masukan, maka masukan tersebut akan diolah untuk menghitung nilai dari $ N! $ dalam modulo $ P $ dan hasilnya ditampilkan pada layar berupa nilai dari $ N! $ dalam modulo $ P $. Pada tahap pencarian nilai dari  $ N! $ dalam modulo $ P $, sistem menggunakan dua metode yang berbeda yaitu \textit{Multipoint Evaluation} dan \textit{Shifting Evaluation Values}. Masing-masing metode akan digunakan untuk dibandingkan kinerja satu sama lainnya. Pseudocode fungsi \fakesc{main} ditunjukkan pada pseudocode \ref{psdo:function_main}. Pada pseudocode \ref{psdo:function_main}, fungsi \fakesc{main} merupakan bagian fungsi utama yang menerima masukan, memproses masukan tersebut, dan menampilkan masukan tersebut. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{main}}
+	\label{psdo:function_main}
+	\begin{algorithmic}[1]
+		\State $T \leftarrow $ \fakesc{Input()}
+		\For {$i \leftarrow 1, T$}
+			\State $ N , P \leftarrow $ \fakesc{Input()}
+			\State $ ans \leftarrow  $ \fakesc{Solve($N, P$)}
+			\State \fakesc{Print($ ans $)}
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\subsection{Desain Class Montgomery Multiplication}
+\label{sec:mont}
+Class \fakesc{Mod64} adalah class bilangan $64$-bit yang menerapkan perkalian modular \textit{Montgomery} didalamnya. Semua variabel yang memiliki tipe data \fakesc{Mod64} akan dikonvert ke dalam \textit{Montgomery World}. Class ini merupakan class terpenting dikarenakan semua perhitungan FFT dan polinomial dilakukan melibatkan perkalian modular. Pseudocode \ref{psdo:class_mod64} merupakan pseudocode dari class \fakesc{Mod64}. Nantinya pada implementasi, class ini akan melakukan override terhadap operator perkalian, penambahan, dan pengurangan.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|c|p{7cm}|}
+	\hline
+	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
+$mod$           & Menyimpan nilai modulo yang akan digunakan dalam perkalian modular \\ \hline
+$inv$           & Menyimpan nilai inverse dari $ mod $          \\ \hline
+$r$             & Menyimpan nilai $r$ pada persamaan \eqref{eq:mont_world} \\ \hline
+$n\_$           & Menyimpan nilai bilangan \textit{Montgomery}   \\ \hline
+	\end{tabular}
+	\caption{Nama dan Fungsi Variabel dalam class \fakesc{Mod64}}
+	\label{tab:var_mod64}
+\end{table}
+
+\begin{algorithm}
+	\caption{Class \fakesc{Mod64}}
+	\label{psdo:class_mod64}
+	\begin{algorithmic}[1]
+		\State $ mod, inv, r, n\_ \leftarrow $ \textbf{integer}
+		\State \textbf{constructor} \Call{\fakesc{Mod64}}{$ $}
+		\State \textbf{constructor} \Call{\fakesc{Mod64}}{$ n $}
+		\State \textbf{procedure} \Call{\fakesc{SetMod}}{$ m $}
+		\State \textbf{function} \Call{\fakesc{Reduce}}{$ x $}
+		\State \textbf{function} \Call{\fakesc{Init}}{$ w $}
+		\State \textbf{function} \Call{\fakesc{Pow}}{$ e $}
+		\State \textbf{function} \Call{\fakesc{Inverse}}{$ $}
+		\State \textbf{function} \Call{\fakesc{Mult}}{$ other $}
+		\State \textbf{function} \Call{\fakesc{Get}}{$ $}
+	\end{algorithmic}
+\end{algorithm}
+
+Fungsi-fungsi yang terkandung dalam class ini adalah \fakesc{SetMod}, \fakesc{Reduce}, \fakesc{Init}, \fakesc{Pow}, \fakesc{Inverse}, \fakesc{Mult}, dan \fakesc{Get}. Tabel \ref{tab:var_mod64} menjelaskan variabel dan kegunaannya dalam class \fakesc{Mod64}.  Pseudocode \ref{psdo:class_mod64} memberikan gambaran mengenai desain class \fakesc{Mod64}. 
+
+Fungsi \textit{constructor} dari class ini terdiri dari dua jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, bilangan yang akan dikonversi kedalam \textit{Montgomery World} adalah $ 0 $. Fungsi \textit{constructor} yang kedua adalah fungsi dengan parameter $ n $, menyatakan bilangan yang akan dikonversi kedalam \textit{Montgomery World}.
+
+Fungsi \fakesc{SetMod}, fungsi ini bertanggung jawab untuk menginisialiasi modulo yang digunakan pada seluruh tipe data \fakesc{Mod64}, variabel yang akan diinisialisasi adalah variabel $ mod, inv $ dan $ r $. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_setmod}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_setmod}.
+
+\begin{algorithm}
+	\caption{Prosedur \fakesc{SetMod} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_setmod}
+	\begin{algorithmic}[1]
+		\Require $ m $
+		\State $ mod \leftarrow m , inv \leftarrow $\Call{\fakesc{Init}}{$ m $}$\rightarrow$\fakesc{Inverse}()
+		\State $ r \leftarrow 2^{128} - m \Mod{m} $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	Suatu bilangan bulat $m$ yang menyatakan modulo yang digunakan & Menginisialisasi variabel $mod, inv$ dan $m$ & -        \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{SetMod} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_setmod}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Reduce}, fungsi ini akan mengembalikan bilangan yang menjadi masukkan fungsi dari \textit{Montgomery World} kembali menjadi bilangan yang seharusnya. Terdapat sedikit perbedaan dengan langkah pada pseudocode \ref{psdo:montgomery}, langkah reduksi diubah menjadi $ y = ( x - ( x \times n^{-1} \times mod )$ agar menjadi lebih efisien, karena langkah diatas akan menghasilkan hasil yang sama dengan pseudocode \ref{psdo:montgomery}. Pada desain fungsi ini akan menggunakan masukan \textit{integer} $128$-bit, yang kemudian akan direduksi menjadi \textit{integer} $64$ bit dengan dibagi $2^{64}$ karena akan memberikan hasil yang sama dengan modulo $ r $, hal ini dilakukan karena komputer akan lebih cepat dalam memproses dalam bentuk bitwise. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_reduce}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_reduce}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Reduce} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_reduce}
+	\begin{algorithmic}[1]
+		\Require $ x $
+		\State \Return $ y = ( x - ( x \times mod^{-1}) \% 2^{64} \times mod ) / 2^{64} $ 
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	Suatu bilangan bulat $x$ yang menyatakan bilangan dari \textit{Montgomery World} yang merupakan bilangan \textit{integer} $128$-bit & Mengembalikan bilangan bulat $x$ kedalam nilai yang seharusnya & Bilangan bulat $x$ dengan nilai yang seharusnya    \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Reduce} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_reduce}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Init}, fungsi ini dipanggil oleh fungsi constructor untuk menginisialisasi bilangan pada tipe data \fakesc{Mod64}, Fungsi ini mengkonversi bilangan masukan kedalam \textit{Montgomery World}. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_init}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_init}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Init} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_init}
+	\begin{algorithmic}[1]		
+		\Require $ w $
+		\State \Return \Call{\fakesc{Reduce}}{$ w \times r $}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	Suatu bilangan bulat $w$ yang menyatakan bilangan yang akan diinisialisasi dalam tipe data \fakesc{Mod64} & Mengkonversi bilangan masukan kedalam \textit{Montgomery World} & -    \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Init} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_init}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Pow}, fungsi ini akan menerima input $ e $ dan mengembalikan nilai bilangan sekarang pangkat $ e $ dalam \textit{Montgomery World}. Fungsi ini menerapkan \textit{fast modular exponentiation} seperti pada pseudocode \ref{psdo:fast_modex}. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_pow}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_pow}
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Pow} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_pow}
+	\begin{algorithmic}[1]
+		\Require $ e $
+		\State $ res \leftarrow $ \Call{\fakesc{Init}}{$1$} , $ base \leftarrow n\_ $
+		\For {$e \leftarrow 1, e /= 2 $ }
+			\If{$e$ ganjil} \State $ res \leftarrow $\Call{\fakesc{Mult}}{$ res, base $} \EndIf
+			\State $ base \leftarrow $\Call{\fakesc{Mult}}{$ base, base $}
+		\EndFor
+		\State \Return $ res $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	Suatu bilangan bulat $e$ yang menyatakan pangkat & Menghitung hasil pemangkatan dengan algoritma \textit{fast modular exponentiation} & Bilangan hasil pemangkatan dalam \textit{Montgomery World} \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Pow} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_pow}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Inverse}, fungsi ini akan mengembalikan nilai modulo inverse dari bilangan sekarang dengan mengadaptasi theorema \ref{theo:fermat_little_theorem}. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_inverse}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_inverse}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Inverse} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_inverse}
+	\begin{algorithmic}[1]
+		\State \Return \Call{\fakesc{Pow}}{$ mod - 2 $}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	- & Menghitung hasil modulo inverse dengan theorema \ref{theo:fermat_little_theorem} & Bilangan hasil modulo inverse dalam \textit{Montgomery World} \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Inverse} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_inverse}
+\end{table}
+
+Fungsi \fakesc{Mult}, fungsi ini akan mengembalikan nilai perkalian modulo dua bilangan dengan tipe \fakesc{Mod64}. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_mod64_mult}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_mult}. 
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Mult} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_mult}
+	\begin{algorithmic}[1]
+		\State \Return \Call{\fakesc{Reduce}}{$ n\_ $} $ \times other $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	Suatu bilangan $ other $ dengan tipe data \fakesc{Mod64} yang menyatakan bilangan yang akan dikali & Menghitung hasil perkalian dengan theorema \textit{Montgomery World} & Bilangan hasil perkalian dalam \textit{Montgomery World} \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Mult} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_mult}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Get}, fungsi ini akan mengembalikan nilai seharusnya dengan mereduksi variabel $ n\_ $. Masukan, proses dan fungsi ini tercantum pada tabel \ref{tab:class_mod64_get}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_mod64_get}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Get} pada class \fakesc{Mod64}}
+	\label{psdo:class_mod64_get}
+	\begin{algorithmic}[1]
+		\State \Return \Call{\fakesc{Reduce}}{$ n\_ $}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan                                                      & Proses                                   & Keluaran \\ \hline
+	- & Menghitung hasil reduksi bilangan dalam \textit{Montgomery World} & Bilangan seharusnya \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Get} Class \fakesc{Mod64}}
+	\label{tab:class_mod64_get}
+\end{table}
+
+\newpage
+
+\subsection{Desain Namespace Perhitungan Perkalian Polinomial dengan NTT}
+\label{sec:ntt}
+Class dan fungsi yang digunakan dalam perhitungan perkalian polinomial dengan NTT akan dikelompokkan menjadi satu \textit{namespace} \fakesc{NTT}. Namespace \fakesc{NTT} ini digunakan sebagai dasar perkalian polinomial menggunakan NTT dengan tipe data \fakesc{Mod64}. Pseudocode \ref{psdo:namespace_ntt} merupakan pseudocode dari namespace NTT. Fungsi-fungsi yang terkandung dalam namespace ini adalah \fakesc{Convolve}, \fakesc{RevPermute} dan \fakesc{NTTDit4}. Tabel \ref{tab:var_ntt} menjelaskan variabel dan kegunaannya dalam namespace \fakesc{NTT}.
+
+\begin{algorithm}
+	\caption{Namespace \fakesc{NTT}}
+	\label{psdo:namespace_ntt}
+	\begin{algorithmic}[1]
+		\State $ N \leftarrow 316230 $
+		\State $ Mod64\_1 \leftarrow $ \fakesc{Mod64} $ \rightarrow $ prima $ 709143768229478401 $
+		\State $ Mod64\_2 \leftarrow $ \fakesc{Mod64} $ \rightarrow $ prima $ 711416664922521601 $
+		\State $ f1, f2, g1, g2 \leftarrow $ \textbf{array} $ [1..N] $ \textbf{integer}
+		\State \textbf{function} \Call{\fakesc{Convolve}}{$ x $}
+		\State \textbf{function} \Call{\fakesc{RevPermute}}{$ w $}
+		\State \textbf{function} \Call{\fakesc{NTTDit4}}{$ e $}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|c|p{7cm}|}
+	\hline
+	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
+$N$           & Menyimpan nilai batas maksimal panjang polinomial yang akan dikalikan yaitu $ 316230 $ dikarenakan derajat polinomial terbesar adalah $ \sqrt{10^{11}} $. \\ \hline
+\fakesc{Mod64\_1}, \fakesc{Mod64\_2}         & Menyimpan \textit{instance} dari class \fakesc{Mod64} dengan bilangan prima yang ditentukan pada tabel \ref{tab:two_primes}. \\ \hline
+$f1, f2, g1, g2 $           & Array \textit{temporary} yang digunakan untuk mengalikan polinomial dengan NTT.   \\ \hline
+	\end{tabular}
+	\caption{Nama dan Fungsi Variabel dalam Namespace \fakesc{NTT}}
+	\label{tab:var_ntt}
+\end{table}
+
+Fungsi \fakesc{Convolve}, fungsi ini bertanggung jawab untuk mengalikan dua polinomial yang menjadi input dalam \textit{montgomery form} menggunakan langkah langkah pada subbab \ref{ssec:langkah_perkalian_ntt}. Pada fungsi ini akan dilakukan preproses agar derajat polinomial yang dihasilkan adalah dua pangkat $ i $. Pada fungsi ini terdapat parameter masukan $ cyclic $ yang menyatakan perkalian polinomial biasa apabila bernilai $ false $ dan perkalian polinomial \textit{middle product} apabila bernilai $ true $. Setelah preproses selesai, langkah selanjutnya adalah mengecek masukan polinomial, apabila kedua polinomial tersebut identik, maka akan dilakukan proses NTT pada salah satu polinomial saja untuk menghemat waktu. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:namespace_ntt_convolve}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:namespace_ntt_convolve}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Convolve} pada namespace \fakesc{NTT}}
+	\label{psdo:namespace_ntt_convolve}
+	\begin{algorithmic}[1]
+		\Require $ a, s1, b, s2, cylic $
+		\State $ S \leftarrow $ \Call{\fakesc{Max}}{$ s1 , s2 $}
+		\If{$!cyclic$} \State $ S \leftarrow s1 + s2 -1 $ \EndIf
+		\State $ size \leftarrow 1 $
+		\While{$size < s$} 
+		\State $ size = size * 2 $; 
+		\EndWhile
+		\State $ roots \leftarrow Array(Mod64::level) $
+		\State $ roots[0] \leftarrow Mod64::omega $
+		\For{$i \leftarrow 1$ \textbf{to} $Mod64::level - 1$} 
+		\State $ roots[i] = roots[i-1] * roots[i-1] $
+		\EndFor
+		\State \Call{\fakesc{NTTDit4}}{A, size, 1, roots}
+		\State \Call{\fakesc{NTTDit4}}{B, size, 1, roots}
+		\For{$i \leftarrow 1$ \textbf{to} $size$} 
+		\State $ A[i] = A[i] * B[i] $
+		\EndFor
+		\State \Call{\fakesc{NTTDit4}}{A, size, -1, roots}
+		\State $ inv \leftarrow Mod64(size).Inverse() $
+		\For{$i \leftarrow 1$ \textbf{to} $ size $} 
+		\State $ A[i] = A[i] * inv $
+		\EndFor
+		\State \Return $ A $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa array $A$, ukuran array $A$, array $B$ dan ukuran array $B$ & Konvolusi array $A$ dan $B$ menggunakan \fakesc{NTT} & Polinomial hasil konvolusi pada array $A$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Convolve} Namespace \fakesc{NNT}}
+	\label{tab:namespace_ntt_convolve}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{RevPermute}, fungsi ini bertanggung jawab untuk melakukan pengurutan data atau pengelompokan data dengan metode \textit{bit-reverse}. Kompleksitas dari fungsi ini adalah $ \mathcal{O}{(N\ \text{log } N)}$. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:namespace_ntt_revpermute}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:namespace_ntt_revpermute}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{RevPermute} pada namespace \fakesc{NTT}}
+	\label{psdo:namespace_ntt_revpermute}
+	\begin{algorithmic}[1]
+		\Require $ a, n $
+		\State $ r \leftarrow 0, nh \leftarrow n / 2$
+		\For{$i \leftarrow 1$ \textbf{to} \text{n}} 
+			\For{$ h \leftarrow nh $}
+				\If{$ (r\ \leftarrow r\ xor\ h)\ and\ h $} \State \textbf{break} \EndIf
+			\EndFor
+			\State $ h \leftarrow h / 2 $
+			\If{$ r > i $}
+				\State \fakesc{Swap}($ A[i], A[r]$) 
+			\EndIf
+		\EndFor
+		\State \Return $ A $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa array A dan ukuran array A & Merestruktur Array A dengan bit-reverse & Array A yang telah di bit-reverse\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{RevPermute} Namespace \fakesc{NNT}}
+	\label{tab:namespace_ntt_revpermute}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{NTTDit4}, fungsi ini bertanggung jawab untuk melakukan \textit{Number Theoretic Transform} maupun \textit{Inverse Number Theoretic Transform} pada polinomial yang menjadi input. NTT yang digunakan dalam tugas akhir ini adalah NTT-DIT 4, yang kompatibel dengan polinomial dengan derajat 4 pangkat $ i $, karena memiliki kompleksitas lebih rendah dari NTT-DIT 2 yang biasanya digunakan. Sehingga langkah pertama adalah jika derajat polinomial bukan 4 pangkat $ i $, maka polinomial tersebut akan di konvolusikan satu kali terlebih dahulu sebelum masuk kedalam proses NTT. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:namespace_ntt_nttdit4}. Pseudocode fungsi ini agak berbeda dari NTT-DIT 2, pseudocode lengkap dapat dilihat pada pseudocode \ref{psdo:namespace_ntt_nttdit4}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{NTTDit4} pada namespace \fakesc{NTT}}
+	\label{psdo:namespace_ntt_nttdit4}
+	\begin{algorithmic}[1]
+		\Require $ A, n, sign, roots $
+		\State \Call{\fakesc{RevPermute}}{$ A, n $}
+		\If{$log(n)\& 1$}
+			\For{$ i \leftarrow 0; i < n; i \leftarrow i + 2$}
+		\State $ a \leftarrow A[i], b \leftarrow A[i+1], A[i] \leftarrow a + b, A[i+1] \leftarrow a - b $
+			\EndFor
+		\EndIf
+		\State $ imag \leftarrow roots[Mod64::level - 2]$
+		\If{$sign < 0$} $ imag \leftarrow imag.inverse() $ \EndIf
+		\For{$e \leftarrow 2 + log(n)\& 1); e < log(n)+ 1; e \leftarrow e + 2$}
+			\State $ m \leftarrow 2^{e} , m4 \leftarrow m / 2 $
+			\State $ dw \leftarrow roots[Mod64::level - e]$
+			\If{sign < 0} $ dw \leftarrow dw.inverse() $ \EndIf
+			\State $ block\_size \leftarrow min(n, max(m, 2^{20}/size\_int))$
+			\For{$ k \leftarrow 0; k < n; k \leftarrow k + block\_size $}
+				\State $ w, w2, w3 \leftarrow 1$
+				\For{$ j \leftarrow 0; j < m4; j \leftarrow j + 1$}
+					\For{$ i \leftarrow k + j; i < k + block\_size ; i \leftarrow i + m$}
+							\State $ a0 \leftarrow A[i + m4 * 0] * one, a2 \leftarrow A[i + m4 * 1] * w2 $
+							\State $ a1 \leftarrow A[i + m4 * 2] * w, a3 \leftarrow A[i + m4 * 3] * w3 $
+							\State $ t02 \leftarrow a0 + a2, t13 \leftarrow a1 + a3$
+							\State $ A[i + m4 * 0] = t02 + t13 $ 
+							\State $ A[i + m4 * 2] = t02 - t13 $
+							\State $ t02 = a0 - a2, t13 (a1 - a3) * imag$
+							\State $ A[i + m4 * 1] = t02 + t1 3$ 
+							\State $ A[i + m4 * 3] = t02 - t13 $
+						\EndFor
+						\State $ w \leftarrow w * dw, w2 \leftarrow w * w, w3 \leftarrow w2 * w $
+				\EndFor
+			\EndFor
+		\EndFor
+		\State \Return $ A $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa array A, ukuran array A, sign atau tanda, dan array \textit{root of unity} & NTT pada Array A sesuai dengan sign atau tanda & Array A yang telah melalui proses NTT\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{NTTDit4} Namespace \fakesc{NNT}}
+	\label{tab:namespace_ntt_nttdit4}
+\end{table}
+
+\newpage
+
+\section{Desain Penyelesaian Perhitungan Faktorial dengan Multipoint Evaluation}
+Pada subbab ini akan dijelaskan mengenai desain dan algoritma Multipoint Evaluation dalam menyelesaikan perhitungan Faktorial dengan modulo prima. Algoritma Multipoint Evaluation memiliki banyak sekali operasi polinomial, sehingga diperlukan \textit{class} polinomial. Pada subbab ini akan dipaparkan dua \textit{class} atau fungsi yang digunakan dalam algoritma \textit{Multipoint Evaluation}.
+
+\subsection{Desain Class Polinomial}
+Class \fakesc{Poly} adalah class yang mengandung semua algoritma yang berkaitan dengan polinomial. Class ini merupakan bagian paling penting dalam algoritma \textit{Multipoint Evaluation}. Pseudocode \ref{psdo:class_poly} merupakan pseudocode dari class \fakesc{Poly}. Nantinya pada implementasi, class ini akan melakukan override terhadap operator penambahan, pengurangan dan perkalian. Semua bilangan di class \fakesc{Poly} akan menggunakan class \fakesc{Mod64}.
+
+\begin{algorithm}
+	\caption{Class \fakesc{Poly}}
+	\label{psdo:class_poly}
+	\begin{algorithmic}[1]
+		\State \textbf{public : }
+		\State \textbf{static} \fakesc{NTT\_THRESHOLD} $ \leftarrow 900 $
+		\State \textbf{static} \fakesc{QUOTIENT\_THRESHOLD} $ \leftarrow 700 $
+		\State \textbf{static} \fakesc{DIVREM\_THRESHOLD} $ \leftarrow 700 $
+		\State \textbf{static} \text{\fakesc{EVALUATE\_THRESHOLD}} $ \leftarrow 16 $
+
+		\State \textbf{procedure} \Call{\fakesc{VectorAdd}}{$ res, s, f, c $}
+		\State \textbf{procedure} \Call{\fakesc{VectorSub}}{$ res, s, f, c $}
+
+		\State \textbf{constructor} \Call{\fakesc{Poly}}{$ $}
+		\State \textbf{constructor} \Call{\fakesc{Poly}}{$ n $}
+		
+		\State \textbf{function} \Call{\fakesc{MulBasecase}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{QuotientBasecase}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{DivremBasecase}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{Mul}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{MulCyclically}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{MiddleProduct}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{Inverse}}{$ n $}
+		\State \textbf{function} \Call{\fakesc{Quotient}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{SubMul}}{$ f, g, d $}
+		\State \textbf{function} \Call{\fakesc{Divrem}}{$ f, g $}
+		\State \textbf{function} \Call{\fakesc{Evaluate}}{$ x $}
+		\State \textbf{function} \Call{\fakesc{MulPoint}}{$ f $}
+		\State \textbf{function} \Call{\fakesc{BuildSubproductTree}}{$ beg, end, k $}
+		\State \textbf{function} \Call{\fakesc{FastEval}}{$ g, beg, end, k $}
+		\State \textbf{function} \Call{\fakesc{MultipointEvaluation}}{$ f, points $}
+		\State \textbf{function} \Call{\fakesc{FactMod}}{$ N, mod $}
+		
+		\State \textbf{private : }
+		\State \textbf{function} \Call{\fakesc{MulCRT}}{$ beg, end $}
+		\State \textbf{function} \Call{\fakesc{MulConvolve}}{$ f, g, cyclic $}
+
+	\end{algorithmic}
+\end{algorithm}
+
+Pada class \fakesc{Poly} didefinisikan 4 variabel static yaitu \fakesc{NTT\_THRESHOLD} yang berperan sebagai batas derajat pada perkalian polinomial untuk menggunakan algoritma \textit{NTT}, \fakesc{QUOTIENT\_THRESHOLD} yang berperan sebagai batas derajat pada pembagian polinomial untuk menggunakan algoritma pembagian, \fakesc{DIVREM\_THRESHOLD} berperan sebagai batas derajat pada perkalian polinomial untuk menggunakan algoritma pembagian dengan sisa, dan \fakesc{EVALUATE\_THRESHOLD} yang berperan sebagai batas derajat pada evaluasi polinomial menggunakan \textit{Multipoint Evaluation}. Batas derajat ini diperlukan, karena terkadang algoritma yang cepat memiliki batas tertentu agar dia bisa lebih cepat dari pada cara naif.
+
+Fungsi \textit{constructor} dari class ini terdiri dari dua jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter dan kedua adalah dengan parameter $ n $, yang digunakan untuk membuat polinomial kosong dengan derajat paling besar $ n $. Pada implementasi nya, mungkin akan bertambah \textit{construct} yang dibuat untuk menyesuaikan dengan kebutuhan.
+
+Fungsi \fakesc{VectorAdd} dan \fakesc{VectorSub}, fungsi ini bertanggung jawab utuk melakukan operasi pertambahan ataupun pengurangan dengan suatu konstanta tertentu dikalian nilai pada vector yang menjadi input. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{psdo:class_poly_vector_add}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{tab:class_poly_vector_add} dan pseudocode \ref{psdo:class_poly_vector_sub}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{VectorAdd} pada class \fakesc{Poly}}
+	\label{psdo:class_poly_vector_add}
+	\begin{algorithmic}[1]
+		\Require $ res, s, f, c $
+		\For{$ i \leftarrow 0; i < s; i \leftarrow i + 1$}
+			\State $ res[i] \leftarrow res[i] + (f[i] * c) $
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{VectorSub} pada class \fakesc{Poly}}
+	\label{psdo:class_poly_vector_sub}
+	\begin{algorithmic}[1]
+		\Require $ res, s, f, c $
+		\For{$ i \leftarrow 0; i < s; i \leftarrow i + 1$}
+			\State $ res[i] \leftarrow res[i] - (f[i] * c) $
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa hasil, ukuran array, array penambah/pengurang, dan multiplier& Melakukan operasi penambahan. pengurangan & Array hasil yang telah ditambah\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{VectorAdd} / \fakesc{VectorSub} class \fakesc{Poly}}
+	\label{tab:class_poly_vector_add}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MulBasecase}, bertanggung jawab untuk melakukan perkalian polinomial dengan cara naif. Kompleksitas dari fungsi ini adalah $ \mathcal{O}{(NM)} $, dengan $ N , M $ adalah derajat dari polinomial yang akan dikalikan. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul_basecase}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul_basecase}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MulBasecase} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul_basecase}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f \times g $
+		\State $ size \leftarrow |f|+|g|-1 $
+		\State $ temp, ret \leftarrow poly(0) $
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|g|}} 
+			\If{$ g[i] $}
+				\State \Call{\fakesc{VectorAdd}}{temp + i, |f|, f, g[i]}
+			\EndIf
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|f|}} 
+			\State $ ret[i] = f[i] $
+		\EndFor
+		\State \Return $ ret $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Mengalikan polinomial $f$ dan polinomial $g$ dengan cara naif & Hasil perkalian polinomial $f$ dan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MulBasecase} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul_basecase}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{QuotientBasecase}, bertanggung jawab untuk melakukan pembagian polinomial dengan cara naif. Kompleksitas dari fungsi ini adalah $ \mathcal{O}{(NM)} $, dengan $ N $ adalah derajat polinomial numerator dan $ M $ adalah derajat dari polinomial denumerator. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_quo_basecase}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_quo_basecase}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{QuotientBasecase} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_quo_basecase}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f / g $
+		\State $ size \leftarrow |f|-|g|+1 $
+		\State $ q \leftarrow poly(0) $
+		\State $ temp \leftarrow f $
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|f|}} 
+			\If{$ temp[i] $}
+				\State \Call{\fakesc{VectorSub}}{$temp + i + 1, min(|f|-i, |g|) - 1, g + 1, temp[i]$}
+			\EndIf
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|f|}} 
+			\State $ q[i] = temp[i] $
+		\EndFor
+		\State \Return $ q $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Membagi polinomial $f$ dengan polinomial $g$ dengan cara naif & Hasil pembagian polinomial $f$ dengan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{QuotientBasecase} Class \fakesc{Poly}}
+	\label{tab:class_poli_quo_basecase}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{DivremBasecase}, bertanggung jawab untuk melakukan pembagian polinomial serta sisa dari pembagian polinomial dengan cara naif. Kompleksitas dari fungsi ini adalah $ \mathcal{O}{(NM)} $, dengan $ N $ adalah derajat polinomial numerator dan $ M $ adalah derajat dari polinomial denumerator. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_div_basecase}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_div_basecase}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{DivremBasecase} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_div_basecase}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f / g, f \% g $
+		\State $ size \leftarrow |f|-|g|+1 $
+		\State $ q \leftarrow poly(0) $
+		\State $ r \leftarrow poly(0) $
+		\State $ temp \leftarrow f $
+		\State $ inv \leftarrow g[0]^{-1} $
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|g|}} 
+			\State $ c \leftarrow temp[i] * inv $
+			\If{$ c $}
+				\State \Call{\fakesc{VectorSub}}{$temp + i + 1, |g| - 1, g + 1, c$}
+			\EndIf
+			\State $ q[i] \leftarrow c $
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|f|}} 
+			\State $ r[i-size] = temp[i] $
+		\EndFor
+		\State \Return $ [q,r] $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Membagi polinomial $f$ dengan polinomial $g$ dengan cara naif & Hasil pembagian dan sisa dari pembagian polinomial $f$ dengan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{DivremBasecase} Class \fakesc{Poly}}
+	\label{tab:class_poli_div_basecase}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Mul}, bertanggung jawab untuk melakukan pergantian untuk mengalikan polinomial dengan naif maupun menggunakan NTT. Pada fungsi ini digunakan variabel \fakesc{NTT\_THRESHOLD} yang merupakan batas menggunakan algoritma naif maupun NTT. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Mul} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f x g $
+		\If{|f| = 0 \text{ or } |g| = 0}
+			\State \Return Poly(0)
+		\EndIf
+		\If{$|f| + |g| \leq$ \fakesc{NTT\_THRESHOLD}}
+			\State \Return \Call{\fakesc{MulBasecase}}{$f,g$}
+		\EndIf
+		\State \Call{MulConvolve}{$f,g,false$}
+		\State \Return \Call{MulCRT}{0, |f|+|g|-1}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Pergantian antara perkalian polinomial dengan cara naif maupun menggunakan NTT & Hasil perkalian polinomial $f$ dan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Mul} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MulCyclically}, bertanggung jawab untuk melakukan perkalian polinomial yang memiliki sifat \textit{cyclic} seperti Middle Product. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul_cyclic}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul_cyclic}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MulCyclically} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul_cyclic}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f x g (\textit{cyclic})$
+		\If{|f| = 0 \text{ or } |g| = 0}
+			\State \Return Poly(0)
+		\EndIf
+		\State \Call{\fakesc{MulConvolve}}{$f,g,true$}
+		\State $ s \leftarrow 1 \Call{\fakesc{max}}{|f|,|g|} $
+		\State $ size \leftarrow 1 $
+		\While{$ size < s$}  $size \leftarrow size * 2$ \EndWhile
+		\If{$|f| + |g| \leq$ \fakesc{NTT\_THRESHOLD}}
+			\State \Return \Call{\fakesc{MulBasecase}}{$f,g$}
+		\EndIf
+		\State \Return \Call{MulCRT}{0, size}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Mengalikan polinomial $f$ dan $g$ dengan cyclic & Hasil perkalian cyclic polinomial $f$ dan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MulCyclically} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul_cyclic}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MiddleProduct}, bertanggung jawab untuk melakukan perkalian polinomial yang mengembalikan \textit{middle product} dari polinomial hasil perkalian.  Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mp}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mp}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MiddleProduct} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mp}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f \times g (\textit{middle product})$
+		\If{$|f| = 0 \text{ or } |g| = 0$}
+			\State \Return Poly(0)
+		\EndIf
+		\State \Call{\fakesc{MulConvolve}}{$f,g,true$}
+		\State \Return \Call{MulCRT}{$|f|, |g|$}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan polinomial $g$ & Mengalikan polinomial $f$ dan $g$ dengan \textit{Middle Product Optimization} & Hasil perkalian \textit{Middle Product} polinomial $f$ dan $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MiddleProduct} Class \fakesc{Poly}}
+	\label{tab:class_poli_mp}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Inverse}, bertanggung jawab untuk melakukan power inverse dari sebuah polinomial menggunakan Interasi Newton. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_inverse}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_inverse}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Inverse} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_inverse}
+	\begin{algorithmic}[1]
+		\Require $ f, n $
+		\Ensure $ f^{-1} \text{ mod } x^{n}$
+		\State $ ret \leftarrow Poly(1) $
+		\For{$e \leftarrow 1 , ne$; $ e < n $; $ e = ne$} 
+			\State $ ne \leftarrow \Call{\fakesc{min}}{2 * e, n}$
+			\State $ h \leftarrow ret_{[ne - e \cdots n]} * - \Call{\fakesc{MiddleProduct}}{ret, f}$
+			\State $ [ret] \leftarrow [ret , h] $
+		\EndFor
+		\State \Return $ ret $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan pangkat modulo $n$ & Mencari \textit{power inversion} $n$ dari polinomial $f$ & Hasil \textit{power inversion} $n$ dari polinomial $f$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Inverse} Class \fakesc{Poly}}
+	\label{tab:class_poli_inverse}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Quotient}, bertanggung jawab untuk melakukan pembagian yang tidak melibatkan sisa hasil bagi, serta melakukan pergantian untuk membagi polinomial dengan cara naif maupun menggunakan algoritma yang telah didefinisikan sebelumnya. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_quotient}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_quotient}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Quotient} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_quotient}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f / g $
+		\If{$|g| \leq$ \fakesc{QUOTIENT\_THRESHOLD}}
+			\State \Return \Call{\fakesc{QuotientBasecase}}{$f,g$}
+		\EndIf
+		\State $ s \leftarrow |f| / 2 + 1 $
+		\State $ inv \leftarrow b_{[0 \cdots n - s - 1]}^{-1} $
+		\State $ q1 \leftarrow inv \times a_{[0 \cdots n - s - 1]} $
+		\State $ lo \leftarrow \Call{\fakesc{MiddleProduct}}{q1, b} $
+		\State $ q2 \leftarrow \left[ inv_0, \cdots inv_{s-1} \right] \times \left[ b_{n-s} - lo_{0}, \cdots,  b_{n-1} - lo_{s-1} \right] $
+		\State \Return $ [q1_0, \cdots, q1_{n-s-1}, q2_0, \cdots, q2_{s-1}] $.
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan $g$ & Membagi polinomial $f$ dengan polinomial $g$  & Hasil bagi polinomial $f$ dari polinomial $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Quotient} Class \fakesc{Poly}}
+	\label{tab:class_poli_quotient}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{SubMul}, bertanggung jawab untuk melakukan operasi $ f - d.q $. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_sub_mul}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_sub_mul}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{SubMul} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_sub_mul}
+	\begin{algorithmic}[1]
+		\Require $ f, q, d $
+		\Ensure $ f - q.d $
+		\State $ sq \leftarrow |q| $
+		\State $ q \leftarrow \Call{\fakesc{MulCycically}}{$d$}$
+		\State $ mask \leftarrow |p| - 1$
+		\For{$i \leftarrow 0 $ \textbf{to} \text{sq}} 
+			\State $ p[i \& mask] \leftarrow p[i \& mask] - f[i \& mask]$
+		\EndFor
+		\State $ r \leftarrow f $
+		\For{$i \leftarrow 0 $ \textbf{to} \text{|f| - sq}} 
+			\State $ r[i] \leftarrow r[i] - p[(sq + i) \& mask]$
+		\EndFor
+		\State \Return $ r $.
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f , q$ dan $d$ & Menghitung $ f - q.d $  & Hasil dari $ f - q.d $\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{SubMul} Class \fakesc{Poly}}
+	\label{tab:class_poli_sub_mul}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Divrem}, bertanggung jawab untuk melakukan pembagian yang melibatkan sisa hasil bagi, serta melakukan pergantian untuk membagi polinomial dengan cara naif maupun menggunakan algoritma yang telah didefinisikan sebelumnya. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_divrem}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_divrem}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Divrem} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_divrem}
+	\begin{algorithmic}[1]
+		\Require $ f, g $
+		\Ensure $ f / g $
+		\If{$|f| < |g| $}
+			\State \Return [$Poly(0), f$]
+		\EndIf
+		\If{$|f| \leq$ \fakesc{DIVREM\_THRESHOLD}}
+			\State \Return \Call{\fakesc{DivremBasecase}}{$f,g$}
+		\EndIf
+		\State $ sq \leftarrow |f| - |g| + 1 $
+		\State $ q = \Call{\fakesc{Quotient}}{f, g}$
+		\State $ r = \Call{\fakesc{SubMul}}{f, q, g}$
+		\State \Return $ [q, r] $.
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan $g$ & Membagi polinomial $f$ dengan polinomial $g$ dengan sisa  & Hasil bagi dan sisa hasil bagi polinomial $f$ dari polinomial $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Divrem} Class \fakesc{Poly}}
+	\label{tab:class_poli_divrem}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{Evaluate}, bertanggung jawab untuk menghitung hasil evaluasi polinomial pada titik tertentu menggunakan metode horner. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_eval}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_eval}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Evaluate} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_eval}
+	\begin{algorithmic}[1]
+		\Require $ f, x $
+		\Ensure $ f(x) $
+		\State $ ret \leftarrow 0 $
+		\For{$i \leftarrow 0 $ \textbf{to} \text{sq}} 
+			\State $ ret \leftarrow ret * x + f[i] $
+		\EndFor
+		\State \Return $ ret $.
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan $g$ & Membagi polinomial $f$ dengan polinomial $g$ dengan sisa  & Hasil bagi dan sisa hasil bagi polinomial $f$ dari polinomial $g$\\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Evaluate} Class \fakesc{Poly}}
+	\label{tab:class_poli_eval}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MulPoint}, bertanggung jawab untuk melakukan perkalian pada polinomial titik. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul_point}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul_point}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MulPoint} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul_point}
+	\begin{algorithmic}[1]
+		\Require $ beg, end $
+		\Ensure $ (x - f(beg)) \times \cdots \times (x - f(end)) $
+		\If{$ beg - end = 1$}
+			\State \Return $Poly(1, f[beg])$
+		\EndIf
+		\State $ mid \leftarrow (beg + end) / 2 $
+		\State \Return \Call{\fakesc{MulPoint}}{$beg, mid$} $\times$ \Call{\fakesc{MulPoint}}{$mid, end$}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa titik awal $beg$ dan akhir $end$ & Mengalikan polinomial dari titik $beg$ sampai $end$ & Hasil perkalian polinomial dari titik $beg$ sampai $end$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MulPoint} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul_point}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{BuildSubproductTree}, bertanggung jawab untuk membuat pohon polinomial dari titik titik pada vector points. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_bst}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_bst}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{BuildSubproductTree} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_bst}
+	\begin{algorithmic}[1]
+		\Require $ beg, end, k $
+		\If{$ end - beg = 1$}
+			\State $ tree[k] \leftarrow Poly(1, -points[beg]) $
+		\Else
+			\State $ mid \leftarrow (beg + end) / 2 $
+			\State \Call{\fakesc{BuildSubproductTree}}{$beg, mid, 2 * k + 1$}
+			\State \Call{\fakesc{BuildSubproductTree}}{$mid, end, 2 * k + 2$}
+			\State $ tree[k] \leftarrow tree[2 * k + 1] \times tree[2 * k + 2]$
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa index mulai , berakhir, serta posisi node saat ini & Membuat pohon polinomial & - \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{BuildSubproductTree} Class \fakesc{Poly}}
+	\label{tab:class_poli_bst}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{FastEval}, bertanggung jawab untuk evaluasi terhadap pohon polinomial. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel  . Pseudocode dari fungsi ini dapat dilihat pada pseudocode  .
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{FastEval} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_fast_eval}
+	\begin{algorithmic}[1]
+		\Require $ g, beg, end, k $
+		\If{$ end - beg \leq $ \fakesc{EVALUATE\_THRESHOLD}}
+			\For{$i \leftarrow beg $ \textbf{to} end-1} 
+				\State $ res[i] \leftarrow $\Call{\fakesc{Evaluate}}{$r, points[i]$}
+			\EndFor
+		\Else
+			\State $ mid \leftarrow (beg + end) / 2 $
+			\State \Call{\fakesc{FastEval}}{$r, beg, mid, 2 * k + 1$}
+			\State \Call{\fakesc{FastEval}}{$r, mid, end, 2 * k + 2$}
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $r$, index mulai , berakhir, serta posisi node saat ini & Evaluasi polinomial $r$ pada titik pada array dengan index mulai sampai index berakhir & - \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{FastEval} Class \fakesc{Poly}}
+	\label{tab:class_poli_fast_eval}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MultipointEvaluation}, bertanggung jawab untuk melakukan \textit{multipoint evaluation} pada polinomial $ f $ pada beberapa titik. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_multi_eval}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_multi_eval}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MultipointEvaluation} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_multi_eval}
+	\begin{algorithmic}[1]
+		\Require $ f, points $
+		\Ensure $ res $
+		\State $ s \leftarrow |s| $
+		\State $ res \leftarrow Array() $
+		\State $ tree\_size \leftarrow 2 \times 2 ^{ ^2\log{S-1}}$
+		\State $ tree \leftarrow Array(tree\_size) $
+		\State $ \Call{\fakesc{BuildSubproductTree}}{0, s, 0}$
+		\State $ \Call{\fakesc{FastEval}}{f, 0, s, 0}$
+		\State \Return $ res $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f$ dan titik titik evaluasi & Multipoint Evaluation pada polinomial $f$ dan titik titik evaluasi & Array hasil evaluasi polinomial $f$ pada titik titik evaluasi \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MultipointEvaluation} Class \fakesc{Poly}}
+	\label{tab:class_poli_multi_eval}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{FactMod}, bertanggung jawab untuk menghitung nilai dari $ N! $ mod $ P $. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_factmod}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_factmod}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{FactMod} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_factmod}
+	\begin{algorithmic}[1]
+		\Require $ N, P $
+		\Ensure $ N! \text{ mod } P $
+		\State \Call{\fakesc{SetMod}}{P}
+		\If{$N \leq P-N-1$}
+			\State $ v \leftarrow \left \lfloor \sqrt{N} \right \rfloor, ret = 1, points \leftarrow Array() $
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $points[i] \leftarrow (i * v + 1)$
+			\EndFor
+			\State $ f \leftarrow $ \Call{\fakesc{MulPoint}}{points}
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $points[i] \leftarrow i$
+			\EndFor
+			\State $ eval \leftarrow \Call{\fakesc{MultipointEvaluation}}{f, point}$
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $ret \leftarrow ret * eval[i]$
+			\EndFor
+			\For{$i \leftarrow v\times v + 1 $ \textbf{to} $ N $} $ret \leftarrow ret * i$
+			\EndFor
+			\State \Return $ ret $
+		\Else
+			\State $ v \leftarrow \left \lfloor \sqrt{P-N-1} \right \rfloor, ret = 1, points \leftarrow Array() $
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $points[i] \leftarrow (i * v + 1 + N)$
+			\EndFor
+			\State $ f \leftarrow $ \Call{\fakesc{MulPoint}}{points}
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $points[i] \leftarrow i$
+			\EndFor
+			\State $ eval \leftarrow \Call{\fakesc{MultipointEvaluation}}{f, point}$
+			\For{$i \leftarrow 0 $ \textbf{to} $ v - 1$} $ret \leftarrow ret * eval[i]$
+			\EndFor
+			\For{$i \leftarrow v\times v + 1 + N $ \textbf{to} $ P - 1$} $ret \leftarrow ret * i$
+			\EndFor
+			\State $ ret = ret ^{-1}$
+			\If{$v * v + 1 + N > P-1$} $ ret = ret * (P-1)$ \EndIf
+			\State \Return $ ret $
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa $N$ dan $P$ & Perhitungan $ N! $ mod $P$ & Hasil perhitungan $ N! $ mod $P$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{FactMod} Class \fakesc{Poly}}
+	\label{tab:class_poli_factmod}
+\end{table}
+
+Fungsi \fakesc{MulCRT}, bertanggung jawab untuk menghitung nilai modulo sesungguhnya dari dua buah array hasil konvolusi yang sebelumnya dihitung dengan dua buah bilangan prima berbeda. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul_crt}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul_crt}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MulCRT} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul_crt}
+	\begin{algorithmic}[1]
+		\Require $ beg, end $
+		\Ensure Evaluasi CRT pada array dengan index $ beg $ sampai $ end $
+		\State $ inv \leftarrow Mod64\_2(Mod64\_1::modulus).Inverse() $
+		\State $ mod \leftarrow Mod64::modulus $
+		\State $ mod1 \leftarrow Mod64\_1::modulus \text{ \% mod }$
+		\State $ ret \leftarrow Poly() $
+		\For{$i \leftarrow 0 $ \textbf{to} $end - beg$}
+			\State $ r1 \leftarrow Mod64\_2(f1[i + beg])$
+			\State $ r2 \leftarrow f2[i + beg] $
+			\State $ ret[i] \leftarrow r1 \text{\% mod } + ((r2 - r1) * inv)  \text{\% mod } * mod1$
+		\EndFor
+		\State \Return $ ret $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa index awal $beg$ dan akhir $end$ & Perhitungan nilai modulo sesungguhnya pada index $ beg $ sampai $end$ & Hasil nilai modulo sesungguhnya pada index $ beg $ sampai $end$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MulCRT} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul_crt}
+\end{table}
+
+\newpage
+
+Fungsi \fakesc{MulConvolve}, bertanggung jawab untuk menghitung nilai konvolusi dengan modulo dua buah bilangan prima berbeda. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class_poli_mul_convolve}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:class_poli_mul_convolve}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MulConvolve} pada namespace \fakesc{NTT}}
+	\label{psdo:class_poli_mul_convolve}
+	\begin{algorithmic}[1]
+		\Require $ f, g, cyclic $
+		\For{$i \leftarrow 0 $ \textbf{to} $|f|$}
+			\State $f1[i] \leftarrow f[i] $
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} $|g|$}
+			\State $g1[i] \leftarrow g[i] $
+		\EndFor
+		\State \Call{\fakesc{Convolve}}{$f1, |f|, g1, |g|, cyclic$}
+		\For{$i \leftarrow 0 $ \textbf{to} $|f|$}
+			\State $f2[i] \leftarrow f[i] $
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} $|g|$}
+			\State $g2[i] \leftarrow g[i] $
+		\EndFor
+		\State \Call{\fakesc{Convolve}}{$f2, |f|, g2, |g|, cyclic$}
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $f, g$ dan boolean cyclic & Melakukan konvolusi pada polinomial $f$ dan $g$ dengan modulo $2$ bilangan prima berbeda & Hasil konvolusi pada polinomial $f$ dan $g$ dengan modulo $2$ bilangan prima berbeda \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MulConvolve} Class \fakesc{Poly}}
+	\label{tab:class_poli_mul_convolve}
+\end{table}
+
+\newpage
+
+\subsection{Desain Fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai fungsi Solve untuk menyelesaikan permasalahan. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:multipoint_solve}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Solve}}
+	\label{psdo:multipoint_solve}
+	\begin{algorithmic}[1]
+		\Require $ N, P$
+		\State \Return \Call{\fakesc{Poly::FactMod}}{$N, P$}
+	\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\section{Desain Penyelesaian Perhitungan Faktorial dengan Shifting Evaluation Values}
+Pada subbab ini akan dijelaskan mengenai desain dan algoritma Shifting Evaluation Values dalam menyelesaikan perhitungan Faktorial dengan modulo prima. selanjutnya akan dipaparkan beberapa fungsi yang digunakan dalam algoritma \textit{Shifting Evaluation Values}.
+
+\subsection{Desain Fungsi Perhitungan Inverse Factorial}
+Pada persamaan \eqref{eq:interpolasi_langrange_4}, diperlukan perhitungan \textit{inverse} faktorial. Nilai \textit{inverse} faktorial ini dapat dihitung terlebih dahulu agar efisien. Fungsi \fakesc{PrecomputeIFactorials}, bertanggung jawab untuk melakukan perhitungan ini.  Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_precom_ifactorials}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_precom_ifactorials}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{PrecomputeIFactorials}}
+	\label{psdo:shift_precom_ifactorials}
+	\begin{algorithmic}[1]
+		\Require $ n $
+		\State $ iter \leftarrow 1 $
+		\State $ ret \leftarrow Array(1, n+1) $
+		\For{$i \leftarrow 1 $ \textbf{to} $ n $}
+			\State $ ret[i] \leftarrow iter * ret[i-1] $
+			\State $ iter \leftarrow iter + 1 $
+		\EndFor
+		\State $ ret[n] \leftarrow ret[n].inverse() $
+		\State $ iter \leftarrow iter - 1 $
+		\If{n = 0}
+			\Return $ret$
+		\EndIf
+		\For{$i \leftarrow n-1 $ \textbf{to} $ 0 $}
+			\State $ ret[i] \leftarrow iter * ret[i+1] $
+			\State $ iter \leftarrow iter - 1 $
+		\EndFor
+		\State \Return $ret$
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa bilangan $ n $ yang menyatakan batas perhitungan \textit{inverse} faktorial & Melakukan perhitungan \textit{inverse} faktorial & Array hasil \textit{precompute inverse} faktorial \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{PrecomputeIFactorials}}
+	\label{tab:shift_precom_ifactorials}
+\end{table}
+
+\newpage
+
+\subsection{Desain Fungsi Convolution}
+Konvolusi digunakan untuk menghitung polinomial $\tilde{P}$ dilakukan oleh fungsi \fakesc{Conv}. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_conv}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_conv}. 
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{conv}}
+	\label{psdo:shift_conv}
+	\begin{algorithmic}[1]
+		\Require $ f $
+		\State $ n \leftarrow |f| $
+		\State $ ret \leftarrow f $
+		\For{$i \leftarrow 0 $ \textbf{to} $ n-1 $}
+			\State $ d \leftarrow ifactorials[i] \times ifactorials(n-1-i) \times (-1)^{n-1-i} $
+			\State $ ret[i] \leftarrow ret[i] * d $
+		\EndFor
+		\State \Return $ret$
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa array $ f $ yang nilai awal & Melakukan proses agar nilai awal tersebut menjadi polinomial $ \tilde{P}$ & Polinomial $ \tilde{P} $ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{conv}}
+	\label{tab:shift_conv}
+\end{table}
+
+\newpage
+
+\subsection{Desain Fungsi Middle Product}
+Middle Product Optimization digunakan untuk mengalikan polinomial $ \tilde{P} $ dan polinomial $S$, seperti pada teorema \ref{theo:middle_product}. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_mp}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_mp}. 
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{MiddleProduct}}
+	\label{psdo:shift_mp}
+	\begin{algorithmic}[1]
+		\Require $ f , g $
+		\State \textit{Middle Product }$ f \times g $
+		\For{$i \leftarrow 0 $ \textbf{to} $|f|$}
+			\State $f1[i] \leftarrow f[i] $
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} $|g|$}
+			\State $g1[i] \leftarrow g[i] $
+		\EndFor
+		\State \Call{\fakesc{Convolve}}{$f1, |f|, g1, |g|, true$}
+		\For{$i \leftarrow 0 $ \textbf{to} $|f|$}
+			\State $f2[i] \leftarrow f[i] $
+		\EndFor
+		\For{$i \leftarrow 0 $ \textbf{to} $|g|$}
+			\State $g2[i] \leftarrow g[i] $
+		\EndFor
+		\State \Call{\fakesc{Convolve}}{$f2, |f|, g2, |g|, true$}
+		\State $ beg \leftarrow |f| - 1, end \leftarrow |g| $
+		\State $ inv \leftarrow Mod64\_2(Mod64\_1::modulus).Inverse() $
+		\State $ mod \leftarrow Mod64::modulus $
+		\State $ mod1 \leftarrow Mod64\_1::modulus \text{ \% mod }$
+		\State $ ret \leftarrow Poly() $
+		\For{$i \leftarrow 0 $ \textbf{to} $end - beg$}
+			\State $ r1 \leftarrow Mod64\_2(f1[i + beg])$
+			\State $ r2 \leftarrow f2[i + beg] $
+			\State $ ret[i] \leftarrow r1 \text{\% mod } + ((r2 - r1) * inv)  \text{\% mod } * mod1$
+		\EndFor
+		\State \Return $ ret $
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $ f $ dan $ g $ & Melakukan perkalian \textit{Middle Product} polinomial $ f $ dan $ g $ & \textit{Middle Product} dari perkalian polinomial $ f $ dan $ g $ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{MiddleProduct}}
+	\label{tab:shift_mp}
+\end{table}
+
+\subsection{Desain Fungsi Shifting Evaluation Values}
+Shifting Evaluation Values akan digunakan untuk menyelesaikan grid. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_shift}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_shift}. 
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Shift}}
+	\label{psdo:shift_shift}
+	\begin{algorithmic}[1]
+		\Require $ f, dx $
+		\State $ n \leftarrow |f| , deg \leftarrow n - 1, a = \frac{dx}{\sqrt{N}}, g = Array(0)$
+		\State $ r \leftarrow a - deg $
+		\For{$i \leftarrow 0 $ \textbf{to} $|g|$}
+			\State $ g[i] \leftarrow r $
+			\State $ r \leftarrow r + 1$
+			\If{$r = mod$} $ r = 0 $
+			\EndIf
+		\EndFor
+		\For{$i \leftarrow 1$ \textbf{to} $|g|$} $ g[i] \leftarrow g[i] \times g[i-1]$
+		\EndFor
+		\State $ inv \leftarrow g[|g|-1].inverse() $
+		\State $ iter \leftarrow |g|-1 $
+		\For{$i \leftarrow |g| $ \textbf{to} $0$}
+			\State $ g[i] \leftarrow g[i-1] \times inv $
+			\State $ inv \leftarrow inv * (a + iter - deg) $
+			\State $ iter \leftarrow iter - 1 $
+		\EndFor
+		\State $ g[0] \leftarrow inv $
+		\State $ ret \leftarrow \Call{\fakesc{MiddleProduct}}{f, g}$
+		\State $ prod \leftarrow 1, iter \leftarrow 0 $
+		\For{$i \leftarrow 0$ \textbf{to} $n - 1$} 
+		\State $ prod \leftarrow prod \times (a + deg -iter), iter \leftarrow iter + 1$
+		\EndFor 
+		\State $ iter \leftarrow iter - 1$
+		\For{$i \leftarrow n-1$ \textbf{to} $0$}
+			\State $ ret[i] \leftarrow ret[i] \times prod $
+			\State $ prod \leftarrow (prod \times g[n - 1 + i]) \times (a + iter - deg - 1)$
+			\State $ iter \leftarrow iter - 1 $
+		\EndFor 
+		\State \Return $ret$
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $ \tilde{P} $ dan delta perubahan & Melakukan proses \textit{shifting} pada polinomial $ \tilde{P} $ sesuai dengan delta perubahan & Polinomial $ \tilde{P} $ baru hasil \textit{shifting} \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{shift}}
+	\label{tab:shift_shift}
+\end{table}
+
+\newpage
+
+\subsection{Desain Fungsi Solve Grid}
+Fungsi Solve Grid digunakan untuk mengimplementasikan \textit{Shifting Evaluation Values} kepada permasalahan faktorial. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_solve_grid}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_solve_grid}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{SolveGrid}}
+	\label{psdo:shift_solve_grid}
+	\begin{algorithmic}[1]
+		\Require $ n $
+		\If{n = 1}
+			\Return [$1, 1 + \sqrt{N}$]
+		\EndIf
+		\State $ halfN \leftarrow n / 2 $
+		\State $ f11 \leftarrow $ \Call{\fakesc{SolveGrid}}{$halfN$}
+		\State $ f \leftarrow $ \Call{\fakesc{Conv}}{$f11$}
+		\State $ f12 \leftarrow $ \Call{\fakesc{Shift}}{$f, halfN$}
+		\State $ f21 \leftarrow $ \Call{\fakesc{Shift}}{$f, halfN * \sqrt{N}$}
+		\State $ f22 \leftarrow $ \Call{\fakesc{Shift}}{$f, halfN * \sqrt{N} + halfN$}
+		\For{$i \leftarrow 0$ \textbf{to} $halfN$} $f11[i] \leftarrow f11[i] \times f12[i] $
+		\EndFor
+		\For{$i \leftarrow 1$ \textbf{to} $halfN$} $f11[i + halfN] \leftarrow f21[i] \times 212[i] $
+		\EndFor
+		\If{$n \& 1$}
+			\For{$i \leftarrow 0$ \textbf{to} $n$} $f11[i] \leftarrow f11[i] \times (\sqrt{N} \times i + n) $
+			\EndFor
+			\For{$i \leftarrow 1$ \textbf{to} $n$} $prod \leftarrow prod \times (\sqrt{N} \times n + i + 1) $
+			\EndFor
+			\State $ f11[|f11|-1] \leftarrow prod $
+		\EndIf	
+		\State \Return $f11$
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa polinomial $ \tilde{P} $ dan delta perubahan & Melakukan proses \textit{shifting} pada polinomial $ \tilde{P} $ sesuai dengan delta perubahan & Polinomial $ \tilde{P} $ baru hasil \textit{shifting} \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{SolveGrid}}
+	\label{tab:shift_solve_grid}
+\end{table}
+
+\subsection{Desain Fungsi FactMod}
+Fungsi \fakesc{FactMod}, digunakan untuk menghitung nilai dari $ N! $ mod $ P $. Masukkan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:shift_factmod}. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_factmod}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{FactMod}}
+	\label{psdo:shift_factmod}
+	\begin{algorithmic}[1]
+		\Require $ n $
+		\If{$ n / 2 >= mod $} 
+			\State $ m \leftarrow mod - n - 1 $
+			\State $ ret \leftarrow $ \Call{\fakesc{FactMod}}{$M$}
+			\If{M\&1 = 0}
+				\State $ ret \leftarrow mod - ret$
+			\EndIf
+			\State \Return $ ret.inverse() $
+		\EndIf
+		\State $ k \leftarrow $ \Call{\fakesc{min}}{$\sqrt{n}, \frac{n}{\sqrt{n}}$}
+		\State $ ret \leftarrow f[k-1] $
+		\State $ t \leftarrow k * \sqrt{N} $
+		\For{$i \leftarrow 0$ \textbf{to} $n$}
+			\State $ ret \leftarrow ret \times (t + i + 1)$
+		\EndFor
+		\State \Return $ret$
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{table}[]	
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan & Proses & Keluaran \\ \hline
+	Berupa $N$ dan $P$ & Perhitungan $ N! $ mod $P$ & Hasil perhitungan $ N! $ mod $P$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{FactMod}}
+	\label{tab:shift_factmod}
+\end{table}
+
+\subsection{Desain Fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai fungsi Solve untuk menyelesaikan permasalahan. Pseudocode dari fungsi ini dapat dilihat pada pseudocode \ref{psdo:shift_solve}.
+
+\begin{algorithm}
+	\caption{Fungsi \fakesc{Solve}}
+	\label{psdo:shift_solve}
+	\begin{algorithmic}[1]
+		\Require $ N, mod $
+		\If{$N \geq mod$} \Return $ 0 $ \EndIf
+		\If{$N  = mod$} \Return $ 1 $ \EndIf
+		\If{$N+1 = mod$} \Return $ N $ \EndIf
+		\State $ x \leftarrow N $
+		\If{$ N * 2 > mod $}
+			\State $ x \leftarrow mod - N $
+		\EndIf
+		\State $ \Call{Mod64::SetMod}{mod}$
+		\State $ ifactorials \leftarrow $ \Call{\fakesc{PrecomputeIFactorials}}{$\sqrt{N} / 2 $}
+		\State $ f \leftarrow $ \Call{\fakesc{SolveGrid}}{$\sqrt{N}$}
+		\For{$i \leftarrow 1$ \textbf{to} $\sqrt{N} - 1$}
+			\State $ f[i] \leftarrow f[i] \times f[i-1] $
+		\EndFor
+		\State \Return \Call{\fakesc{FactMod}}{$N$}
+	\end{algorithmic}
+\end{algorithm}

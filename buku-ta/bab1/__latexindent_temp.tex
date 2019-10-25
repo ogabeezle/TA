@@ -1,0 +1,75 @@
+\vspace{0ex}
+\chapter {PENDAHULUAN}
+
+Pada bab ini, akan dijelaskan mengenai latar belakang, rumusan masalah, Batasan masalah, tujuan, metodologi pengerjaan, dan sistematika penulisan tugas akhir.
+
+\section{Latar Belakang}
+
+\par Faktorial sangat penting dalam perhitungan kombinatorik, untuk contoh, terdapat n! cara berbeda untuk menyusun n bilangan berbeda dalam sebuah urutan. Kemudian banyak cara untuk memilih k bilangan dari n bilangan yang diberikan yang disebut koefisien binomial, memerlukan faktorial dalam perhitungannya. Selain kombinatorik, faktorial juga berperan dalam kalkulus (\textit{Taylor’ theorem}), teori probabilitas maupun dalam teori keamanan jaringan yang menggunakan domain modulo prima.
+
+\par Topik Tugas Akhir ini mengacu pada permasalahan komputasi faktorial dalam modulo prima pada \textit{Sphere Online Judge (SPOJ)} dengan kode FACTMODP\cite{factmodp}. Inti permasalahan pada FACTMODP\cite{factmodp} adalah mengkomputasi N! dalam modulo P dengan N berada dalam rentang $ 0 < N < 10^{11} $ dan P adalah bilangan prima dalam rentang $ 2 < N < 10^{11} $. Pertanyaan utama yang mendasari permasalahan FACTMODP\cite{factmodp} adalah bagaimana cara mengkomputasi faktorial dalam prime field dengan efisien. Pendekatan penulis untuk menyelesaikan permasalahan tersebut adalah menggunakan algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform}, yang mentransformasikan bentuk faktorial ke dalam bentuk polinomial, kemudian mengevaluasi banyak titik pada polinomial sehingga didapatkan nilai dari faktorial tersebut, dengan kompleksitas akhir $ O(\sqrt{n}\ log^3  n) $.
+
+\par Hasil dari Tugas Akhir ini diharapkan dapat menghasilkan cara mengkomputasi faktorial dalam modulo prima secara efisien, menggunakan algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform} dan diharapkan dapat memberikan kontribusi pada perkembangan ilmu pengetahuan dan teknologi informasi.
+
+\section {Rumusan Masalah}
+
+Permasalahan yang akan diselesaikan pada tugas akhir ini adalah sebagai berikut:
+
+\begin {enumerate}
+\item Bagaimana mengimplementasi dan menganalisa algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform} untuk menyelesaikan permasalahan pada soal \textit{Sphere Online Judge Factorial Modulo Prime} (FACTMODP\cite{factmodp})?
+\item Bagaimana mengingkatkan performa algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform} pada soal \textit{Sphere Online Judge Factorial Modulo Prime} (FACTMODP\cite{factmodp})?
+\end {enumerate}
+
+\section {Batasan Masalah}
+
+Masalah yang akan diselesaikan memiliki batasan-batasan berikut:
+
+\begin {enumerate}
+\item Implementasi dilakukan menggunakan bahasa pemrograman C++.
+\item Batas nilai T di antara $ 1 $ sampai $ 100.000 $, dimana T merupakan banyaknya data uji.
+\item Batas nilai N di antara $ 0 $ sampai $ 10^{11} $.
+\item Batas nilai P di antara $ 2 $ sampai $ 10^{11} $ dimana P adalah bilangan prima.
+\item Pada soal diketahui bahwa jumlah dari $ \sqrt{P} $ kurang dari $ 320.000 $.
+\item Batas waktu yang diberikan adalah $ 10-15 $ detik.
+\item Batas memori yang diberikan adalah $ 1.526 $ MB.
+\item Batas memori yang diberikan adalah $ 50.000 $ B.
+\end {enumerate}
+
+\section {Tujuan}
+
+Tujuan tugas akhir ini adalah sebagai berikut:
+
+\begin{enumerate}
+\item Mengimplementasikan dan menganalisa algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform} dalam menyelesaikan permasalahan pada soal \textit{Sphere Online Judge Factorial Modulo Prime} (FACTMODP\cite{factmodp}).
+\item Mengevaluasi dan mengingkatkan performa algoritma \textit{Multipoint Evaluation} dengan \textit{Number Theoretic Transform} dalam menyelesaikan permasalahan pada soal \textit{Sphere Online Judge Factorial Modulo Prime} (FACTMODP\cite{factmodp}).
+\end{enumerate}
+
+\section {Metodologi}
+
+Metodologi pengerjaan yang digunakan pada tugas akhir ini memiliki beberapa tahapan. Tahapan-tahapan tersebut yaitu:
+
+\begin{enumerate}
+\item Penyusunan proposal\\
+Pada tahapan ini penulis memberikan penjelasan mengenai apa yang penulis akan lakukan dan mengapa tugas akhir ini dilakukan. Penjelasan tersebut dituliskan dalam bentuk proposal tugas akhir.
+\item Studi literatur\\
+Pada tahapan ini penulis mengumpulkan referensi yang diperlukan guna mendukung pengerjaan tugas akhir. Referensi yang digunakan dapat berupa hasil penelitian yang sudah pernah dilakukan, buku, artikel internet, atau sumber lain yang bisa dipertanggungjawabkan.
+\item Implementasi algoritma\\
+Pada tahapan ini penulis mulai mengembangkan algoritma yang digunakan untuk menyelesaiakan permasalahan DSA Attack.
+\item Pengujian dan evaluasi\\
+Pada tahapan ini penulis menguji performa algoritma yang digunakan. Hasil pengujian kemudian dievaluasi untuk kemudian dipertimbangkan apakah algoritma masih bisa ditingkatkan lagi atau tidak.
+\item Penyusunan buku\\
+Pada tahapan ini penulis menyusun hasil pengerjaan tugas akhir mengikuti format penulisan tugas akhir.
+\end{enumerate}
+
+\section {Sistematika Penulisan}
+
+Sistematika laporan tugas akhir yang akan digunakan adalah sebagai berikut:
+
+\begin{enumerate}
+\item Bab 1. Bagian ini akan menjelaskan mengenai konteks tugas akhir yang akan dikerjakan, termasuk latar belakang, tujuan, rumusan masalah, dan metodologi.
+\item Bab 2. Bagian ini akan menjelaskan mengenai dasar teori yang akan digunakan dalam pengerjaan tugas akhir.
+\item Bab 3. Bagian ini akan menjelaskan mengenai desain program yang akan dibangun berdasarkan dasar teori pada bab 2.
+\item Bab 4. Bagian ini akan menjelaskan implementasi desain program yang dijelaskan pada bab 3.
+\item Bab 5. Bagian ini akan menjelaskan mengenai hasil pengujian program yang telah diimplementasikan pada bab 4.
+\item Bab 6. Bagian ini berisi kesimpulan yang akan menjawab rumusan masalah.
+\end{enumerate}

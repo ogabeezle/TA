@@ -35,7 +35,12 @@ struct Point
     {
         x = _x;
         y = _y;
-        z = _z
+        z = _z;
+    }
+    Point(double _x, double _y)
+    {
+        x = _x;
+        y = _y;
     }
     bool operator<(Point other) const
     {
@@ -194,20 +199,45 @@ Polygon convexHull(vector<Point> &pts)
 
 int main()
 {
-    Polygon p;
-    vector<Point> arr;
-    arr.push_back(Point(0, 0, 0));
-    arr.push_back(Point(4, 0, 0));
-    arr.push_back(Point(0, 4, 0));
-    arr.push_back(Point(0, -4, 0));
-    arr.push_back(Point(-4, 0, 0));
-    arr.push_back(Point(-1, 1, 1));
-    arr.push_back(Point(-1, -1, 1));
-    arr.push_back(Point(1, 1, 1));
-    arr.push_back(Point(1, -1, 1));
-    p = convexHull(arr);
-    for (int i = 0; i < p.P.size(); i++)
+    int a, b;
+    while (cin >> a >> b)
     {
-        p.P[i].print('\n');
+        Polygon walls;
+        Polygon rope;
+        vector<Point> trees;
+        for (int i = 0; i < a; i++)
+        {
+            int x, y;
+            cin >> x >> y;
+            walls.P.push_back(Point(x, y));
+        }
+        for (int i = 0; i < b; i++)
+        {
+            int x, y;
+            cin >> x >> y;
+            trees.push_back(Point(x, y));
+        }
+        rope = convexHull(trees);
+        for (int i = 0; i < rope.P.size(); i++)
+        {
+            rope.P[i].print('\n');
+        }
+
+        Polygon p;
+        vector<Point> arr;
+        arr.push_back(Point(0, 0, 0));
+        arr.push_back(Point(4, 0, 0));
+        arr.push_back(Point(0, 4, 0));
+        arr.push_back(Point(0, -4, 0));
+        arr.push_back(Point(-4, 0, 0));
+        arr.push_back(Point(-1, 1, 1));
+        arr.push_back(Point(-1, -1, 1));
+        arr.push_back(Point(1, 1, 1));
+        arr.push_back(Point(1, -1, 1));
+        p = convexHull(arr);
+        for (int i = 0; i < p.P.size(); i++)
+        {
+            p.P[i].print('\n');
+        }
     }
 }

@@ -171,7 +171,8 @@ polygon convexHull(vector<point> &pts){
     vector<point> hull; 
     for(int i=0;i<2;i++){
         int start=(int)hull.size();
-        for(auto pt:pts){
+        for(int i=0;i<pts.size();i++){
+        	point pt=pts[i];
             while((int)hull.size()>=start+2&&orientation(hull[(int)hull.size()-1],hull[(int)hull.size()-2],pt)<=0.0)hull.pob();
             hull.pb(pt);
         }
@@ -198,11 +199,10 @@ int inSimplePolygon(point P,polygon &A) { //-1 inside,0 onsegment, 1 outside
 	return ret==0?1:-1;
 }
 
+map<point,int> pool;
+
 bool find(queue<point> q, point cur){
-	while(!q.empty()){
-		if(q.front()==cur) return true;
-		q.pop();
-	}
+	if(pool[cur]+pool[point(cur.x,cur.y,!cur.fixed)]>0) return true;
 	return false;
 }
 
@@ -262,6 +262,7 @@ polygon shrink(polygon &perimeter, vector<point> &trees){
 		while(count--){
 			point cur=q.front();
 			q.pop();
+			pool[cur]--;
 			if(!cur.fixed&&(!find(q,cur)||cur==bef||cur==q.front())&&orientation(cur,bef,q.front())<=0.0){
 				erased=true;
 				polygon triangle;
@@ -271,15 +272,18 @@ polygon shrink(polygon &perimeter, vector<point> &trees){
 				vector<point> points=getTriangle(triangle,q,trees);
 				for(int i=0;i<points.size();i++){
 					q.push(points[i]);
+					pool[points[i]]++;
 					bef=points[i];
 				}
 			}
 			else{
 				q.push(cur);
+				pool[cur]++;
 				bef=cur;
 			}
 		}
-		if(!erased) break;
+		if(!erased) 
+			break;
 	}
 	
 	vector<point> hull;
@@ -294,12 +298,14 @@ int main(){
 	int kase=1;
 	int n,m;
 	while(cin>>n){
+		pool.clear();
 		cin>>m;
 		polygon perimeter;
 		vector<point> trees;
 		
 		for(int i=0;i<n;i++){
 			double a=readint(),b=readint();
+			pool[point(a,b,false)]++;
 			perimeter.P.push_back(point(a,b,false));
 		}
 		
@@ -310,6 +316,7 @@ int main(){
 		
 		for(int i=0;i<m;i++){
 			double a=readint(),b=readint();
+			pool[point(a,b,true)]++;
 			trees.push_back(point(a,b,true));
 		}
 		
