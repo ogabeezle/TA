@@ -329,3 +329,82 @@ Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga 
         \State \Return \fakesc{Cross}($OP, OQ$)
 	\end{algorithmic}
 \end{algorithm}
+
+\section{Fungsi OnSegment}
+Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segment garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}.
+\begin{algorithm}
+    \caption{Fungsi \fakesc{OnSegment}}
+	\label{psdo:fungsi-onsegment}
+    \begin{algorithmic}[1]
+        \Require $P, S$
+        \If{\fakesc{Orientation}($S.P, S.Q, P$)}
+            \State \Return \fakesc{False}
+        \Else
+            \State \Return (\fakesc{BetweenD}($P.x, S.P.x, S.Q.x$) and \fakesc{BetweenD}($P.y, S.P.y, S.Q.y$))
+        \EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi ConvexHull}
+Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} dari sekumpulan titik $pts$. Algoritma yang digunakan oleh fungsi ini adalah algoritma \textit{Monotone Chain} yang dapat dilihat pada bagian \ref{sec:algoritma-monotone-chain}. Pseudocode dari fungsi \fakesc{ConvexHull} yang digunakan dapat dilihat pada Pseudocode \ref{psdo:fungsi-convexhull}.
+\begin{algorithm}
+    \caption{Fungsi \fakesc{ConvexHull}}
+	\label{psdo:fungsi-convexhull}
+    \begin{algorithmic}[1]
+        \Require $pts$
+        \State \fakesc{Sort}($pts$)
+        \State $hull \leftarrow$ Array \fakesc{Point}
+        \For{$i \leftarrow 0$ to $2$}
+            \State $start \leftarrow$ \fakesc{Size}($hull$)
+            \For{$pt$ in $pts$}
+                \While{(\fakesc{Size}($hull$)$\ge start+2$) and (\fakesc{Orientation}($hull[$\fakesc{size}($hull$)$-1]$, $hull[$\fakesc{size}($hull$)$-2]$, $pt$)$\le 0$)}
+                \State $hull.$\fakesc{Erase}($hull[$\fakesc{size}($hull$)$-1]$)
+                \EndWhile
+                \State $hull.$\fakesc{Insert}($pt$)
+            \EndFor
+            \State $hull.$\fakesc{Erase}($hull[$\fakesc{size}($hull$)$-1]$)
+            \State \fakesc{reverse}($pts$)
+        \EndFor
+        \State \Return \fakesc{Polygon}($hull$);
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi InSimplePolygon}
+Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$ atau tidak. Algoritma yang digunakan pada fungsi ini adalah algoritma \textit{point inside polygon} yang dapat dilihat pada bagian \ref{sec:point-inside-polygon}. Pada desain fungsi \fakesc{InSimplePolygon} ada 3 macam keluaran yaitu $-1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$, $0$ untuk menandakan bahwa \fakesc{Point} $P$ berada di salah satu sisi \fakesc{Polygon} $A$, dan $1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di luar \fakesc{Polygon} $A$. Pseudocode fungsi \fakesc{InSimplePolygon} dapat dilihat pada pseudocode \ref{psdo:fungsi-insimplepolygon}.
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{InSimplePolygon}}
+	\label{psdo:fungsi-insimplepolygon}
+    \begin{algorithmic}[1]
+        \Require $P, A$
+        \State $ret \leftarrow$ \fakesc{Integer}
+        \For{$i \leftarrow 0$ to \fakesc{Size}($A.P$)}
+            \If{$P = A.P[i]$}
+                \State \Return $0$
+            \EndIf
+            \State $j \leftarrow A.$\fakesc{Next}($i$)
+            \If{\fakesc{OnSegment}($P$, \fakesc{Segment}($A.P[i], A.P[j]$))}
+                \State \Return $0$
+            \EndIf
+            \State $below \leftarrow (A.P[i].y < P.y)$
+            \If{$below \neq (A.P[j].y<P.y)$}
+                \State $o \leftarrow$ \fakesc{Orientation}($P, A.P[i], A.P[j]$)
+                \If{$o = 0$}
+                    \State \Return $0$
+                \EndIf
+                \If{$below = (o>0)$ and $below =$ \fakesc{True}}
+                    \State $ret+=1$
+                \Else
+                    \If{$below = (o>0)$ and $below =$ \fakesc{False}}
+                        \State $ret-=1$
+                    \EndIf
+                \EndIf
+            \EndIf
+        \EndFor
+        \If{$ret=0$}
+            \State \Return $1$
+        \Else
+            \State \Return $-1$
+        \EndIf
+	\end{algorithmic}
+\end{algorithm}
