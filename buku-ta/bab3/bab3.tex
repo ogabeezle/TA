@@ -3,21 +3,29 @@
 Pada bab ini akan dijelaskan desain algoritma yang akan digunakan untuk menyelesaikan permasalahan.
 
 \section{Desain Umum Sistem}
-Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari algoritma yang dirancang. Sistem diawali dengan menerima masukan 2 buah bilangan bulat $N$ yang merupakan banyaknya vertex pembentuk poligon luar dan $M$ yang merupakan banyaknya titik yang ada di dalam poligon tersebut. $N$ baris berikutnya berisikan 2 buah bilangan bulat $x_i$, $y_i$ yang merupakan koordinat dari vertex pembentuk poligon luar terurut berlawanan arah jarum jam. $M$ baris berikutnya berisikan dua buah bilangan bulat $x1_i$, $y1_i$ yang merupakan koordinat dari titik yang ada di dalam poligon. Pseudocode fungsi \fakesc{main} merupakan bagian fungsi utama yang menerima masukan, memproses masukan tersebut, dan menampilkan masukan tersebut. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
+\label{sec:desain-umum-sistem}
+Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari algoritma yang dirancang. Sistem diawali dengan menerima masukan 2 buah bilangan bulat $N$ yang merupakan banyaknya vertex pembentuk poligon luar dan $M$ yang merupakan banyaknya titik yang ada di dalam poligon tersebut. $N$ baris berikutnya berisikan 2 buah bilangan bulat $x_i$, $y_i$ yang merupakan koordinat dari vertex pembentuk poligon luar terurut berlawanan arah jarum jam. $M$ baris berikutnya berisikan dua buah bilangan bulat $x1_i$, $y1_i$ yang merupakan koordinat dari titik yang ada di dalam poligon.
+
+\section{Desain Fungsi Main}
+Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masukan yang sudah dijelaskan pada \ref{sec:desain-umum-sistem} untuk dilakukan proses sekanjutnya. Pseudocode fungsi \fakesc{main} dapat dilihat pada pseudocode \ref{psdo:fungsi-main}. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
 
 \begin{algorithm}
 	\caption{Fungsi \fakesc{main}}
-	\label{psdo:function_main}
+	\label{psdo:fungsi-main}
     \begin{algorithmic}[1]
         \While{($N \leftarrow $ \fakesc{Input()}) and $N \neq EOF$}
             \State $M \leftarrow$ \fakesc{Input()}
+            \State $perimeter \leftarrow$ \fakesc{Polygon}
+            \State $trees \leftarrow$ Array \fakesc{Point}   
             \For {$i \leftarrow 1, N$}
-                \State $ x_i , y_i \leftarrow $ \fakesc{Input()}
+                \State $x_i , y_i \leftarrow $ \fakesc{Input()}
+                \State $perimeter.P[i]\leftarrow$ \fakesc{Point}($x_i$, $y_i$, false)
             \EndFor
             \For {$i \leftarrow 1, M$}
                 \State $ x1_i , y1_i \leftarrow $ \fakesc{Input()}
+                \State $trees \leftarrow$ \fakesc{Point}($x1_i$, $y1_i$, true)
             \EndFor
-            \State $ans \leftarrow $\fakesc{solve(n,p)}
+            \State $ans \leftarrow $\fakesc{Solve}($perimeter$, $trees$)
             \State \fakesc{Print} ($ans $)
         \EndWhile
 	\end{algorithmic}
@@ -79,7 +87,7 @@ $y$           & Menyimpan arah vektor sejajar dengan sumbu $y$          \\ \hlin
 
 Class \fakesc{Vec} tidak memiliki fungsi karena class ini hanya untuk menyimpan vector dari dua titik yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Point} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y$, menyatakan nilai $x, y$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $x$ dan $y$ akan didapatkan dari pengurangan koordinat dari \fakesc{Point} $A$ dan \fakesc{Point} $B$.
+Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Vec} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y$, menyatakan nilai $x, y$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $x$ dan $y$ akan didapatkan dari pengurangan koordinat dari \fakesc{Point} $A$ dan \fakesc{Point} $B$.
 
 \section{Desain Class Line}
 Class \fakesc{Line} merupakan class yang bertanggung jawab untuk melakukan operasi-operasi pada garis dalam diagram kartesian. Pseudocode \ref{psdo:class-line} merupakan pseudocode dari class \fakesc{Line}. 
@@ -109,4 +117,215 @@ $c$           & Menyimpan nilai $c$ pada persamaan $ax + by + c =0$          \\ 
 
 Class \fakesc{Line} tidak memiliki fungsi karena class ini hanya untuk menyimpan nilai dari fungsi $ax+by+c=0$ yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Point} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_a, \_b, \_c$, menyatakan nilai $a, b, c$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $a$, $b$ dan $c$ akan didapatkan dengan mencari fungsi garis yang melewati \fakesc{Point} $A$ dan \fakesc{Point} $B$.
+Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Line} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_a, \_b, \_c$, menyatakan nilai $a, b, c$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $a$, $b$ dan $c$ akan didapatkan dengan mencari fungsi garis yang melewati \fakesc{Point} $A$ dan \fakesc{Point} $B$.
+
+\section{Desain Class Segment}
+Class \fakesc{Segment} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada segment garis dalam diagram kartesian. Pseudocode \ref{psdo:class-segment} merupakan pseudocode dari class \fakesc{Segment}. 
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|c|p{7cm}|}
+	\hline
+	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
+$P$           & Menyimpan \fakesc{Point} yang merupakan ujung awal dari sebuah segment garis \\ \hline
+$Q$           & Menyimpan \fakesc{Point} yang merupakan ujung akhir dari sebuah segment garis          \\ \hline
+$L$           & Menyimpan fungsi dari garis yang melalui dua titik tersebut      \\ \hline
+	\end{tabular}
+	\caption{Nama dan Fungsi Variabel dalam class \fakesc{Segment}}
+	\label{tab:var-segment}
+\end{table}
+\begin{algorithm}
+	\caption{Class \fakesc{Segment}}
+	\label{psdo:class-segment}
+	\begin{algorithmic}[1]
+        \State $ P, Q \leftarrow $ \fakesc{Point}
+        \State $L \leftarrow$ \fakesc{Line}
+		\State \textbf{constructor} \Call{\fakesc{Segment}}{$ $}
+        \State \textbf{constructor} \Call{\fakesc{Segment}}{$ \_P, \_Q$}
+	\end{algorithmic}
+\end{algorithm}
+
+Class \fakesc{Segment} tidak memiliki fungsi karena class ini hanya untuk menyimpan data dari sebuah segmen garis yang akan digunakan nanti.
+
+Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Segment} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P, \_Q$, menyatakan \fakesc{Point} dari titik $P$ dan \fakesc{Point} dari titik $Q$, yang merupakan titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ secara berturut, dan \fakesc{Line} $L$ didapar dengan menggunakan \textit{constructor} \fakesc{Line} dengan parameter $P$ dan $Q$.
+
+\section{Desain Class Polygon}
+Class \fakesc{Polygon} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada poligon pada diagram kartesian. Pseudocode \ref{psdo:class-polygon} merupakan pseudocode dari class \fakesc{Polygon}. 
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|c|p{7cm}|}
+	\hline
+	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
+$P$           & Menyimpan array dari \fakesc{Point} yang membentuk poligon tersebut \\ \hline
+	\end{tabular}
+	\caption{Nama dan Fungsi Variabel dalam class \fakesc{Polygon}}
+	\label{tab:var-polygon}
+\end{table}
+\begin{algorithm}
+	\caption{Class \fakesc{Polygon}}
+	\label{psdo:class-polygon}
+	\begin{algorithmic}[1]
+        \State $ P \leftarrow $ Array \fakesc{Point}
+		\State \textbf{constructor} \Call{\fakesc{Polygon}}{$ $}
+        \State \textbf{constructor} \Call{\fakesc{Polygon}}{$ \_P$}
+        \State \textbf{function} \Call{\fakesc{prev}}{$ idx $}
+		\State \textbf{function} \Call{\fakesc{next}}{$ idx $}
+		\State \textbf{function} \Call{\fakesc{perimeter}}{$ $}
+	\end{algorithmic}
+\end{algorithm}
+
+Fungsi-fungsi yang terkandung dalam class ini adalah \fakesc{prev}, \fakesc{next}, \fakesc{perimeter}. Tabel \ref{tab:var-polygon} menjelaskan variabel dan kegunaannya dalam class \fakesc{Polygon}. 
+
+Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, variabel $P$ yang ada di dalam class \fakesc{Polygon} akan di inisialisasi. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P$, menyatakan array \fakesc{Point} dari titik pembentuk poligon tersebut.
+\newpage
+Fungsi \textit{next} bertanggung jawab untuk mencari index selanjutnya dari titik yang membentuk polygon. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-next}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-next}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Suatu bilangan bulat $idx$ yang menyatakan index saat ini & mencari index selanjutnya &   Suatu bilangan bulat yang menyatakan index selanjutnya     \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Next} Class \fakesc{Polygon}}
+	\label{tab:class-polygon-next}
+\end{table}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Next} pada class \fakesc{Polygon}}
+	\label{psdo:class-polygon-next}
+	\begin{algorithmic}[1]
+        \Require $ idx $
+        \If{$idx = $\fakesc{Size}($P$)$-1$}
+            \State \Return $0$
+        \Else
+            \State \Return $idx+1$
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+\newpage
+Fungsi \textit{prev} bertanggung jawab untuk mencari index sebelumnya dari titik yang membentuk polygon. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-prev}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-prev}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Suatu bilangan bulat $idx$ yang menyatakan index saat ini & mencari index sebelumnya &   Suatu bilangan bulat yang menyatakan index sebelumnya     \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Prev} Class \fakesc{Polygon}}
+	\label{tab:class-polygon-prev}
+\end{table}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Prev} pada class \fakesc{Polygon}}
+	\label{psdo:class-polygon-prev}
+	\begin{algorithmic}[1]
+        \Require $ idx $
+        \If{$idx = 0$}
+            \State \Return \fakesc{Size}($P$)$-1$
+        \Else
+            \State \Return $idx-1$
+		\EndIf
+	\end{algorithmic}
+\end{algorithm}
+\newpage
+Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah polygon. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-perimeter}. Pseudocode funsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-perimeter}.
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	- & mencari keliling dengan mencari jarak eulerian dari semua titik pembentuk polygon &   Suatu bilangan berkoma yang menyatakan keliling dari poligon tersebut     \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Perimeter} Class \fakesc{Polygon}}
+	\label{tab:class-polygon-perimeter}
+\end{table}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Perimeter} pada class \fakesc{Polygon}}
+	\label{psdo:class-polygon-perimeter}
+    \begin{algorithmic}[1]
+        \State $ret \leftarrow 0$
+        \For{$i \leftarrow 0$ \textbf{to} \fakesc{Size}($P$)$-1$}
+            \State $ret \leftarrow ret $ \fakesc{EDist}($P[i]$, $P[$ \fakesc{next}($i$)$] $)
+        \EndFor
+        \State \Return $ret$
+	\end{algorithmic}
+\end{algorithm}
+\newpage
+\section{Fungsi BetweenD}
+Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ berada diantara bilangan $l$ dan bilangan$r$. Pseudocode dari fungsi \fakesc{BetweenD} dapat dilihat pada pseudocode \ref{psdo:fungsi-betweend}.
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{BetweenD}}
+	\label{psdo:fungsi-betweend}
+    \begin{algorithmic}[1]
+        \Require $x, l, r$
+        \If{\fakesc{Min}($l, r$) $\le x + EPS$ and $x \le$ \fakesc{Max}($l, r$) $+ EPS$}
+            \State \Return \fakesc{True}
+        \Else
+            \State \Return \fakesc{False}
+        \EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi SameD}
+Fungsi \fakesc{SameD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ sama dengan bilangan$y$. Pseudocode dari fungsi \fakesc{SameD} dapat dilihat pada pseudocode \ref{psdo:fungsi-sameD}.
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{SameD}}
+	\label{psdo:fungsi-samed}
+    \begin{algorithmic}[1]
+        \Require $x, y$
+        \State \Return \fakesc{BetweenD}($x,y,y$)
+	\end{algorithmic}
+\end{algorithm}
+
+\newpage
+\section{Fungsi EDist}
+Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus Pythagoras. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}.
+\begin{equation}
+    \label{eq:pythagoras}
+    C=\sqrt{A^2 + B^2}
+\end{equation}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{EDist}}
+	\label{psdo:fungsi-edist}
+    \begin{algorithmic}[1]
+        \Require $A, B$
+        \State \Return \fakesc{Sqrt}($(A*A)+(B*B)$)
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi Cross}
+Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cross} dari dua buah vector. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:cross}. Pseudocode fungsi \fakesc{Cross} dapat dilihat pada pseudocode \ref{psdo:fungsi-cross}.
+
+\begin{equation}
+    \label{eq:cross}
+    C = (u_x*v_y) - (u_y*v_x)
+\end{equation}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Cross}}
+	\label{psdo:fungsi-cross}
+    \begin{algorithmic}[1]
+        \Require $U, V$
+        \State \Return $(U.x*V.y) - (U.y*V.x)$
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi Orientation}
+Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga titik. Pseudocode fungsi \fakesc{Orientation} dapat dilihat pada pseudocode \ref{psdo:fungsi-orientation}.
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Orientation}}
+	\label{psdo:fungsi-orientation}
+    \begin{algorithmic}[1]
+        \Require $O, P, Q$
+        \State $OP \leftarrow$ \fakesc{Vec}($O,P$)
+        \State $OQ \leftarrow$ \fakesc{Vec}($O,Q$)
+        \State \Return \fakesc{Cross}($OP, OQ$)
+	\end{algorithmic}
+\end{algorithm}
