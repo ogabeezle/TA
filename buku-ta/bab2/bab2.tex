@@ -12,21 +12,21 @@ $\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon} menyatakan sisi polyg
 \begin{figure}
 	\Centering
 	\includegraphics [width=0.5\columnwidth]{bab2/img/contoh-kasus-tanpa-solusi}
-	\caption {Ilustrasi contoh kasus tanpa solusi}
+	\caption {Ilustrasi Contoh Kasus Tanpa Solusi}
 	\label {fig:ilustrasi-contoh-kasus-tanpa-solusi}
 \end{figure}
 \begin{figure}
 	\Centering
 	\includegraphics [width=0.5\columnwidth]{bab2/img/contoh-kasus}
-	\caption {Ilustrasi contoh kasus}
+	\caption {Ilustrasi Contoh Kasus}
 	\label {fig:ilustrasi-contoh-kasus}
 \end{figure}
 
 \section{Convex Polygon}
-Merupakan sebuah polygon sederhana yang memiliki sudut maksimal 180 derajat pada tiap edgenya. \textit{Convex polygon} memiliki beberapa properti, yaitu:
+\textit{Convex polygon} merupakan sebuah polygon sederhana yang memiliki sudut maksimal 180 derajat pada tiap edgenya. \textit{Convex polygon} memiliki beberapa properti, yaitu:
 \begin{enumerate}
-    \item sebuah garis lurus yang di gambar melewati sebuah \textit{convex} polygon akan berpotongan maksimal 2 kali. Ilustrasi dapat dilihan pada gambar \ref{fig:ilustrasi-properti-convex-polygon-1}
-    \item Jika dua titik sembarang diambil dan ditarik garis antara keduanya, tidak ada bagian dari garis yang berada di luar polygon. Ilustrasi dapat dilihan pada gambar \ref{fig:ilustrasi-properti-convex-polygon-2}
+    \item Sebuah garis lurus yang di gambar melewati sebuah \textit{convex} polygon akan berpotongan maksimal 2 kali. Ilustrasi dapat dilihan pada gambar \ref{fig:ilustrasi-properti-convex-polygon-1}
+    \item Jika dua titik sembarang diambil dan ditarik garis antara keduanya, tidak ada bagian dari garis yang berada di luar polygon. Ilustrasi dapat dilihat pada gambar \ref{fig:ilustrasi-properti-convex-polygon-2}
 \end{enumerate}
 \begin{figure}
     \Centering
@@ -42,7 +42,7 @@ Merupakan sebuah polygon sederhana yang memiliki sudut maksimal 180 derajat pada
 \end{figure}
 
 \subsection{Relative Convex Polygon}
-Merupakan penurunan dari convex Polygon tetapi ada beberapa sisi dari polygon tersebut berbentuk convace atau cekung kedalam dikarenakan adanya batasan dari luar seperti polygon atau segmen garis lainnya. Ilustrasi relative convex polygon dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-polygon}.
+\textit{Relative convex polygon} merupakan penurunan dari convex Polygon tetapi ada beberapa sisi dari polygon tersebut berbentuk convace atau cekung kedalam dikarenakan adanya batasan dari luar seperti polygon atau segmen garis lainnya. Ilustrasi relative convex polygon dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-polygon}.
 \begin{figure}
     \Centering
     \includegraphics[width=0.5\columnwidth]{bab2/img/ilustrasi-relative-convex-polygon}
@@ -50,27 +50,27 @@ Merupakan penurunan dari convex Polygon tetapi ada beberapa sisi dari polygon te
     \label{fig:ilustrasi-relative-convex-polygon}
 \end{figure}
 \section{Strategi Penyelesaian Permasalahan}
-Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode ISUN1 menggunakan algoritma reduksi poligon. Secara singkat, strategi penyelesaian masalah dari ISUN1 menggunakan algoritma reduksin poligon menjadi 2 bagian besar yaitu :
+Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode ISUN1 menggunakan algoritma reduksi polygon. Secara singkat, strategi penyelesaian masalah dari ISUN1 menggunakan algoritma reduksin polygon menjadi 2 bagian besar, yaitu :
 \begin{enumerate}
     \item Pemrosesan titik pembentuk polygon yang membentuk \textit{Convex}.
     \item \textit{Convex Hull} dari titik yang berada didalam polygon
 \end{enumerate}
-Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai poligon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma Melkman dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buak titik pembentuk poligon yang konsekutif membuat \textit{convex} maka titik tengan dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah - langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}
+Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma Melkman dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buak titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengan dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
 
 
 \subsection{Pemrosesan Titik Pembentuk Polygon yang Membentuk Convex}
 \label{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}
-Pemrosesan titik pembentuk poligon dapat dilakukan dengan cara melakukan \textit{traversing} terhadap semua vertex pembentuk poligon. Untuk setiap vertex $p_i$ yang di cek, hitung orientasi(secara berlawanan jarum jam) titik $p_i$ dengan $p_{i-1}$ dan $ p_{i+1}$. Jika orientasinya membentuk \textit{convex} maka titik $p_i$ akan dibuang.
+Pemrosesan titik pembentuk polygon dapat dilakukan dengan cara melakukan \textit{traversing} terhadap semua vertex pembentuk polygon. Untuk setiap vertex $p_i$ yang di cek, hitung orientasi(secara berlawanan jarum jam) titik $p_i$ dengan $p_{i-1}$ dan $ p_{i+1}$. Jika orientasinya membentuk \textit{convex}, maka titik $p_i$ akan dibuang.
 \par Sebelum membuang titik $p_i$, kita akan membuat sebuah segitiga $ABC$ dimana $A=p_i$, $B=p_{i-1}$, dan $C=p_{i+1}$ karena triangulation of polygon(Teorema \ref{theo:triangulation-of-polygon}).
 \begin{theo}[Triangulation of Polygon]
     \label{theo:triangulation-of-polygon}
 	Semua polygon dapat di buat dari beberapa segitiga.
 \end{theo}
-Kemudian cari $T(ABC)$ dimana $T(ABC)$ merupakan semua titik $S$ yang berada di dalam segitiga $ABC$ dengan menggunakan algoritma \textit{Point inside Polygon} (dapat dilihat pada subbab \ref{sec:point-inside-polygon}). Pencarian titik yang berada di dalam segitiga $ABC$ berguna untuk mencari pengganti vertex $p_i$ sebagai pembentuk poligon luarnya.
+Kemudian cari $T(ABC)$ dimana $T(ABC)$ merupakan semua titik $S$ yang berada di dalam segitiga $ABC$ dengan menggunakan algoritma \textit{Point Inside Polygon} (dapat dilihat pada subbab \ref{sec:point-inside-polygon}). Pencarian titik yang berada di dalam segitiga $ABC$ berguna untuk mencari pengganti vertex $p_i$ sebagai pembentuk polygon luarnya.
 
 \subsection{Convex Hull dari Titik yang Berada di Dalam Polygon}
 \label{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}
-Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}, ketika sudah mendapatkan $T$, lakukan pencarian \textit{Convex Hull} dari titik - titik tersebut menggunakan \textit{monotone chain} (dapat dilihat pada subbab \ref{sec:algoritma-monotone-chain}). Kemudian sisipkan semua titik yang membentuk \textit{Convex Hull} diantara vertex $p_{i-1}$, $p_{i+1}$ untuk me-rekonstruksi poligon luar yang sudah di reduksi.
+Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}, ketika sudah mendapatkan $T$, lakukan pencarian \textit{Convex Hull} dari titik - titik tersebut menggunakan algoritma \textit{monotone chain} (dapat dilihat pada subbab \ref{sec:algoritma-monotone-chain}). Kemudian sisipkan semua titik yang membentuk \textit{Convex Hull} diantara vertex $p_{i-1}$, $p_{i+1}$ untuk me-rekonstruksi polygon luar yang sudah di reduksi.
 
 \section{Convex Hull}
 \label{sec:convex-hull}
@@ -120,13 +120,13 @@ Ada beberapa algoritma yang dapat digunakan untuk mencari sebuah \textit{convex 
     Graham's Scan         & Sedikit Mudah          & $\mathcal{O}(n\log(n))$  & Singkat         & Kumpulan Titik  \\ \hline
     Quick Hull            & Kompleks               & $\mathcal{O}(n\log(n))$  & Panjang         & Kumpulan Titik  \\ \hline
     Monotone Chain        & Mudah                  & $\mathcal{O}(n\log(n))$  & Singkat         & Kumpulan Titik  \\ \hline
-    Melkman's Algorithm   & Mudah                  & $\mathcal{O}(n)$           & Singkat         & Poligon Sederhana \\ \hline    
+    Melkman's Algorithm   & Mudah                  & $\mathcal{O}(n)$           & Singkat         & polygon Sederhana \\ \hline    
     \end{tabular}
 \end{table}
 Berdasarkan tabel \ref{tab:tabel-algoritma-convex-hull}, penulis memilih 2 algoritma yang akan digunakan pada buku ini.
 \subsubsection{Algoritma Melkman Convex Hull}
 \label{sec:algoritma-melkman-convex-hull}
-Merupakan algoritma untuk menghitung rantai polygonal ataupun polygon sederhana dengan waktu linear $\mathcal{O}(n)$\cite{melkman_algorithm}. Asumsikan sebuah poligon sederhana $P$, dengan vertex $p_i$ dan edge $p_i p_{i+1}$. Algoritma ini menggunakan deque, $D = \left \langle d_1, d_2, ..., d_n \right \rangle$, untuk mereprentasikan \CH, $Q_i = CH(P_i)$, dimana $P_i = (p_0, p_1, ..., p_i)$. Deque mempunyai fungsi \textit{push} dan \textit{pop} dari atas/depan dan \textit{insert} dan \textit{remove} dari bawah/belakang. Secara spesifiknya yang dilakukan \textit{push} $v$ ke deque melakukan $(l \leftarrow l+1; d_t \leftarrow v)$, untuk \textit{pop} $d_t$ dari deque melakukan $(t \leftarrow t-1)$, untuk insert $v$ ke deque melakukan $(b \leftarrow b-1; d_b \leftarrow v)$, dan \textit{remove} $d_b$ dari deque melakukan $(b \leftarrow b+1)$.
+Algoritma melkman \textit{convex hull} merupakan algoritma untuk menghitung rantai polygonal ataupun polygon sederhana dengan waktu linear $\mathcal{O}(n)$\cite{melkman_algorithm}. Asumsikan sebuah polygon sederhana $P$, dengan vertex $p_i$ dan edge $p_i p_{i+1}$. Algoritma ini menggunakan deque, $D = \left \langle d_1, d_2, ..., d_n \right \rangle$, untuk mereprentasikan \CH, $Q_i = CH(P_i)$, dimana $P_i = (p_0, p_1, ..., p_i)$. Deque mempunyai fungsi \textit{push} dan \textit{pop} dari atas/depan dan \textit{insert} dan \textit{remove} dari bawah/belakang. Secara spesifiknya yang dilakukan \textit{push} $v$ ke deque melakukan $(l \leftarrow l+1; d_t \leftarrow v)$, untuk \textit{pop} $d_t$ dari deque melakukan $(t \leftarrow t-1)$, untuk insert $v$ ke deque melakukan $(b \leftarrow b-1; d_b \leftarrow v)$, dan \textit{remove} $d_b$ dari deque melakukan $(b \leftarrow b+1)$.
 \par Algoritma ini menggunakan konvensi dimana vertexnya berurutan secara berlawanan jarum jam di sekitar \CH $Q$.
 \par Setiap $d_t$ dan $d_b$ mengacu kepada vertex yang sama pada rantai polygon $C$, dan vertex ini akan selalu menjadi vertex yang kita tambahkan terakhir pada \CH. Pseudocode Melkman Convex Hull dapat dilihat pada pseudocode \ref{psdo:Melkman-Convex-Hull}.
 \begin{figure}
@@ -199,7 +199,7 @@ Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan komp
 \end{algorithm}
 \section{Point Inside Polygon}
 \label{sec:point-inside-polygon}
-\textit{Point Inside Polygon} merupakan algoritma untuk menentukan apakah suatu polygon berada di dalam sebuah polygon atau tidak \cite{point_inside_polygon}. Ide utama dari algoritma ini adalah dengan cara menarik garis sejajar dengan sumbu $x$ dimana garis tersebut berujung pada titik yang ingin dicari lokasinya kemudian hitung ada berapa edge dari poligon yang berpotongan dengan garis tersebut. Jika jumlah edge polygon yang berpotongan adalah ganjil, maka titik tersebut berada dalam polygon, dan sebaliknya, jika jumlahnya genap maka titik tersebut berada di luar polygon.
+\textit{Point Inside Polygon} merupakan algoritma untuk menentukan apakah suatu polygon berada di dalam sebuah polygon atau tidak \cite{point_inside_polygon}. Ide utama dari algoritma ini adalah dengan cara menarik garis sejajar dengan sumbu $x$ dimana garis tersebut berujung pada titik yang ingin dicari lokasinya kemudian hitung ada berapa edge dari polygon yang berpotongan dengan garis tersebut. Jika jumlah edge polygon yang berpotongan adalah ganjil, maka titik tersebut berada dalam polygon, dan sebaliknya, jika jumlahnya genap maka titik tersebut berada di luar polygon.
 
 \begin{figure}
 	\Centering

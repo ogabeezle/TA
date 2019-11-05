@@ -1,0 +1,1051 @@
+\chapter {IMPLEMENTASI}
+
+\section{Lingkungan implementasi}
+
+Lingkungan implementasi dan pengembangan yang dilakukan adalah sebagai berikut.
+\begin{enumerate}
+	\item Perangkat Keras
+	\begin{enumerate}
+		\item Processor Intel® Core™ i7-6500U CPU @ 2.50GHz (4 CPUs), ~2.6GHz
+		\item Random Access Memory 8192MB
+	\end{enumerate}
+	\item Perangkat Lunak
+	\begin{enumerate}
+		\item Sistem Operasi Windows 10 Home Single Language 64-bit
+		\item Dev C++
+		\item Bahasa Pemrograman C++
+		\item Kompiler GCC 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) untuk Windows Subsystem Linux
+	\end{enumerate}
+\end{enumerate}
+
+\section{Implementasi Program Utama}
+
+Subbab ini menjelaskan implementasi proses algoritma secara Keseluruhan berdasarkan desain yang telah dijelaskan pada Bab \ref{sec:desain}. Program ini merupakan program yang digunakan untuk menyelesaikan permasalahan \textit{LL and ErBao}.
+
+\subsection{Header yang diperlukan}
+Implementasi algoritma ini membutuhkan lima buah \textit{header} yaitu \texttt{iostream}, \texttt{vector}, \texttt{cmat}, \texttt{functional} dan \texttt{algorithm} seperti yang terlihat pada Kode Sumber \ref{code:header_main}.
+
+\begin{code}[firstnumber=1]{\textit{Header} yang diperlukan}{header_main}
+#pragma GCC optimize("O3")
+#pragma GCC target("avx")
+
+#include <iostream>
+#include<vector>
+#include<cmath>
+#include<map>
+#include<queue>
+#include<algorithm>
+\end{code}
+
+Selain header, terdapat juga preprocessor \textit{pragma}, digunakan untuk mengganti flag kompiler yang digunakan pada daring SPOJ.
+\textit{Header} \texttt{iostream} berisi fungsi standar input output operasi yang digunakan oleh bahasa C++. \textit{Header} \texttt{vector} berisi struktur data yang digunakan untuk menyimpan data array secara dinamis. \textit{Header} \texttt{cmath} berisi fungsi-fungsi untuk operasi matematika seperti fungsi \texttt{hypot}. \textit{Header} \texttt{queue} berisi struktur data yang digunakan untuk menyimpan antrian data. \textit{Header} \texttt{algorithm} berisi modul yang memiliki fungsi-fungsii yang sangat berguna dalam membantu mengimplementasi algoritma yang telah dibangun, contohnya adalah fungsi \textit{reverse} dan \textit{sort}. \textit{Header} \texttt{map} berisi struktur data untuk menyimpan data \textit{key value}.
+
+\subsection{Preprocessor}
+Pre-processor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat tiga alias yang digunakan yaitu \texttt{push_back(x)} sebagai \texttt{pb(x)}, \texttt{pop_back} sebagai \texttt{pob}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Pre-processor dapat dilihat pada Kode Sumber \ref{code:preprocessor_main}.
+
+\begin{code}[firstnumber=1]{\textit{Preprocessor} yang diperlukan}{preprocessor_main}
+#define pb(x) push_back(x)
+#define pob(x) pop_back(x)
+#define FOR(i, n) for (int i = 0; i < n; i++)
+#define gc(x) getchar(x)
+using namespace std;
+\end{code}
+
+\subsection{Variabel Global}
+Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct. Kode sumber implementasi variabel global dapat dilihat pada kode sumber \ref{code:var_glob_main}. Variabel tersebut didefinisikan secara global agar dapat digunakan pada setiap fungsi.
+
+\begin{code}[firstnumber=1]{Variabel global yang didefinisikan setelah definisi Struct Mod64}{var_glob_main}
+	
+const double EPS = 0.0;
+const double INF = 1E9;
+map<point, int> pool;
+\end{code}
+
+\subsection{Implementasi Fungsi Main}
+Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:function-main}. Implementasi fungsi main dapat dilihat pada Kode Sumber \ref{code:main}. 
+\begin{code}[firstnumber=1]{Fungsi main}{main}
+int main(){
+	int kase = 1;
+	int n, m;
+	while (cin >> n){
+		pool.clear();
+		cin >> m;
+		polygon perimeter;
+		vector<point> trees;
+
+		for (int i = 0; i < n; i++){
+			double a = readint(), b = readint();
+			pool[point(a, b, false)]++;
+			perimeter.P.push_back(point(a, b, false));
+		}
+
+		if (m == 0 || m == 1){
+			printf("Case #%d: %.3lf\n", kase++, 0.0);
+			continue;
+		}
+
+		for (int i = 0; i < m; i++){
+			double a = readint(), b = readint();
+			pool[point(a, b, true)]++;
+			trees.push_back(point(a, b, true));
+		}
+
+		polygon hasil = solve(perimeter, trees);
+
+		printf("Case #%d: %.3lf\n", kase++, hasil.perimeter());
+	}
+}
+\end{code}
+
+\subsection{Implementasi Class Point}
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Point} pada subbab \ref{sec:point} dan pseudocode \ref{psdo:class-point}. Implementasi dari class \texttt{Point} dapat dilihat pada Kode Sumber \ref{code:class-point}.
+
+\begin{code}[firstnumber=1]{Struct Point}{class-point}
+struct point{
+	double x, y;
+	bool fixed;
+	point(){
+		x = y = 0.0;
+		fixed = 0;
+	}
+	point(double _x, double _y, bool _fixed = false){
+		x = _x;
+		y = _y;
+		fixed = _fixed;
+	}
+	bool operator<(point other) const{
+		if (y < other.y + EPS)
+			return true;
+		if (y + EPS > other.y)
+			return false;
+		return x < other.x + EPS;
+	}
+	bool operator==(point other) const{
+		return same_d(x, other.x) && same_d(y, other.y);
+	}
+};
+\end{code}
+
+\subsection{Implementasi Class Vec}
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Vec} pada subbab \ref{sec:vec} dan pseudocode \ref{psdo:class-vec}. Implementasi dari class \texttt{Vec} dapat dilihat pada Kode Sumber \ref{code:class-vec}.
+
+\begin{code}[firstnumber=1]{Struct Vec}{class-vec}
+struct vec{
+	double x, y;
+	vec(){
+		x = y = 0.0;
+	}
+	vec(double _x, double _y){
+		x = _x;
+		y = _y;
+	}
+	vec(point A){
+		x = A.x;
+		y = A.y;
+	}
+	vec(point A, point B){
+		x = B.x - A.x;
+		y = B.y - A.y;
+	}
+};
+\end{code}
+
+\subsection{Implementasi Class Line}
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Line} pada subbab \ref{sec:line} dan pseudocode \ref{psdo:class-line}. Implementasi dari class \texttt{Line} dapat dilihat pada Kode Sumber \ref{code:class-line}.
+
+\begin{code}[firstnumber=1]{Struct Line}{class-line}
+struct line{
+	double a, b, c;
+	line(){
+		a = b = c = 0.0;
+	}
+	line(double _a, double _b, double _c){
+		a = _a;
+		b = _b;
+		c = _c;
+	}
+	line(point P1, point P2){
+		if (P2 < P1){
+			point T;
+			T = P1;
+			P1 = P2;
+			P2 = T;
+		}
+		if (same_d(P1.x, P2.x))
+			a = 1.0, b = 0.0, c = -P1.x;
+		else
+			a = -(P1.y - P2.y) / (P1.x - P2.x), b = 1.0, c = -(a * P1.x) - P1.y;
+	}
+	line(point P, double slope){
+		if (same_d(slope, INF))
+			a = 1.0, b = 0.0, c = -P.x;
+		else
+			a = -slope, b = 1.0, c = -(a * P.x) - P.y;
+	}
+	bool operator==(line other) const{
+		return same_d(a, other.a) && same_d(b, other.b) && same_d(c, other.c);
+	}
+};
+\end{code}
+
+\subsection{Implementasi Class Segment}
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Segment} pada subbab \ref{sec:segment} dan pseudocode \ref{psdo:class-segment}. Implementasi dari class \texttt{Segment} dapat dilihat pada Kode Sumber \ref{code:class-segment}.
+
+\begin{code}[firstnumber=1]{Struct Segment}{class-segment}
+struct segment{
+	point P, Q;
+	line L;
+	segment(){
+		point T1;
+		P = Q = T1;
+		line T2;
+		L = T2;
+	}
+	segment(point _P, point _Q){
+		if (_Q < _P){
+			point T1 = _P;
+			_P = _Q;
+			_Q = T1;
+		}
+		P = _P;
+		Q = _Q;
+		line T2(_P, _Q);
+		L = T2;
+	}
+	bool operator==(segment other) const{
+		return P == other.P && Q == other.Q;
+	}
+};
+\end{code}
+
+\subsection{Implementasi Class Polygon}
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Polygon} pada subbab \ref{sec:polygon} dan pseudocode \ref{psdo:class-polygon}. Implementasi dari class \texttt{Polygon} dapat dilihat pada Kode Sumber \ref{code:class-polygon}.
+
+\begin{code}[firstnumber=1]{Struct Polygon}{class-polygon}
+struct polygon{
+	vector<point> P;
+	polygon(){
+		P.clear();
+	}
+	polygon(vector<point> &_P){
+		P = _P;
+	}
+	int prev(int idx){
+		return (idx == 0 ? P.size() - 1 : idx - 1);
+	}
+	int next(int idx){
+		return (idx == P.size() - 1 ? 0 : idx + 1);
+	}
+	double perimeter(){
+		double ret = 0;
+		FOR(i, P.size()){
+			ret += e_dist(P[i], P[next(i)]);
+		}
+		return ret;
+	}
+	double area(){
+		double ret = 0;
+		FOR(i, P.size()){
+			ret += P[i].x * (P[prev(i)].y - P[next(i)].y);
+		}
+		return ret / 2;
+	}
+};
+\end{code}
+
+\subsubsection{Implementasi Fungsi Convolve pada Namespace NTT}
+Pada subbab ini akan dijelaskan mengenai implementasi fungsi convolve dari pseudocode \ref{psdo:namespace_ntt_convolve}. Implementasi dari fungsi \texttt{Convolve} dapat dilihat pada Kode Sumber \ref{code:ntt_convolve}
+
+\begin{code}[firstnumber=1]{Fungsi Convolve pada Namespace NTT}{ntt_convolve}
+	template<typename mod_t>
+    void convolve(mod_t* A, int s1, mod_t* B, int s2, bool cyclic = false) {
+        int s = (cyclic ? max(s1, s2) : s1 + s2 - 1);
+        int size = 1, i;
+        while (size < s) size <<= 1;
+        mod_t roots[mod_t::level] = { mod_t::omega() };
+        for(i = 1; i < mod_t::level; i++) roots[i] = roots[i - 1] * roots[i - 1];
+        fill(A + s1, A + size, mod_t()); ntt_dit4(A, size, 1, roots);
+        if (A == B && s1 == s2) {
+            for(i = 0; i < size; i++) A[i] *= A[i];
+        } else {
+            fill(B + s2, B + size, mod_t()); ntt_dit4(B, size, 1, roots);
+            for(i = 0; i < size; i++)  A[i] *= B[i];
+        }
+        ntt_dit4(A, size, -1, roots);
+        mod_t inv = mod_t(size).inverse();
+        for(i = 0; i < (cyclic ? size : s); i++) A[i] *= inv;
+    }
+\end{code}
+
+\subsection{Implementasi Namespace NTT}
+Pada subbab ini akan dijelaskan mengenai implementasi pada subbab \ref{sec:ntt} dan pseudocode \ref{psdo:namespace_ntt}. Implementasi ini terdapat dalam beberapa subbab.
+
+\subsubsection{Struct Mont pada Namespace NTT}
+Pada implementasi ini terdapat struct yang mirip dengan \texttt{Mod64}, tetapi dimodifikasi agar memenuhi kebutuhan pada namespace \texttt{NTT} bernama \texttt{Mont}. Implementasi dari struct \texttt{Mont} dapat dilihat pada Kode Sumber \ref{code:mont_1}.
+
+\begin{code}[firstnumber=1]{Struct Mont}{mont_1}
+    class Mont {
+	private:
+		static constexpr u64 mul_inv(u64 n, int e=6, u64 x=1) {
+			return e == 0 ? x : mul_inv(n, e-1, x*(2-x*n));
+		}
+	public:
+		static constexpr u64 inv = mul_inv(mod);
+		static constexpr u64 r2 = -u128(mod) % mod;
+		static constexpr int level = __builtin_ctzll(mod - 1);
+		Mont() {}
+		Mont(u64 n) : x(init(n)) {};
+		static u64 modulus() { return mod; }
+		static u64 init(u64 w) { w%= mod; return reduce(u128(w) * r2); }
+		static u64 reduce(const u128 w) { return u64(w >> word_bits) + mod - u64((u128(u64(w) * inv) * mod) >> word_bits); }
+		static Mont omega() { return Mont(prim_root).pow((mod - 1) >> level); }
+		Mont& operator += (Mont rhs) { this->x += rhs.x - mod; while(i64(this->x) < 0) this->x += mod; return *this; }
+		Mont& operator -= (Mont rhs) { this->x += 3 * mod - rhs.x; while(i64(this->x) < 0) this->x += mod; return *this; }
+		Mont& operator *= (Mont rhs) { this->x = reduce(u128(this->x) * rhs.x); return *this; }
+		Mont operator + (Mont rhs) const { return Mont(*this) += rhs; }
+        Mont operator - (Mont rhs) const { return Mont(*this) -= rhs; }
+		Mont operator * (Mont rhs) const { return Mont(*this) *= rhs; }
+		u64 get() const { return reduce(u128(this->x)) % mod; }
+		void set(u64 n) const { this->x = n; }
+		Mont pow(u64 exp) const {
+			Mont ret = Mont(1);
+			for (Mont base = *this; exp; exp >>= 1, base *= base) if (exp & 1) ret *= base;
+			return ret;
+		}
+		Mont inverse() const { return pow(mod - 2); }
+		friend ostream& operator << (ostream& os, const Mont& m) { return os << m.get(); }
+		u64 x;
+	};
+\end{code}
+
+\subsubsection{Variabel Global pada Namespace NTT}
+Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct pada namespace tertentu. Kode sumber variabel global dapat dilihat pada kode sumber \ref{code:var_glob_ntt}. 
+
+\begin{code}[firstnumber=1]{Variabel Global pada Namespace NTT}{var_glob_ntt}
+	static const int word_bits = (sizeof(u64) << 3);
+	const int N = 316230; // SQRT(10^11)
+
+	using Mod64_1 = NTT::Mont<709143768229478401, 31>;
+	using Mod64_2 = NTT::Mont<711416664922521601, 19>;
+
+	Mod64_1 f1[N], g1[N];
+	Mod64_2 f2[N], g2[N];
+\end{code}
+
+\subsubsection{Implementasi Fungsi Convolve pada Namespace NTT}
+Pada subbab ini akan dijelaskan mengenai implementasi fungsi convolve dari pseudocode \ref{psdo:namespace_ntt_convolve}. Implementasi dari fungsi \texttt{Convolve} dapat dilihat pada Kode Sumber \ref{code:ntt_convolve}
+
+\begin{code}[firstnumber=1]{Fungsi Convolve pada Namespace NTT}{ntt_convolve}
+	template<typename mod_t>
+    void convolve(mod_t* A, int s1, mod_t* B, int s2, bool cyclic = false) {
+        int s = (cyclic ? max(s1, s2) : s1 + s2 - 1);
+        int size = 1, i;
+        while (size < s) size <<= 1;
+        mod_t roots[mod_t::level] = { mod_t::omega() };
+        for(i = 1; i < mod_t::level; i++) roots[i] = roots[i - 1] * roots[i - 1];
+        fill(A + s1, A + size, mod_t()); ntt_dit4(A, size, 1, roots);
+        if (A == B && s1 == s2) {
+            for(i = 0; i < size; i++) A[i] *= A[i];
+        } else {
+            fill(B + s2, B + size, mod_t()); ntt_dit4(B, size, 1, roots);
+            for(i = 0; i < size; i++)  A[i] *= B[i];
+        }
+        ntt_dit4(A, size, -1, roots);
+        mod_t inv = mod_t(size).inverse();
+        for(i = 0; i < (cyclic ? size : s); i++) A[i] *= inv;
+    }
+\end{code}
+
+\subsubsection{Implementasi Fungsi RevPermute pada Namespace NTT}
+Pada subbab ini akan dijelaskan mengenai implementasi fungsi RevPermute dari pseudocode \ref{psdo:namespace_ntt_revpermute}. Implementasi dari fungsi \texttt{RevPermute} dapat dilihat pada Kode Sumber \ref{code:ntt_revpermute}
+
+\begin{code}[firstnumber=1]{Fungsi RevPermute pada Namespace NTT}{ntt_revpermute}
+	template <typename mod_t>
+    void rev_permute(mod_t* A, int n) {
+        int r = 0, nh = n >> 1, i, h;
+        for(i = 1; i < n; i++) {
+            for (h = nh; !((r ^= h) & h); h >>= 1);
+            if (r > i) swap(A[i], A[r]);
+        }
+    }
+\end{code}
+
+\subsubsection{Implementasi Fungsi NTTDit4 pada Namespace NTT}
+Pada subbab ini akan dijelaskan mengenai implementasi fungsi NTTDit4 dari pseudocode \ref{psdo:namespace_ntt_nttdit4}. Implementasi dari fungsi \texttt{NTTDit4} dapat dilihat pada Kode Sumber \ref{code:ntt_dit_4}
+
+\begin{code}[firstnumber=1]{Fungsi NTTDit4 pada namespace NTT}{ntt_dit_4}
+	template <typename mod_t>
+    void ntt_dit4(mod_t* A, int n, int sign, mod_t* roots) {
+        rev_permute(A, n);
+        int logn = __builtin_ctz(n);
+
+        if (logn & 1) for(int i = 0; i < n; i += 2) {
+            mod_t a = A[i], b = A[i + 1];
+            A[i] = a + b; A[i + 1] = a - b;
+        }
+        mod_t imag = roots[mod_t::level - 2];
+        if (sign < 0) imag = imag.inverse();
+
+        mod_t one = mod_t(1);
+        for(int e = 2 + (logn & 1); e < logn + 1; e += 2 ){
+            const int m = 1 << e;
+            const int m4 = m >> 2;
+            mod_t dw = roots[mod_t::level - e];
+            if (sign < 0) dw = dw.inverse();
+            int k, j, i;
+            const int block_size = min(n, max(m, (1 << 20) / int(sizeof(A[0]))));
+            for(k = 0; k < n; k += block_size){
+                mod_t w = one, w2 = one, w3 = one;
+                for(j = 0; j < m4; j++){
+                    for(i = k + j; i < k + block_size; i += m) {
+                        mod_t a0 = A[i + m4 * 0] * one, a2 = A[i + m4 * 1] * w2;
+                        mod_t a1 = A[i + m4 * 2] * w,   a3 = A[i + m4 * 3] * w3;
+                        mod_t t02 = a0 + a2, t13 = a1 + a3;
+                        A[i + m4 * 0] = t02 + t13; A[i + m4 * 2] = t02 - t13;
+                        t02 = a0 - a2, t13 = (a1 - a3) * imag;
+                        A[i + m4 * 1] = t02 + t13; A[i + m4 * 3] = t02 - t13;
+                    }
+                    w *= dw; w2 = w * w; w3 = w2 * w;
+                }
+            }
+        }
+    }
+\end{code}
+
+\section{Implementasi Multipoint Evaluation pada fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai implementasi \textit{Multipoint Evaluation} pada fungsi \texttt{solve}.
+
+\subsection{Implementasi Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari Class \texttt{poly} pada pseudocode \ref{psdo:class_poly}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poly}.
+
+\begin{code}[firstnumber=1]{Class Poly}{class_poly}
+	class poly {
+	public:
+		static const int NTT_THRESHOLD = 900;
+		static const int QUOTIENT_THRESHOLD = 700;
+		static const int DIVREM_THRESHOLD = 700;
+		static const int EVALUATE_THRESHOLD = 16;
+
+		static int ilog2(Mod64 x) {
+			return 63 - __builtin_clzll(x.get());
+		}
+
+		int size() const { return coefs.size(); }
+		void resize(int s) { coefs.resize(s); }
+		void push_back(Mod64 c) { coefs.push_back(c); }
+
+		const Mod64* data() const { return coefs.data(); }
+		Mod64* data() { return coefs.data(); }
+		const Mod64& operator [] (int i) const { return coefs[i]; }
+		Mod64& operator [] (int i) { return coefs[i]; }
+
+		void reverse() { std::reverse(coefs.begin(), coefs.end()); }
+
+		poly operator - () {
+			poly ret = *this;
+			for(int i = 0; i < ret.size(); i++){ ret[i] = -ret[i];}
+			return ret;
+		}
+
+		poly& operator += (const poly& rhs) {
+			if (size() < rhs.size()) resize(rhs.size());
+			for(int i = 0; i < rhs.size(); i++) coefs[i] += rhs[i];
+			return *this;
+		}
+		poly& operator -= (const poly& rhs) {
+			if (size() < rhs.size()) resize(rhs.size());
+			for(int i = 0; i < rhs.size(); i++) coefs[i] -= rhs[i];
+			return *this;
+		}
+		poly operator *= (const poly& rhs) {
+			return *this = *this * rhs;
+		}
+
+		poly operator + (const poly& rhs) const { return poly(*this) += rhs; }
+		poly operator - (const poly& rhs) const { return poly(*this) -= rhs; }
+		poly operator * (const poly& rhs) const { return this->mul(rhs); }
+
+		static void set_mod(u64 mod) {Mod64::set_mod(mod);}
+
+		vector<Mod64> coefs;
+		static vector<Mod64> temp64;
+	}
+\end{code}
+
+\subsubsection{Implementasi Constructor pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi constructor. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poly_constructor}.
+
+
+\begin{code}[firstnumber=1]{Constructor Class Poly}{class_poly_constructor}
+	poly() {}
+	poly(int n) : coefs(n) {}
+	poly(int n, u64 c) : coefs(n, Mod64(c)) {}
+	poly(const Mod64* ar, int s) : coefs(ar, ar + s) {}
+	poly(const vector<Mod64>& v) : coefs(v) {}
+	poly(const poly& f, int beg, int end=-1) {
+		if (end < 0) end = beg, beg = 0;
+		resize(end - beg);
+		for(int i = beg; i <end; i++) if (i < f.size()) coefs[i - beg] = f[i];
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi VectorSub dan VectorAdd pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{VectorSub} dan \texttt{VectorAdd} pada pseudocode \ref{psdo:class_poly_vector_sub} dan \ref{psdo:class_poly_vector_add}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poly_vector_sub_add}.
+
+
+\begin{code}[firstnumber=1]{Fungsi VectorSub dan VectorAdd Class Poly}{class_poly_vector_sub_add}
+	inline static void vector_add(Mod64* res, int s, const Mod64* f, Mod64 c){
+		for(int i = 0; i < s; i++) res[i] += (f[i] * c);
+	}
+
+	inline static void vector_sub(Mod64* res, int s, const Mod64* f, Mod64 c){
+		for(int i = 0; i < s; i++) res[i] -= (f[i] * c);
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MulBasecase pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MulBasecase} pada pseudocode \ref{psdo:class_poli_mul_basecase}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_basecase}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MulBasecase Class Poly}{class_poli_mul_basecase}
+	static void amul(const Mod64* f, int s1, const Mod64* g, int s2, Mod64* res) {
+		int s = s1 + s2 - 1;
+		temp64.assign(s, Mod64(0));
+		for(int i = 0; i < s2; i++) if(g[i].get()) vector_add(temp64.data() + i, s1, f, g[i]);
+		for(int i = 0; i < s; i++) res[i] = temp64[i];
+	}
+	
+	poly mul_basecase(const poly& g) const {
+		const auto& f = *this;
+		int s = size() + g.size() - 1;
+		poly ret(s);
+		amul(f.data(), f.size(), g.data(), g.size(), ret.data());
+		return ret;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi QuotientBasecase pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{QuotientBasecase} pada pseudocode \ref{psdo:class_poli_quo_basecase}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_quo_basecase}.
+
+
+\begin{code}[firstnumber=1]{Fungsi QuotientBasecase Class Poly}{class_poli_quo_basecase}
+	static void aquotient(const Mod64* f, int s1, const Mod64* g, int s2, Mod64* res) {
+		temp64.resize(s1);
+		for(int i = 0; i < s1; i++) temp64[i] = f[i];
+		for(int i = 0; i < s1; i++) if(temp64[i].get()) vector_sub(temp64.data() + i + 1, min(s1 - i, s2) - 1, g + 1, temp64[i]);
+		for(int i = 0; i < s1; i++) res[i] = temp64[i];
+	}
+	
+	poly quotient_basecase(const poly& g) const {
+		const auto& f = *this;
+		int s = size();
+		poly q(s);
+		aquotient(f.data(), f.size(), g.data(), g.size(), q.data());
+		return q;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi DivremBasecase pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{DivremBasecase} pada pseudocode \ref{psdo:class_poli_div_basecase}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_div_basecase}.
+
+
+\begin{code}[firstnumber=1]{Fungsi DivremBasecase Class Poly}{class_poli_div_basecase}
+	static void adivrem(const Mod64* f, int s1, const Mod64* g, int s2, Mod64* q, Mod64* r, bool need_r = true) {
+		int sq = s1 - s2 + 1;
+		temp64.resize(s1);
+		for(int i = 0; i < s1; i++) temp64[i] = f[i];
+		Mod64 inv = g[0].inverse();
+		for(int i = 0; i < sq; i++){
+			Mod64 c = temp64[i] * inv;
+			if(c.get()) vector_sub(temp64.data() + i + 1, s2 - 1, g + 1, c);
+			q[i] = c;
+		}
+		if(need_r){
+			for(int i = sq; i < s1; i++) r[i - sq] = temp64[i];
+		}
+	}
+	
+	pair<poly, poly> divrem_basecase(const poly& g) const {
+		const auto& f = *this;
+		int s1 = f.size(), s2 = g.size();
+		int sq = s1 - s2 + 1;
+		auto q = poly(sq), r = poly(g.size() - 1);
+		adivrem(f.data(), s1, g.data(), s2, q.data(), r.data());
+		return make_pair(q, r);
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi Mul pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Mul} pada pseudocode \ref{psdo:class_poli_mul}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Mul Class Poly}{class_poli_mul}
+	poly mul(const poly& g) const {
+		const auto& f = *this;
+		if (f.size() == 0 || g.size() == 0) return poly();
+		if (f.size() + g.size() <= NTT_THRESHOLD) {
+			return f.mul_basecase(g);
+		} else {
+			mul_convolve(f, g, false);
+			return mul_crt(0, f.size() + g.size() - 1);
+		}
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MulCyclically pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MulCyclically} pada pseudocode \ref{psdo:class_poli_mul_cyclic}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_cyclic}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MulCyclically Class Poly}{class_poli_mul_cyclic}
+	poly mul_cyclically(const poly& g) const {
+		const auto& f = *this;
+		if (f.size() == 0 || g.size() == 0) return poly();
+		mul_convolve(f, g, true);
+		int s = max(f.size(), g.size()), size = 1;
+		while (size < s) size <<= 1;
+		return mul_crt(0, size);
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MiddleProduct pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MiddleProduct} pada pseudocode \ref{psdo:class_poli_mp}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mp}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MiddleProduct Class Poly}{class_poli_mp}
+	poly middle_product(const poly& g) const {
+		const poly& f = *this;
+		if (f.size() == 0 || g.size() == 0) return poly();
+		mul_convolve(f, g, true);
+		return mul_crt(f.size(), g.size());   
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi Inverse pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Inverse} pada pseudocode \ref{psdo:class_poli_inverse}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_inverse}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Inverse Class Poly}{class_poli_inverse}
+	poly inverse(int prec = -1) const {
+		if(prec < 0) prec = size();
+		poly ret(1,1ULL);
+		for (int e = 1, ne; e < prec; e = ne) {
+			ne = min(2 * e, prec);
+			poly h = poly(ret, ne - e) * -ret.middle_product(poly(*this, ne));
+			for(int i = e; i < ne; i++) ret.push_back(h[i - e]);
+		}
+		return ret;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi Quotient pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Quotient} pada pseudocode \ref{psdo:class_poli_quotient}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_quotient}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Quotient Class Poly}{class_poli_quotient}
+	poly quotient(const poly& b) const {
+		if (b.size() < QUOTIENT_THRESHOLD) {
+			return quotient_basecase(b);
+		}
+		int s = (size() >> 1) + 1;
+		poly inv = b.inverse(s);
+		poly q1 = poly(poly(*this, s) * inv, s);
+		poly lo = q1.middle_product(b);
+		poly q2 = poly(inv, size() - s) * (poly(*this, s, size()) - lo);
+		for(int i = 0; i < size() - s; i++) q1.push_back(q2[i]);
+		return q1;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi SubMul pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{SubMul} pada pseudocode \ref{psdo:class_poli_sub_mul}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_sub_mul}.
+
+
+\begin{code}[firstnumber=1]{Fungsi SubMul Class Poly}{class_poli_sub_mul}
+	static poly sub_mul(const poly& f, const poly& q, const poly& d) {
+		int sq = q.size();
+		poly p = q.mul_cyclically(d);
+		int mask = p.size() - 1;
+		for(int i = 0; i < sq; i++) p[i & mask] = p[i & mask] - f[i & mask];
+		poly r = poly(f, sq, f.size());
+		for(int i = 0; i < r.size(); i++) r[i] = r[i] - p[(sq + i) & mask];
+		return r;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi Divrem pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Divrem} pada pseudocode \ref{psdo:class_poli_divrem}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_divrem}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Divrem Class Poly}{class_poli_divrem}
+	pair<poly, poly> divrem(const poly& b) const {
+		if (size() < b.size()) return make_pair(poly(), poly(*this));
+		if (size() < DIVREM_THRESHOLD) {
+			return divrem_basecase(b);
+		}
+		int sq = size() - b.size() + 1;
+		poly q = poly(*this, sq).quotient(poly(b, sq));
+		poly r = sub_mul(*this, q, b);
+		return make_pair(q, r);
+	}
+
+	poly rem(const poly& b) const {
+		return divrem(b).second;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi Evaluate pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Evaluate} pada pseudocode \ref{psdo:class_poli_eval}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_eval}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Evaluate Class Poly}{class_poli_eval}
+	Mod64 evaluate(Mod64 x) const {
+		Mod64 ret = 0;
+		for(int i = 0; i < size(); i++){
+			ret = ret * x + coefs[i];
+		}
+		return ret;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MulPoint pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MulPoint} pada pseudocode \ref{psdo:class_poli_mul_point}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_point}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MulPoint Class Poly}{class_poli_mul_point}
+	static poly mul_point(vector<Mod64>& f){
+		function< poly(int, int) > rec = [&](int beg, int end) {
+			if (end - beg == 1) {
+				return poly(vector<Mod64>({Mod64(1), f[beg]}));
+			}
+			int mid = (beg + end) >> 1;
+			return rec(beg, mid) * rec(mid, end);
+		};
+		return rec(0, f.size());
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MultipointEvaluation pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MultipointEvaluation} pada pseudocode \ref{psdo:class_poli_bst}, \ref{psdo:class_poli_fast_eval} dan \ref{psdo:class_poli_multi_eval}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_point}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MultipointEvaluation Class Poly}{class_poli_mul_point}
+	static vector<Mod64> multipoint_evaluation(const poly& f, vector<Mod64>& points) {
+		int s = points.size();
+		u64 tree_size = 4 << ilog2(s - 1);
+        u64 mod = Mod64::modulus();
+
+		vector<poly> tree(tree_size);
+		function< void(int, int, int) > build_suproduct_tree = [&](int beg, int end, int k) {
+			if (end - beg == 1) {
+				tree[k] = poly(vector<Mod64>({Mod64(1), Mod64(mod - points[beg].get())}));
+			} else {
+				int mid = (beg + end) >> 1;
+				build_suproduct_tree(beg, mid, 2 * k + 1);
+				build_suproduct_tree(mid, end, 2 * k + 2);
+				tree[k] = tree[2 * k + 1] * tree[2 * k + 2];
+			}
+		};
+
+		build_suproduct_tree(0, s, 0);
+
+		vector<Mod64> res(s);
+		function< void(const poly&, int, int, int) > fast_eval = [&](const poly& g, int beg, int end, int k) {
+			auto r = g.rem(tree[k]);
+			if (end - beg <= EVALUATE_THRESHOLD) {
+				for(int i = beg; i < end; i++) {
+					res[i] = r.evaluate(points[i]);
+				}
+			} else {
+				int mid = (beg + end) >> 1;
+				fast_eval(r, beg, mid, 2 * k + 1);
+				fast_eval(r, mid, end, 2 * k + 2);
+			}
+		};
+
+		fast_eval(f, 0, s, 0);
+		return res;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi FactMod pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{FactMod} pada pseudocode \ref{psdo:class_poli_factmod}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_factmod}.
+
+
+\begin{code}[firstnumber=1]{Fungsi FactMod Class Poly}{class_poli_factmod}
+	static u64 fact_mod(u64 N, u64 mod) {
+		if(N >= mod) return 0;
+		if(N <= 1) return 1;
+		if(N == mod-1) return N;
+	
+		Mod64::set_mod(mod);
+        if(N <= mod-N-1){
+            u64 v = sqrt(N);
+            vector<Mod64> point(v);
+            for(u64 i = 0; i < v; i++) point[i] = Mod64(i * v + 1);
+            auto f = mul_point(point);
+            for(u64 i = 0; i < v; i++) point[i] = Mod64(i);
+            auto eval = multipoint_evaluation(f, point);
+
+            Mod64 ret = Mod64(1);
+            for(u64 i = 0; i < v; i++) ret *= eval[i];
+            for(u64 i = u64(v * v + 1); i <= N; i++) ret *= Mod64(i);
+
+            return ret.get();
+        } else {
+            // Inverse of Wilson's Theorem
+            u64 v = sqrt(mod-N-1);
+            vector<Mod64> point(v);
+            for(u64 i = 0; i < v; i++) point[i] = Mod64(i * v + 1 + N);//, printf("%llu\n", i*v+1+N);
+            auto f = mul_point(point);
+            for(u64 i = 0; i < v; i++) point[i] = Mod64(i);
+            auto eval = multipoint_evaluation(f, point);
+
+            Mod64 ret = Mod64(1);
+            for(u64 i = 0; i < v; i++) ret *= eval[i];//, printf("%llu\n",ret.get());
+            for(u64 i = u64(v * v + 1 + N); i < mod-1; i++) ret *= Mod64(i);
+            Mod64 ans = ret.inverse();
+            if(v * v + 1 + N > mod -1) ans *= Mod64(mod-1);
+            return ans.get();
+        }
+		
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MulCRT pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MulCRT} pada pseudocode \ref{psdo:class_poli_mul_crt}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_crt}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MulCRT Class Poly}{class_poli_mul_crt}
+	static poly mul_crt(int beg, int end){
+		using namespace NTT;
+		auto inv = Mod64_2(Mod64_1::modulus()).inverse();
+		auto mod = Mod64::modulus();
+		auto mod1 = Mod64_1::modulus() % mod;
+
+		poly ret(end - beg);
+		for(int i = 0; i < ret.size(); i++){
+			Mod64_2 r1 = Mod64_2(f1[i + beg].get());
+			Mod64_2 r2 = f2[i + beg];			
+			ret[i] = Mod64((r1.get() % mod + ((r2 - r1) * inv).get() % mod * u128(mod1)) % mod);
+		}
+		return ret;
+	}
+\end{code}
+
+\subsubsection{Implementasi Fungsi MulConvolve pada Class Polinomial}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MulConvolve} pada pseudocode \ref{psdo:class_poli_mul_convolve}. Implementasi dapat dilihat pada Kode Sumber \ref{code:class_poli_mul_convolve}.
+
+
+\begin{code}[firstnumber=1]{Fungsi MulConvolve Class Poly}{class_poli_mul_convolve}
+	static void mul_convolve(const poly& f, const poly& g, bool cyclic = false) {
+		using namespace NTT;
+		if(&f == &g){
+			for(int i = 0; i < f.size(); i++) f1[i] = f[i].get();
+			convolve(f1, f.size(), f1, f.size(), cyclic);
+			for(int i = 0; i < f.size(); i++) f2[i] = f[i].get();
+			convolve(f2, f.size(), f2, f.size(), cyclic);
+		} else{
+			for(int i = 0; i < f.size(); i++) f1[i] = f[i].get();
+			for(int i = 0; i < g.size(); i++) g1[i] = g[i].get();
+			convolve(f1, f.size(), g1, g.size(), cyclic);
+			for(int i = 0; i < f.size(); i++) f2[i] = f[i].get();
+			for(int i = 0; i < g.size(); i++) g2[i] = g[i].get();
+			convolve(f2, f.size(), g2, g.size(), cyclic);
+		}
+	}
+\end{code}
+
+\subsection{Implementasi Fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{FactMod} pada pseudocode \ref{psdo:multipoint_solve}. Implementasi dapat dilihat pada Kode Sumber \ref{code:multipoint_solve}.
+
+
+\begin{code}[firstnumber=1]{Fungsi Solve}{multipoint_solve}
+	u64 solve(u64 N, u64 P) {
+		return poly::fact_mod(N,P)
+	}
+\end{code}
+
+\section{Implementasi Shifting Evaluation Values pada fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai implementasi \textit{Multipoint Evaluation} pada fungsi \texttt{solve} .
+
+\subsection{Implementasi Fungsi PrecomputeIFactorials}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{PrecomputeIFactorials} pada pseudocode \ref{psdo:shift_precom_ifactorials}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_precom_ifactorials}.
+
+\begin{code}[firstnumber=1]{Fungsi PrecomputeIFactorials}{shift_precom_ifactorials}
+	vector<Mod64> precompute_ifactorials(int n){
+		int i;
+		Mod64 one(1ULL);
+		Mod64 iter = one;
+		vector<Mod64> ret(n+1, one);
+		for(i = 1; i <= n; i++){
+			ret[i] = iter * ret[i-1];
+			iter += one;
+		}
+		ret[n] = ret[n].inverse();
+		iter -= one;
+		if(n == 0) return ret;
+		for(i = n-1; i >= 0; i--){
+			ret[i] = ret[i+1] * iter;
+			iter -= one;
+		}
+		return ret;
+	}
+\end{code}
+
+\subsection{Implementasi Fungsi MiddleProduct}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{MiddleProduct} pada pseudocode \ref{psdo:shift_mp}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_mp}.
+
+\begin{code}[firstnumber=1]{Fungsi MiddleProduct}{shift_mp}
+	vector<Mod64> middle_product(const vector<Mod64>& f, const vector<Mod64>& g){
+		using namespace NTT;
+		int i;
+		for(i = 0; i < f.size(); i++) f1[i] = f[i].get();
+		for(i = 0; i < g.size(); i++) g1[i] = g[i].get();
+		convolve(f1, f.size(), g1, g.size(), true);
+		for(i = 0; i < f.size(); i++) f2[i] = f[i].get();
+		for(i = 0; i < g.size(); i++) g2[i] = g[i].get();
+		convolve(f2, f.size(), g2, g.size(), true);
+
+		const int beg = f.size() - 1, end = g.size();
+		auto inv = Mod64_2(Mod64_1::modulus()).inverse();
+		auto mod = Mod64::modulus();
+		auto mod1 = Mod64_1::modulus() % mod;
+		vector<Mod64> ret(end - beg);
+		for(i = 0; i < ret.size(); i++){
+			Mod64_2 r1 = Mod64_2(f1[i + beg].get());
+			Mod64_2 r2 = f2[i + beg];
+			ret[i] = Mod64((r1.get() % mod + ((r2 - r1) * inv).get() % mod * u128(mod1)) % mod);
+		}
+		return ret;
+	}
+\end{code}
+
+\subsection{Implementasi Fungsi Conv}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Conv} pada pseudocode \ref{psdo:shift_mp}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_mp}.
+
+\begin{code}[firstnumber=1]{Fungsi Conv}{shift_mp}
+	auto conv = [&] (const vector<Mod64>& f){
+        const int n = f.size();
+        vector<Mod64> ret = f;
+        for(i = 0; i < n; i++){
+            Mod64 d = ifactorials[i] * ifactorials[(n - 1) - i];
+            if ((n - 1 - i) & 1) d = -d;
+            ret[i] = ret[i] * d; 
+        }
+        return ret;
+    };
+\end{code}
+
+\subsection{Implementasi Fungsi Shift}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Shift} pada pseudocode \ref{psdo:shift_shift}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_shift}.
+
+\begin{code}[firstnumber=1]{Fungsi Shift}{shift_shift}
+	auto shift = [&] (const vector<Mod64>& f, u64 dx) {
+        const u64 n = f.size();
+        const Mod64 deg = Mod64(n - 1);
+        const Mod64 a = Mod64(dx) * Mod64(sqrt_N).inverse();
+
+        vector<Mod64> g(2 * n - 1);
+        Mod64 r = (a - deg);
+        for(i = 0; i < g.size(); i++){
+            g[i] = r.get() ? r : one;
+            r += one;
+            if( r.get() == mod ){ r = zero; }
+        }
+        for(i = 1; i < g.size(); i++) g[i] *= g[i-1];
+        Mod64 inv = g.back().inverse();
+        
+        Mod64 iter = Mod64(g.size() - 1);
+        for(i = g.size() - 1; i > 0; i--){
+            g[i] = inv * g[i-1];
+            inv = inv * (a + iter - deg);
+            iter -= one;
+        }
+        g[0] = inv;
+
+        vector<Mod64> ret = middle_product(f, g);
+		
+		Mod64 prod = one;
+        iter = zero;
+        for(i = 0; i < n; i++) prod *= (a + deg - iter),iter += one;
+		iter -= one;
+		
+        for(i = n - 1; i >= 0; i--){
+            ret[i] *= prod;
+            prod = (prod * g[n - 1 + i]) * (a + iter - deg - one);
+            iter -= one;
+        }
+        return ret;
+    };
+\end{code}
+
+\subsection{Implementasi Fungsi SolveGrid}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{SolveGrid} pada pseudocode \ref{psdo:shift_solve_grid}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_solve_grid}.
+
+\begin{code}[firstnumber=1]{Fungsi SolveGrid}{shift_solve_grid}
+	function<vector<Mod64>(u64)> solve_grid = [&] (u64 n) -> vector<Mod64> {
+        if (n == 1) return {one, Mod64(1 + sqrt_N)};
+        u64 half_N = n >> 1;    
+        auto f11 = solve_grid(half_N);
+        auto f = conv(f11);
+        auto f12 = shift(f, half_N);
+        auto f21 = shift(f, sqrt_N * half_N);
+        auto f22 = shift(f, sqrt_N * half_N + half_N);
+        f11.resize(n + 1);
+        for(i = 0; i < half_N + 1; i++){ f11[i] = f11[i] * f12[i]; }
+        for(i = 1; i < half_N + 1; i++){ f11[i + half_N] = f21[i] * f22[i]; }
+        if (n & 1){
+            for(i = 0; i < n; i++){ f11[i] = f11[i] * Mod64(sqrt_N * i + n); }
+            Mod64 prod = one;
+            for(i = 0; i < n; i++){ prod *= Mod64(sqrt_N * n + i + 1); }
+            f11.back() = prod;
+        }
+
+        return f11;
+    };
+\end{code}
+
+\subsection{Implementasi Fungsi FactMod}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{FactMod} pada pseudocode \ref{psdo:shift_factmod}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_factmod}.
+
+\begin{code}[firstnumber=1]{Fungsi FactMod}{shift_factmod}
+	function<u64(u64)> fact_mod_p = [&] (u64 n) -> u64 {
+        if( (n << 1) >= mod ) {
+            u64 m = mod - n - 1 ;
+            u64 ret = fact_mod_p(m);
+            ret = m & 1 ? ret : mod - ret;
+            return Mod64(ret).inverse().get();
+        }
+        u64 k = min(sqrt_N, n / sqrt_N);
+        Mod64 ret = (k == 0)? one : f[k - 1];
+        u64 t = k * sqrt_N;
+        for(u64 i = 0; i < n - t; i++){
+            ret *= Mod64(t + i + 1);
+        }
+        return ret.get() % mod;
+    };
+\end{code}
+
+
+\subsection{Implementasi Fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Solve} pada pseudocode \ref{psdo:shift_solve}. Implementasi dapat dilihat pada Kode Sumber \ref{code:shift_solve}.
+
+\begin{code}[firstnumber=1]{Fungsi Solve}{shift_solve}
+	u64 solve(u64 N, u64 mod) {
+		if (N >= mod) return 0;
+		if (N == 0) return 1;
+		if (N+1 == mod) return N;
+		u64 X = (N << 1) > mod ? mod - N : N;
+		const u64 sqrt_N = sqrtl(X);
+		Mod64::set_mod(mod);
+		Mod64 one(1ULL);
+		Mod64 zero(0ULL);
+		auto ifactorials = precompute_ifactorials(sqrt_N >> 1);
+		vector<Mod64> f = solve_grid(sqrt_N);
+		for(int i = 1; i < sqrt_N; i++){ f[i] *= f[i-1]; };
+		return fact_mod_p(N);
+	};
+\end{code}
+
+
+

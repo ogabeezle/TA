@@ -20,7 +20,11 @@ Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masu
             \For {$i \leftarrow 1, N$}
                 \State $x_i , y_i \leftarrow $ \fakesc{Input()}
                 \State $perimeter.P[i]\leftarrow$ \fakesc{Point}($x_i$, $y_i$, false)
-            \EndFor
+			\EndFor
+			\If{$M=1$ or $M=0$}
+				\State \fakesc{Print}($0$)
+				\State \fakesc{Continue}
+			\EndIf
             \For {$i \leftarrow 1, M$}
                 \State $ x1_i , y1_i \leftarrow $ \fakesc{Input()}
                 \State $trees \leftarrow$ \fakesc{Point}($x1_i$, $y1_i$, true)
@@ -237,7 +241,7 @@ Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah p
 	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
 	\hline
 	Masukan   & Proses     & Keluaran \\ \hline
-	- & mencari keliling dengan mencari jarak eulerian dari semua titik pembentuk polygon &   Suatu bilangan berkoma yang menyatakan keliling dari poligon tersebut     \\ \hline
+	- & Mencari keliling dengan mencari jarak eulerian dari semua titik pembentuk polygon &   Suatu bilangan berkoma yang menyatakan keliling dari poligon tersebut     \\ \hline
 	\end{tabular}
 	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Perimeter} Class \fakesc{Polygon}}
 	\label{tab:class-polygon-perimeter}
@@ -256,8 +260,18 @@ Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah p
 \end{algorithm}
 \newpage
 \section{Fungsi BetweenD}
-Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ berada diantara bilangan $l$ dan bilangan$r$. Pseudocode dari fungsi \fakesc{BetweenD} dapat dilihat pada pseudocode \ref{psdo:fungsi-betweend}.
+Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ berada diantara bilangan $l$ dan bilangan$r$. Pseudocode dari fungsi \fakesc{BetweenD} dapat dilihat pada pseudocode \ref{psdo:fungsi-betweend}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-betweend}.
 
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	tiga buah bilangan $x,l,r$, dimana bilangan $x$ merupakan bilangan yang ingin diketahui apakah berada diantara titik $l$ dan $r$ & Mencari tahu apakan bilangan $x$ berada diantara bilangan $l$ dan $r$ &   Sebuah boolean yang menyatakan apakah $x$ berada diantara $l$ dan $r$     \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{BetweenD} }
+	\label{tab:fungsi-betweend}
+\end{table}
 \begin{algorithm}
     \caption{Fungsi \fakesc{BetweenD}}
 	\label{psdo:fungsi-betweend}
@@ -271,21 +285,20 @@ Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilan
 	\end{algorithmic}
 \end{algorithm}
 
-\section{Fungsi SameD}
-Fungsi \fakesc{SameD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ sama dengan bilangan$y$. Pseudocode dari fungsi \fakesc{SameD} dapat dilihat pada pseudocode \ref{psdo:fungsi-sameD}.
-
-\begin{algorithm}
-    \caption{Fungsi \fakesc{SameD}}
-	\label{psdo:fungsi-samed}
-    \begin{algorithmic}[1]
-        \Require $x, y$
-        \State \Return \fakesc{BetweenD}($x,y,y$)
-	\end{algorithmic}
-\end{algorithm}
-
 \newpage
 \section{Fungsi EDist}
-Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus Pythagoras. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}.
+Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus Pythagoras. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-edist}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Dua buah \fakesc{Point} $A$ dan \fakesc{Point} $B$ yang akan dicari jaraknya & Mencari jarak antara \fakesc{Point} $A$ dan \fakesc{Point} $B$ &   Sebuah bilangan berkoma yang menyatakan jarak \fakesc{Point} $A$ dan \fakesc{Point} $B$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{EDist} }
+	\label{tab:fungsi-edist}
+\end{table}
 \begin{equation}
     \label{eq:pythagoras}
     C=\sqrt{A^2 + B^2}
@@ -301,7 +314,18 @@ Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fa
 \end{algorithm}
 
 \section{Fungsi Cross}
-Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cross} dari dua buah vector. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:cross}. Pseudocode fungsi \fakesc{Cross} dapat dilihat pada pseudocode \ref{psdo:fungsi-cross}.
+Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cross} dari dua buah vector. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:cross}. Pseudocode fungsi \fakesc{Cross} dapat dilihat pada pseudocode \ref{psdo:fungsi-cross}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-cross}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Dua buah \fakesc{Vec} $U$ dan \fakesc{Vec} $V$ yang akan dicari hasil perkalian silangnya & Mencari nilai perkalian silang dari \fakesc{Vec} $U$ dan \fakesc{Vec} $V$ &   Sebuah bilangan yang menyatakan hasil perkalian silang \fakesc{Vec} $U$ dan \fakesc{Vec} $V$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Cross} }
+	\label{tab:fungsi-cross}
+\end{table}
 
 \begin{equation}
     \label{eq:cross}
@@ -318,7 +342,18 @@ Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cr
 \end{algorithm}
 
 \section{Fungsi Orientation}
-Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga titik. Pseudocode fungsi \fakesc{Orientation} dapat dilihat pada pseudocode \ref{psdo:fungsi-orientation}.
+Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga titik. Pseudocode fungsi \fakesc{Orientation} dapat dilihat pada pseudocode \ref{psdo:fungsi-orientation}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-orientation}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Tiga buah \fakesc{Point} $O$, \fakesc{Point} $P$ dan \fakesc{Point} $Q$ yang akan dicari orientasinya & Mencari orientasi antara \fakesc{Point} $O$, \fakesc{Point} $P$ dan \fakesc{Point} $Q$ &   Sebuah bilangan yang menyatakan orientasi antara \fakesc{Point} $O$, \fakesc{Point} $P$ dan \fakesc{Point} $Q$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Orientation} }
+	\label{tab:fungsi-orientation}
+\end{table}
 \begin{algorithm}
     \caption{Fungsi \fakesc{Orientation}}
 	\label{psdo:fungsi-orientation}
@@ -331,7 +366,18 @@ Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga 
 \end{algorithm}
 
 \section{Fungsi OnSegment}
-Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segment garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}.
+Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segment garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-onsegment}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Dua buah \fakesc{Point} $P$ dan \fakesc{Segment} $S$ yang akan dicari tahu apakah \fakesc{Point} $P$ berada di \fakesc{Segment} $S$ & Mencari tahu apakah \fakesc{Point} $P$ berada di \fakesc{Segment} $S$ &   Sebuah boolean yang menyatakan apakah \fakesc{Point} $P$ berada di dalam \fakesc{Segment} $S$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{OnSegment} }
+	\label{tab:fungsi-onsegment}
+\end{table}
 \begin{algorithm}
     \caption{Fungsi \fakesc{OnSegment}}
 	\label{psdo:fungsi-onsegment}
@@ -346,7 +392,18 @@ Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah tit
 \end{algorithm}
 
 \section{Fungsi ConvexHull}
-Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} dari sekumpulan titik $pts$. Algoritma yang digunakan oleh fungsi ini adalah algoritma \textit{Monotone Chain} yang dapat dilihat pada bagian \ref{sec:algoritma-monotone-chain}. Pseudocode dari fungsi \fakesc{ConvexHull} yang digunakan dapat dilihat pada Pseudocode \ref{psdo:fungsi-convexhull}.
+Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} dari sekumpulan titik $pts$. Algoritma yang digunakan oleh fungsi ini adalah algoritma \textit{Monotone Chain} yang dapat dilihat pada bagian \ref{sec:algoritma-monotone-chain}. Pseudocode dari fungsi \fakesc{ConvexHull} yang digunakan dapat dilihat pada Pseudocode \ref{psdo:fungsi-convexhull}.  Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-convexhull}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+    Sebuah array \fakesc{Point} $pts$ yang merupakan sekumpulan titik & Mencari \fakesc{Polygon} dengan keliling terkecil dari sekumpulan titik &   Sebuah \fakesc{Polygon} yang mengelilingin kumpulan \fakesc{Point} $pts$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{ConvexHull} }
+	\label{tab:fungsi-convexhull}
+\end{table}
 \begin{algorithm}
     \caption{Fungsi \fakesc{ConvexHull}}
 	\label{psdo:fungsi-convexhull}
@@ -370,7 +427,18 @@ Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} 
 \end{algorithm}
 
 \section{Fungsi InSimplePolygon}
-Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$ atau tidak. Algoritma yang digunakan pada fungsi ini adalah algoritma \textit{point inside polygon} yang dapat dilihat pada bagian \ref{sec:point-inside-polygon}. Pada desain fungsi \fakesc{InSimplePolygon} ada 3 macam keluaran yaitu $-1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$, $0$ untuk menandakan bahwa \fakesc{Point} $P$ berada di salah satu sisi \fakesc{Polygon} $A$, dan $1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di luar \fakesc{Polygon} $A$. Pseudocode fungsi \fakesc{InSimplePolygon} dapat dilihat pada pseudocode \ref{psdo:fungsi-insimplepolygon}.
+Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$ atau tidak. Algoritma yang digunakan pada fungsi ini adalah algoritma \textit{point inside polygon} yang dapat dilihat pada bagian \ref{sec:point-inside-polygon}. Pada desain fungsi \fakesc{InSimplePolygon} ada 3 macam keluaran yaitu $-1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$, $0$ untuk menandakan bahwa \fakesc{Point} $P$ berada di salah satu sisi \fakesc{Polygon} $A$, dan $1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di luar \fakesc{Polygon} $A$. Pseudocode fungsi \fakesc{InSimplePolygon} dapat dilihat pada pseudocode \ref{psdo:fungsi-insimplepolygon}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-insimplepolygon}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Sebuah \fakesc{Point} $A$ dan sebuah \fakesc{Polygon} $P$ yang akan dicari tahu apakah \fakesc{Point} $A$ berada di dalam \fakesc{Polygon} $P$ & Mencari tahu apakah \fakesc{Point} $A$ berada di dalam \fakesc{Polygon} $P$ &   Sebuah bilangan yang apakah \fakesc{Point} $A$ berada di dalam \fakesc{Polygon} $P$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{InSimplePolygon} }
+	\label{tab:fungsi-insimplepolygon}
+\end{table}
 
 \begin{algorithm}
     \caption{Fungsi \fakesc{InSimplePolygon}}
@@ -406,5 +474,119 @@ Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebu
         \Else
             \State \Return $-1$
         \EndIf
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi GetBetween}
+Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} yang akan menggantikan \fakesc{Point} yang akan dibuang. Pseudocode fungsi \fakesc{GetBetween} dapat dilihat pada pseudocode \ref{psdo:fungsi-getbetween}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-getbetween}.
+
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Sebuah \fakesc{Polygon} $triangle$ yang merupakan segitiga, \fakesc{Queue} \fakesc{Point} $q$ yang merupakan pembentuk polygon luar, dan array \fakesc{Point} $trees$ yang merupakan titik yang berada di dalam polygon luar & Mencari \fakesc{Point} mana saja yang akan menggantikan \fakesc{Point} $triangle_1$ yang akan dibuang &   Sebuah \fakesc{List} \fakesc{Point} yang berisikan daftar \fakesc{Point} yang akan menggantikan \fakesc{Point} $triangle_1$  \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{GetBetween} }
+	\label{tab:fungsi-getbetween}
+\end{table}
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{GetBetween}}
+	\label{psdo:fungsi-getbetween}
+    \begin{algorithmic}[1]
+        \Require $triangle, q, trees$
+        \State $points \leftarrow$ Array \fakesc{Point}
+        \While{$q$ not \fakesc{Empty}}
+            \If{\fakesc{InSimplepolygon}(q.\fakesc{front}(), $triangle$) $\neq 1$}
+                \State $points.$\fakesc{Insert}($q.$\fakesc{Front}())
+            \EndIf
+            $q.$\fakesc{Pop}
+        \EndWhile
+        \For{$pt$ in $trees$}
+            \If{\fakesc{InSimplepolygon}($pt$, $triangle$) $\neq 1$}
+                \State $points.$\fakesc{Insert}($pt$)
+            \EndIf
+        \EndFor
+        \State $P \leftarrow$ \fakesc{ConvexHull}($points$)
+        \State $pts \leftarrow$ Array \fakesc{Point}
+        \State $i \leftarrow 0$
+        \While{\fakesc{True}}
+            \If{$P.P[i]=triangle.P[0]$}
+                \If{$P.P[P.$\fakesc{Next}($i$)$]=triangle.P[2]$}
+                    \State $i \leftarrow P.$\fakesc{Prev}($i$)
+                    \While{$P.P[i] \neq triangle.P[2]$}
+                        \State $pts.$\fakesc{Insert}($P.P[i]$)
+                        \State $i = P.$\fakesc{Prev}($i$)
+                    \EndWhile
+                \Else
+                    \State $i \leftarrow P.$\fakesc{Next}($i$)
+                    \While{$P.P[i] \neq triangle.P[2]$}
+                        \State $pts.$\fakesc{Insert}($P.P[i]$)
+                        \State $i = P.$\fakesc{Next}($i$)
+                    \EndWhile
+                \EndIf
+                \State \fakesc{Break}
+            \EndIf
+            \State $i\leftarrow P.$\fakesc{Next}($i$)
+        \EndWhile
+        \State \Return $pts$
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Fungsi Solve}
+Fungsi \fakesc{Solve} bertanggung jawab untuk mencari \textit{relative convex polygon} yang mengelilingi semua titik yang ada di dalam polygon luar. Pseudocode fungsi \fakesc{Solve} dapat dilihat pada pseudocode \ref{psdo:fungsi-solve}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-solve}.
+\begin{table}[]
+	\Centering
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Sebuah \fakesc{Polygon} $perimeter$ yang merupakan polygon sederhana yang merupakan poligon pembatas, dan array \fakesc{Point} $trees$ yang merupakan titik yang berada di dalam polygon pembatas & Mencari \textit{relative convex hull} dari semua titik $trees$ di dalam \fakesc{Polygon} $perimeter$  &   Sebuah \fakesc{Polygon} yang merupakan \textit{relative convex hull} dari semua titik $trees$ \\ \hline
+	\end{tabular}
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{Solve} }
+	\label{tab:fungsi-solve}
+\end{table}
+
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{Solve}}
+	\label{psdo:fungsi-solve}
+    \begin{algorithmic}[1]
+        \Require $perimeter, trees$
+        \State $q \leftarrow$ \fakesc{Queue}
+        \For{$pt$ in $perimeter.P$} 
+        \State $q.$\fakesc{Push} $pt$
+		\EndFor
+		\State $bef \leftarrow perimeter.P[perimeter.$\fakesc{Size}$()-1]$
+		\While{\fakesc{True}}
+			\State $erased \leftarrow$ \fakesc{False}
+			\State $count \leftarrow q.$\fakesc{Size}()
+			\While{count--}
+				\State $cur \leftarrow q.$\fakesc{Front}()
+				$q.$\fakesc{Pop}()
+				\If{$cur.fixed =$\fakesc{False} and (\fakesc{Fine}($q,cur$) or $cur = bef$ or $cur = q.$\fakesc{Front}())}
+					\State $erased \leftarrow$ \fakesc{True}
+					\State $triangle \leftarrow$ \fakesc{Polygon}
+					\State $triangle.P.$\fakesc{Insert}($bef, cur, q.$\fakesc{Front}())
+					\State $points \leftarrow$ \fakesc{GetBetween}($triangle,q,trees$)
+					\For{$pt$ in $points$}
+						\State $q.$\fakesc{Push}($pt$);
+						$bef \leftarrow pt$
+					\EndFor
+				\Else
+					\State $q.$\fakesc{Push}($cur$);
+					$bef \leftarrow cur$
+				\EndIf
+			\EndWhile
+			\If{$erased =$ \fakesc{False}}
+				\fakesc{Break}
+			\EndIf
+		\EndWhile  
+		\State $hull \leftarrow$ array of \fakesc{Point}
+		\While{$q$ not empty}
+			\State $hull.$\fakesc{Insert}($q.$\fakesc{Front}())
+			\State $q.$\fakesc{Pop}()
+		\EndWhile
+		\State \Return \fakesc{Polygon}($hull$)
 	\end{algorithmic}
 \end{algorithm}

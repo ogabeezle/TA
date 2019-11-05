@@ -1,11 +1,16 @@
 #pragma GCC optimize("O3")
 #pragma GCC target("avx")
-#include <bits/stdc++.h>
-using namespace std;
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <map>
+#include <queue>
+#include <algorithm>
 #define pb(x) push_back(x)
 #define pob(x) pop_back(x)
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define gc(x) getchar(x)
+using namespace std;
 
 int readint()
 {
@@ -288,7 +293,7 @@ bool find(queue<point> q, point cur)
 	return false;
 }
 
-vector<point> getTriangle(polygon &triangle, queue<point> q, vector<point> trees)
+vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees)
 {
 	vector<point> points;
 
@@ -366,7 +371,7 @@ polygon solve(polygon &perimeter, vector<point> &trees)
 				triangle.P.pb(bef);
 				triangle.P.pb(cur);
 				triangle.P.pb(q.front());
-				vector<point> points = getTriangle(triangle, q, trees);
+				vector<point> points = getBetween(triangle, q, trees);
 				for (int i = 0; i < points.size(); i++)
 				{
 					q.push(points[i]);
