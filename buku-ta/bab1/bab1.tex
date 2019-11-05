@@ -5,14 +5,23 @@ Pada bab ini, akan dijelaskan mengenai latar belakang, rumusan masalah, batasan 
 
 \section{Latar Belakang}
 
-\par \CG adalah cabang dari ilmu komputer yang dikhususkan untuk mempelajari algoritma yang dapat dinyatakan dalam suatu geometri. Salah satu algoritma yang sering dipakai pada \CG adalah algoritma \CG. \CH adalah sebuah set poligon dari titik pada bidang Euclidean atau ruang Euclidean, atau dapat disebut himpunan cembung terkecil yang berisi titik. Sebagai contoh, ketika suatu kumpulan titik merupakan bagian yang dibatasi dalam sebuah bidang, \CH dapat divisualisasikan sebagai bentuk yang tertutup oleh karet gelang yang membentang di sekitar titik - titik tersebut. Berikut merupakan contoh dari \CH :
-\begin{figure}
+\par \textit{Computational geometry} adalah cabang dari ilmu komputer yang dikhususkan untuk mempelajari algoritma yang dapat dinyatakan dalam suatu geometri. Salah satu algoritma yang sering dipakai pada \CG adalah algoritma \CH. \textit{Convex hull} adalah sebuah set poligon dari titik pada bidang Euclidean atau ruang Euclidean, atau dapat disebut himpunan cembung terkecil yang berisi titik. Sebagai contoh, ketika suatu kumpulan titik merupakan bagian yang dibatasi dalam sebuah bidang, \CH dapat divisualisasikan sebagai bentuk yang tertutup oleh karet gelang yang membentang di sekitar titik - titik tersebut. Berikut merupakan contoh dari \CH :
+\begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\textwidth]{bab1/img/ilustrasi-convex-hull}
-	\caption {Ilustrasi \CH}
+	\caption {Ilustrasi Convex Hull}
 	\label {fig:ilustrasi-convex-hull}
 \end{figure}
+\par \textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan kedalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
 
+\begin{figure}[!h]
+	\Centering
+	\includegraphics [width=0.5\columnwidth]{bab2/img/ilustrasi-relative-convex-hull}
+	\caption {Ilustrasi Relative Convex Hull}
+	\label {fig:ilustrasi-relative-convex-hull}
+\end{figure}
+
+\par Pada topik Tugas Akhir ini akan dijelaskan algoritma penyelesaian untuk mencari \textit{relative convex hull} dari sekumpulan titik yang berada di dalam sebuah polygon sederhana dengan menggunakan algoritma \textit{Melkman Convex Hull} yang dimodifikasi dengan studi kasus pada Sphere Online Judge 5637 LL and ErBao.
 
 \section {Rumusan Masalah}
 
@@ -20,20 +29,18 @@ Rumusan masalah yang diangkat dalam Tugas Akhir ini adalah sebagai berikut :
 
 \begin {enumerate}
     \item Bagaimana mencari \RCH dari kumpulan titik di dalam sebuah poligon?
-    \item Bagaimana algoritma melkman yang dimodifikasi menyelesaikan masalah \RCH dari kumpulan titik?
+    \item Bagaimana algoritma \textit{Melkman convex hull} yang dimodifikasi menyelesaikan masalah \RCH dari kumpulan titik?
 \end {enumerate}
 
 \section {Batasan Masalah}
 \label{sec:batasan_masalah}
-Permalsahan yang dibahas pada Tugas Akhit ini memiliki beberapa batasan, yaitu sebagai berikut :
+Permalsahan yang dibahas pada Tugas Akhir ini memiliki beberapa batasan, yaitu sebagai berikut :
 \begin{enumerate}
-    \item perbandingan antara algoritma \textit{Multipoint Evaluation} dan \textit{Shifting Evaluation Values} sebagai penyelesaian permasalahan komputasi faktorial pada {Factorial Modulo Prime}.
-    \item Implementasi algoritma Melkman yang di modifikasi sebagai penyelesaian permasalahan \RCH pada soal ISUN1.
+    \item Implementasi algoritma \textit{Melkman convex hull} yang di modifikasi sebagai penyelesaian permasalahan \RCH pada soal ISUN1.
     \item Algoritma \RCH terbatas pada analisis intuitif yang logis.
 \end{enumerate}
-Berikut merupakan batasan pada situs \textit{Sphere Online Judge} : 
+Berikut merupakan batasan pada situs Sphere Online Judge: 
 \begin {enumerate}
-\item Implementasi dilakukan menggunakan bahasa pemrograman C++.
     \item Implementasi dilakukan menggunakan bahasa pemrograman C++.
     \item Banyaknya sisi pada poligon pembatas ($n$) diantara 3 sampai 500.
     \item banyaknya pohon yang berada dalam taman ($m$) diantara 0 sampai 500.
@@ -47,13 +54,11 @@ Berikut merupakan batasan pada situs \textit{Sphere Online Judge} :
 \section {Tujuan}
 Tujuan Tugas Akhir ini adalah sebagai berikut :
 \begin{enumerate}
-    \item Mengevaluasi kinerja algoritma \textit{Multipoint Evaluation} yang diimplementasikan untuk menyelesaikan permasalahan komputasi faktorial pada \textit{Factorial Modulo Prime}.
-    \item Mengevaluasi kinerja algoritma \textit{Shifting Evaluation Values} yang diimplementasikan untuk menyelesaikan permasalahan komputasi faktorial pada \textit{Factorial Modulo Prime}.
-    \item Melakukan perbandingan algoritma \textit{Multipoint Evaluation} dan \textit{Shifting Evaluation Values} sebagai penyelesaian permasalahan komputasi faktorial pada \textit{Factorial Modulo Prime}.
+    \item Mengevaluasi kinerja algoritma \textit{Melkman Convex Hull} yang dimodifikasi untuk menyelesaikan permasalahan komputasi \textit{relative convex hull} pada LL and ErBao.
 \end{enumerate}
 
 \section {Manfaat}
-Tugas Akhir ini mampu memberikan pemahaman algoritma yang tepat diantara Multipoint Evaluation dan Shifting Evaluation Values dalam menyelesaikan permasalahan komputasi faktorial dalam modulo prima dengan efisien. Dengan komputasi faktorial yang efisien, maka pencarian bilangan prima yang besar untuk RSA akan menjadi efisien juga.
+Tugas Akhir ini mampu memberikan pemahaman algoritma yang tepat untuk menyelesaikan permasalahan komputasi \textit{relative convex hull} dengan efisien.
 
 \section {Metodologi}
 Metodologi pengerjaan yang digunakan pada Tugas Akhir ini memiliki beberapa tahapan. Tahapan-tahapan tersebut yaitu :
@@ -64,7 +69,7 @@ Metodologi pengerjaan yang digunakan pada Tugas Akhir ini memiliki beberapa taha
     \item Studi literatur\\
     Pada tahapan ini penulis mengumpulkan referensi yang diperlukan guna mendukung pengerjaan Tugas Akhir. Referensi yang digunakan dapat berupa hasil penelitian yang sudah pernah dilakukan, buku, artikel internet, atau sumber lain yang bisa dipertanggungjawabkan.
     \item Implementasi algoritma\\
-    Pada tahapan ini penulis mulai mengembangkan algoritma yang digunakan untuk menyelesaikan permasalahan komputasi faktorial.
+    Pada tahapan ini penulis mulai mengembangkan algoritma yang digunakan untuk menyelesaikan permasalahan komputasi \textit{relative convex hull}.
     \item Pengujian dan evaluasi\\
     Pada tahapan ini penulis menguji performa algoritma yang digunakan. Hasil pengujian kemudian dievaluasi untuk kemudian dipertimbangkan apakah algoritma masih bisa ditingkatkan lagi atau tidak.
     \item Penyusunan buku\\
@@ -74,7 +79,7 @@ Metodologi pengerjaan yang digunakan pada Tugas Akhir ini memiliki beberapa taha
 \section {Sistematika Penulisan}
 Sistematika laporan Tugas Akhir yang akan digunakan adalah sebagai berikut :
 \begin{enumerate}
-    \item BABI : PENDAHULUAN\\
+    \item BAB I : PENDAHULUAN\\
     Bab ini berisi latar belakang, rumusan masalah, batasan masalah, tujuan, manfaat, metodologi dan sistematika penulisan Tugas Akhir.
     \item BAB II : DASAR TEORI\\
     Bab ini berisi dasar teori mengenai permasalahan dan algoritma penyelesaian yang digunakan dalam Tugas Akhir

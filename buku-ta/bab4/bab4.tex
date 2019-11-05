@@ -25,7 +25,7 @@ Subbab ini menjelaskan implementasi proses algoritma secara Keseluruhan berdasar
 \subsection{Header yang diperlukan}
 Implementasi algoritma ini membutuhkan lima buah \textit{header} yaitu \texttt{iostream}, \texttt{vector}, \texttt{cmat}, \texttt{functional} dan \texttt{algorithm} seperti yang terlihat pada Kode Sumber \ref{code:header_main}.
 
-\begin{code}[firstnumber=1]{\textit{Header} yang diperlukan}{header_main}
+\begin{code}[firstnumber=1]{\textit{Header} yang Diperlukan}{header_main}
 #pragma GCC optimize("O3")
 #pragma GCC target("avx")
 
@@ -41,9 +41,9 @@ Selain header, terdapat juga preprocessor \textit{pragma}, digunakan untuk mengg
 \textit{Header} \texttt{iostream} berisi fungsi standar input output operasi yang digunakan oleh bahasa C++. \textit{Header} \texttt{vector} berisi struktur data yang digunakan untuk menyimpan data array secara dinamis. \textit{Header} \texttt{cmath} berisi fungsi-fungsi untuk operasi matematika seperti fungsi \texttt{hypot}. \textit{Header} \texttt{queue} berisi struktur data yang digunakan untuk menyimpan antrian data. \textit{Header} \texttt{algorithm} berisi modul yang memiliki fungsi-fungsii yang sangat berguna dalam membantu mengimplementasi algoritma yang telah dibangun, contohnya adalah fungsi \textit{reverse} dan \textit{sort}. \textit{Header} \texttt{map} berisi struktur data untuk menyimpan data \textit{key value}.
 
 \subsection{Preprocessor}
-Pre-processor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat tiga alias yang digunakan yaitu \texttt{push_back(x)} sebagai \texttt{pb(x)}, \texttt{pop_back} sebagai \texttt{pob}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Pre-processor dapat dilihat pada Kode Sumber \ref{code:preprocessor_main}.
+Pre-processor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat tiga alias yang digunakan yaitu \texttt{push\_back(x)} sebagai \texttt{pb(x)}, \texttt{pop\_back(x)} sebagai \texttt{pob(x)}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Pre-processor dapat dilihat pada Kode Sumber \ref{code:preprocessor_main}.
 
-\begin{code}[firstnumber=1]{\textit{Preprocessor} yang diperlukan}{preprocessor_main}
+\begin{code}[firstnumber=1]{\textit{Preprocessor} yang Diperlukan}{preprocessor_main}
 #define pb(x) push_back(x)
 #define pob(x) pop_back(x)
 #define FOR(i, n) for (int i = 0; i < n; i++)
@@ -54,7 +54,7 @@ using namespace std;
 \subsection{Variabel Global}
 Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct. Kode sumber implementasi variabel global dapat dilihat pada kode sumber \ref{code:var_glob_main}. Variabel tersebut didefinisikan secara global agar dapat digunakan pada setiap fungsi.
 
-\begin{code}[firstnumber=1]{Variabel global yang didefinisikan setelah definisi Struct Mod64}{var_glob_main}
+\begin{code}[firstnumber=1]{Variabel Global yang Didefinisikan Setelah Definisi Struct Mod64}{var_glob_main}
 	
 const double EPS = 0.0;
 const double INF = 1E9;
@@ -62,8 +62,8 @@ map<point, int> pool;
 \end{code}
 
 \subsection{Implementasi Fungsi Main}
-Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:function-main}. Implementasi fungsi main dapat dilihat pada Kode Sumber \ref{code:main}. 
-\begin{code}[firstnumber=1]{Fungsi main}{main}
+Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:fungsi-main}. Implementasi fungsi main dapat dilihat pada Kode Sumber \ref{code:main}. 
+\begin{code}[firstnumber=1]{Fungsi Main}{main}
 int main(){
 	int kase = 1;
 	int n, m;
@@ -243,12 +243,200 @@ struct polygon{
 		}
 		return ret;
 	}
-	double area(){
-		double ret = 0;
-		FOR(i, P.size()){
-			ret += P[i].x * (P[prev(i)].y - P[next(i)].y);
-		}
-		return ret / 2;
-	}
 };
+\end{code}
+
+\subsection{Implementasi Fungsi BetweenD}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{BetweenD} pada pseudocode \ref{psdo:fungsi-betweend}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-betweend}.
+
+\begin{code}[firstnumber=1]{Fungsi BetweenD}{fungsi-betweend}
+double between_d(double x, double l, double r){
+	return (min(l, r) <= x + EPS && x <= max(l, r) + EPS);
+}
+\end{code}
+
+\subsection{Implementasi Fungsi EDist}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{EDist} pada pseudocode \ref{psdo:fungsi-edist}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-edist}.
+
+\begin{code}[firstnumber=1]{Fungsi EDist}{fungsi-edist}
+double e_dist(point P1, point P2){
+	return hypot(P1.x - P2.x, P1.y - P2.y);
+}
+\end{code}
+
+\subsection{Implementasi Fungsi Cross}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Cross} pada pseudocode \ref{psdo:fungsi-cross}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-cross}.
+
+\begin{code}[firstnumber=1]{Fungsi Cross}{fungsi-cross}
+double cross(vec u, vec v){
+	return (u.x * v.y - u.y * v.x);
+}
+\end{code}
+
+\subsection{Implementasi Fungsi Orientation}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Orientation} pada pseudocode \ref{psdo:fungsi-orientation}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-orientation}.
+
+\begin{code}[firstnumber=1]{Fungsi Orientation}{fungsi-orientation}
+double orientation(point O, point P, point Q){
+	vec OP(O, P), OQ(O, Q);
+	double c = cross(OP, OQ);
+	return c;
+}
+\end{code}
+
+\subsection{Implementasi Fungsi OnSegment}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{OnSegment} pada pseudocode \ref{psdo:fungsi-onsegment}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-onsegment}.
+
+\begin{code}[firstnumber=1]{Fungsi OnSegment}{fungsi-onsegment}
+bool onSegment(point P, segment S){
+	if (orientation(S.P, S.Q, P) != 0.0)
+		return false;
+	return between_d(P.x, S.P.x, S.Q.x) && between_d(P.y, S.P.y, S.Q.y);
+}
+\end{code}
+
+\subsection{Implementasi Fungsi ConvexHull}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{ConvexHull} pada pseudocode \ref{psdo:fungsi-convexhull}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-convexhull}.
+
+\begin{code}[firstnumber=1]{Fungsi ConvexHull}{fungsi-convexhull}
+polygon convexHull(vector<point> &pts){
+	sort(pts.begin(), pts.end());
+	vector<point> hull;
+	for (int i = 0; i < 2; i++){
+		int start = (int)hull.size();
+		for (int i = 0; i < pts.size(); i++){
+			point pt = pts[i];
+			while ((int)hull.size() >= start + 2 && orientation(hull[(int)hull.size() - 1], hull[(int)hull.size() - 2], pt) <= 0.0)
+				hull.pob();
+			hull.pb(pt);
+		}
+		hull.pop_back();
+		reverse(pts.begin(), pts.end());
+	}
+	if ((int)hull.size() == 2 && hull[0] == hull[1])
+		hull.pob();
+	return polygon(hull);
+}
+\end{code}
+
+\subsection{Implementasi Fungsi InSimplePolygon}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{inSimplePolygon} pada pseudocode \ref{psdo:fungsi-insimplepolygon}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-insimplepolygon}.
+
+\begin{code}[firstnumber=1]{Fungsi InSimplePolygon}{fungsi-insimplepolygon}
+int inSimplePolygon(point P, polygon &A){
+	int ret = 0;
+	FOR(i, A.P.size()){
+		if (P == A.P[i])
+			return 0;
+		int j = A.next(i);
+		if (onSegment(P, segment(A.P[i], A.P[j])))
+			return 0;
+		bool below = (A.P[i].y < P.y);
+		if (below != (A.P[j].y < P.y)){
+			double o = orientation(P, A.P[i], A.P[j]);
+			if (o == 0.0)
+				return 0;
+			if (below == (o > 0.0))
+				ret += below ? 1 : -1;
+		}
+	}
+	return ret == 0 ? 1 : -1;
+}
+\end{code}
+
+\subsection{Implementasi Fungsi GetBetween}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{GetBetween} pada pseudocode \ref{psdo:fungsi-getbetween}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-getbetween}.
+
+\begin{code}[firstnumber=1]{Fungsi GetBetween}{fungsi-getbetween}
+vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees){
+	vector<point> points;
+
+	while (!q.empty()){
+		if (inSimplePolygon(q.front(), triangle) != 1){
+			points.pb(q.front());
+		}
+		q.pop();
+	}
+	for (int i = 0; i < trees.size(); i++){
+		if (inSimplePolygon(trees[i], triangle) != 1){
+			points.pb(trees[i]);
+		}
+	}
+
+	polygon P = convexHull(points);
+
+	vector<point> pts;
+	int i = 0;
+	while (1){
+		if (P.P[i] == triangle.P[0]){
+			if (P.P[P.next(i)] == triangle.P[2]){
+				i = P.prev(i);
+				while (!(P.P[i] == triangle.P[2])){
+					pts.pb(P.P[i]);
+					i = P.prev(i);
+				}
+			}
+			else{
+				i = P.next(i);
+				while (!(P.P[i] == triangle.P[2])){
+					pts.pb(P.P[i]);
+					i = P.next(i);
+				}
+			}
+			break;
+		}
+		i = P.next(i);
+	}
+	return pts;
+}	
+\end{code}
+
+\subsection{Implementasi Fungsi Solve}
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Solve} pada pseudocode \ref{psdo:fungsi-solve}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-solve}.
+
+\begin{code}[firstnumber=1]{Fungsi Solve}{fungsi-solve}
+polygon solve(polygon &perimeter, vector<point> &trees){
+	queue<point> q;
+	for (int i = 0; i < perimeter.P.size(); i++){
+		q.push(perimeter.P[i]);
+	}
+
+	point bef = perimeter.P[perimeter.P.size() - 1];
+	while (1){
+		bool erased = 0;
+		int count = q.size();
+		while (count--){
+			point cur = q.front();
+			q.pop();
+			pool[cur]--;
+			if (!cur.fixed && (!find(q, cur) || cur == bef || cur == q.front()) && orientation(cur, bef, q.front()) <= 0.0){
+				erased = true;
+				polygon triangle;
+				triangle.P.pb(bef);
+				triangle.P.pb(cur);
+				triangle.P.pb(q.front());
+				vector<point> points = getBetween(triangle, q, trees);
+				for (int i = 0; i < points.size(); i++){
+					q.push(points[i]);
+					pool[points[i]]++;
+					bef = points[i];
+				}
+			}
+			else{
+				q.push(cur);
+				pool[cur]++;
+				bef = cur;
+			}
+		}
+		if (!erased)
+			break;
+	}
+
+	vector<point> hull;
+	while (!q.empty()){
+		hull.pb(q.front());
+		q.pop();
+	}
+	return polygon(hull);
+}
 \end{code}

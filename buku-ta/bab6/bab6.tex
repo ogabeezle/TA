@@ -1,8 +1,15 @@
 \chapter{KESIMPULAN}
-
-Berdasarkan penjabaran di bab-bab sebelumnya, dapat disimpulkan beberapa poin terkait penyelesaian permasalahan DSA Attack.
+Pada bab ini dijelaskan mengenai kesimpulan dari hasil uji coba yang telah dilakukan serta saran-saran tentang pengembangan yang dapat dilakukan terhadap Tugas Akhir ini di masa yang akan datang.
+\section{Kesimpulan}
+Berdasarkan penjabaran di bab-bab sebelumnya, dapat disimpulkan beberapa poin terkait penyelesaian permasalahan LL and Erbao.
 \begin{enumerate}
-\item Permasalahan pembuatan \textit{signature} menggunakan kunci publik tanpa mengetahui kunci privat dapat diselesaikan menggunakan \textit{Baby-step Giant-step}, perkalian modular dengan \textit{Logarithmic Modular Multiplication}, pemangkatan modular dengan \textit{Repeated Squaring}, dan pencarian invers modulus dengan \textit{Extended Euclidean} dengan kompleksitas waktu sebesar $ O(\sqrt{q} \log p) + O (\log k * \log p) + O(\log k + \log p) $.
-\item Metode \textit{Pollard Rho} kurang cocok digunakan sebagai solusi penyelesaian permasalahan DSA Attack karena kemungkinan waktu yang dibutuhkan bisa sangat tinggi.
-\item Penyelesaian permasalahan dengan \textit{Baby-step Giant-step} akan membutuhkan waktu yang mendekati rata-rata \textit{running time} yang dimiliki metode tersebut.
+\item Permasalahan LL and ErBao dapat diselesaikan dengan melakukan reduksi polygon luar terhadap titik didalamnya.
+\item Permasalahan LL and Erbao dapat diselesaikan dengan batasan pada soal dapat diselesaikan dengan reduksi polygon dengan waktu minimum 0.08 detik, waktu maksimum 0.08 detik, dan memori minimum 4.4 MB, memori maksimum 4.7 MB.
+\item Algoritma \textit{Melkman convex hull} terbukti efektif untuk melakukan reduksi polygon untuk mencari \textit{relative convex polygon}.
+\end{enumerate}
+\section{Saran}
+Pada Tugas Akhir kali ini tentunya terdapat kekurangan derta nilai-nilai yang dapat penulis ambil. Berikut adalah saran-saran yang dapat diambil melalui Tugas Akhir ini:
+\begin{enumerate}
+ \item Untuk kedepannya, algoritma pada tugas akhir ini dapat menjadi bahan riset untuk mencari optimasi lebih lanjut.
+ \item Metode reduksi polygon dengan menggunakan algoritma \textit{Melkman convex hull} yang dimodifikasi dapat digunakan untuk mencari \textit{relative convex hull} dengan polygon yang membatasi segment garis ataupun polygon sederhana.
 \end{enumerate}
