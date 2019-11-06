@@ -60,7 +60,7 @@ Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai polygon luar yang m
 
 \subsection{Pemrosesan Titik Pembentuk Polygon yang Membentuk Convex}
 \label{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}
-Pemrosesan titik pembentuk polygon dapat dilakukan dengan cara melakukan \textit{traversing} terhadap semua vertex pembentuk polygon. Untuk setiap vertex $p_i$ yang di periksa, hitung orientasi(secara berlawanan jarum jam) titik $p_i$ dengan $p_{i-1}$ dan $ p_{i+1}$. Jika orientasinya membentuk \textit{convex}, maka titik $p_i$ akan dibuang.
+Pemrosesan titik pembentuk polygon dapat dilakukan dengan cara melakukan \textit{traversing} terhadap semua vertex pembentuk polygon. Untuk setiap vertex $p_i$ yang di periksa, hitung orientasi(secara berlawanan arah jarum jam) titik $p_i$ dengan $p_{i-1}$ dan $ p_{i+1}$. Jika orientasinya membentuk \textit{convex}, maka titik $p_i$ akan dibuang.
 \par Sebelum membuang titik $p_i$, kita akan membuat sebuah segitiga $ABC$ dimana $A=p_i$, $B=p_{i-1}$, dan $C=p_{i+1}$ karena triangulation of polygon(Teorema \ref{theo:triangulation-of-polygon}).
 \begin{theo}[Triangulation of Polygon]
     \label{theo:triangulation-of-polygon}
@@ -89,7 +89,7 @@ Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membent
 
 
 \subsection{Relative Convex Hull}
-\textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan kedalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
+\textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan kedalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. Ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
 
 \begin{figure}[!h]
 	\Centering
@@ -97,7 +97,7 @@ Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membent
 	\caption {Ilustrasi Relative Convex Hull}
 	\label {fig:ilustrasi-relative-convex-hull}
 \end{figure}
-\par Penentuan untuk mengetahui sebuah polygon merupakan \textit{convex} atau \textit{concave} dapat menggunakan orientasi. Apabila orientasi dari tiga titik yang berurutan adalah positif berlawanan jarum jam maka tiga titik tersebut adalah \textit{convex}. Sebaliknya apabila negatif maka tiga titik tersebut adalah \textit{concave}. Untuk mencari orientasi antara tiga titik dapat digunakan persamaan \ref{eq:orientasi}.
+\par Penentuan untuk mengetahui sebuah polygon merupakan \textit{convex} atau \textit{concave} dapat menggunakan orientasi. Apabila orientasi dari tiga titik yang berurutan adalah positif berlawanan arah jarum jam maka tiga titik tersebut adalah \textit{convex}. Sebaliknya apabila negatif maka tiga titik tersebut adalah \textit{concave}. Untuk mencari orientasi antara tiga titik dapat digunakan persamaan \ref{eq:orientasi}.
 \begin{equation}
     \begin{aligned}
     \label{eq:orientasi}
@@ -120,14 +120,14 @@ Ada beberapa algoritma yang dapat digunakan untuk mencari sebuah \textit{convex 
     Graham's Scan         & Sedikit Mudah          & $\mathcal{O}(n\log(n))$  & Singkat         & Kumpulan Titik  \\ \hline
     Quick Hull            & Kompleks               & $\mathcal{O}(n\log(n))$  & Panjang         & Kumpulan Titik  \\ \hline
     Monotone Chain        & Mudah                  & $\mathcal{O}(n\log(n))$  & Singkat         & Kumpulan Titik  \\ \hline
-    Melkman's Algorithm   & Mudah                  & $\mathcal{O}(n)$           & Singkat         & polygon Sederhana \\ \hline    
+    Melkman's Algorithm   & Mudah                  & $\mathcal{O}(n)$           & Singkat         & Polygon Sederhana atau Polyline \\ \hline    
     \end{tabular}
 \end{table}
 Berdasarkan tabel \ref{tab:tabel-algoritma-convex-hull}, penulis memilih 2 algoritma yang akan digunakan pada buku ini.
 \subsubsection{Algoritma Melkman Convex Hull}
 \label{sec:algoritma-melkman-convex-hull}
 Algoritma melkman \textit{convex hull} merupakan algoritma untuk menghitung rantai polygonal ataupun polygon sederhana dengan waktu linear $\mathcal{O}(n)$\cite{melkman_algorithm}. Asumsikan sebuah polygon sederhana $P$, dengan vertex $p_i$ dan edge $p_i p_{i+1}$. Algoritma ini menggunakan deque, $D = \left \langle d_1, d_2, ..., d_n \right \rangle$, untuk mereprentasikan \CH, $Q_i = CH(P_i)$, dimana $P_i = (p_0, p_1, ..., p_i)$. Deque mempunyai fungsi \textit{push} dan \textit{pop} dari atas/depan dan \textit{insert} dan \textit{remove} dari bawah/belakang. Secara spesifiknya yang dilakukan \textit{push} $v$ ke deque melakukan $(l \leftarrow l+1; d_t \leftarrow v)$, untuk \textit{pop} $d_t$ dari deque melakukan $(t \leftarrow t-1)$, untuk insert $v$ ke deque melakukan $(b \leftarrow b-1; d_b \leftarrow v)$, dan \textit{remove} $d_b$ dari deque melakukan $(b \leftarrow b+1)$.
-\par Algoritma ini menggunakan konvensi dimana vertexnya berurutan secara berlawanan jarum jam di sekitar \CH $Q$.
+\par Algoritma ini menggunakan konvensi dimana vertexnya berurutan secara berlawanan arah jarum jam di sekitar \CH $Q$.
 \par Setiap $d_t$ dan $d_b$ mengacu kepada vertex yang sama pada rantai polygon $C$, dan vertex ini akan selalu menjadi vertex yang kita tambahkan terakhir pada \CH. Pseudocode Melkman Convex Hull dapat dilihat pada pseudocode \ref{psdo:Melkman-Convex-Hull}.
 \begin{figure}[!h]
 	\Centering
@@ -167,7 +167,7 @@ Algoritma melkman \textit{convex hull} merupakan algoritma untuk menghitung rant
 
 \subsubsection{Algoritma Monotone Chain}
 \label{sec:algoritma-monotone-chain}
-Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan kompleksitas $\mathcal{O}(n$ log$(n))$\cite{monotone_chain_algorithm}. Asumsikan sekumpulan titik $S$ sejumlah $n$ ,$S = \left \langle s_1, s_2, ..., s_n\right \rangle$ algoritma ini menggunakan list untuk membentuk sebuah rantai (\textit{monotone chain}), dimana list $L(S)$ menampung semua titik yang ada di $S$ yang terurut berdasarkan nilai koordinatnya terhadap sumbu $x$. algoritma ini memeriksa setiap 3 vertex yang berurutan, jika 3 vertex tersebut membuat \textit{convex} makan ketiga vertex tersebut disimpan, dan sebaliknya jika ketiga vertex tersebut membuat \textit{concave} maka vertex ke 2 akan dibuang dari vertex penyusun \textit{convex hull}. lalu lakukan hal yang sama dengan membalikan urutan pada $L$ untuk mendapatkan \textit{lower hull}. Pseudocode algoritma \textit{Monotone Chain} dapat dilihat pada pseudocode \ref{psdo:Monotone-Chain-Algorithm}.
+Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan kompleksitas $\mathcal{O}(n$ log$(n))$\cite{monotone_chain_algorithm}. Asumsikan sekumpulan titik $S$ sejumlah $n$ ,$S = \left \langle s_1, s_2, ..., s_n\right \rangle$ algoritma ini menggunakan list untuk membentuk sebuah rantai (\textit{monotone chain}), dimana list $L(S)$ menampung semua titik yang ada di $S$ yang terurut berdasarkan nilai koordinatnya terhadap sumbu $x$. Algoritma ini memeriksa setiap 3 vertex yang berurutan, jika 3 vertex tersebut membuat \textit{convex} maka ketiga vertex tersebut disimpan, dan sebaliknya jika ketiga vertex tersebut membuat \textit{concave} maka vertex ke 2 akan dibuang dari vertex penyusun \textit{convex hull}. Lalu lakukan hal yang sama dengan membalikan urutan pada $L$ untuk mendapatkan \textit{lower hull}. Pseudocode algoritma \textit{Monotone Chain} dapat dilihat pada pseudocode \ref{psdo:Monotone-Chain-Algorithm}.
 
 \begin{figure}[!h]
 	\Centering
@@ -199,7 +199,7 @@ Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan komp
 \end{algorithm}
 \section{Point Inside Polygon}
 \label{sec:point-inside-polygon}
-\textit{Point inside polygon} merupakan algoritma untuk menentukan apakah suatu polygon berada di dalam sebuah polygon atau tidak \cite{point_inside_polygon}. Ide utama dari algoritma ini adalah dengan cara menarik garis sejajar dengan sumbu $x$ dimana garis tersebut berujung pada titik yang ingin dicari lokasinya kemudian hitung ada berapa \textit{edge} dari polygon yang berpotongan dengan garis tersebut. Jika jumlah \textit{edge} polygon yang berpotongan adalah ganjil, maka titik tersebut berada dalam polygon, dan sebaliknya, jika jumlahnya genap maka titik tersebut berada di luar polygon.
+\textit{Point inside polygon} merupakan algoritma untuk menentukan apakah suatu polygon berada di dalam sebuah polygon atau tidak \cite{point_inside_polygon}. Ide utama dari algoritma ini adalah dengan cara menarik garis sejajar dengan sumbu $x$ dimana garis tersebut berujung pada titik yang ingin dicari lokasinya kemudian hitung ada berapa edge dari polygon yang berpotongan dengan garis tersebut. Jika jumlah edge polygon yang berpotongan adalah ganjil, maka titik tersebut berada dalam polygon, dan sebaliknya, jika jumlahnya genap maka titik tersebut berada di luar polygon.
 
 \begin{figure}[!h]
 	\Centering

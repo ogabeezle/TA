@@ -5,6 +5,8 @@
 #include <cmath>
 #include <map>
 #include <queue>
+#include <time.h>
+#include <fstream>
 #include <algorithm>
 #define pb(x) push_back(x)
 #define pob(x) pop_back(x)
@@ -429,9 +431,16 @@ int main()
 			pool[point(a, b, true)]++;
 			trees.push_back(point(a, b, true));
 		}
+    	clock_t tStart = clock();
+	    polygon hasil = solve(perimeter, trees);
 
-		polygon hasil = solve(perimeter, trees);
-
-		printf("Case #%d: %.3lf\n", kase++, hasil.perimeter());
+//		printf("Case #%d: %.3lf\n", kase++, hasil.perimeter());
+		double time=(double)(clock() - tStart)/CLOCKS_PER_SEC;
+		ofstream myfile;
+		string shasil="hasil";
+		myfile.open (shasil+to_string(m)+".txt",ios::app);
+		myfile << time<<endl;
+		myfile.close();
+		return 0;
 	}
 }

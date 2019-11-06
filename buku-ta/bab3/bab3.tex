@@ -186,7 +186,7 @@ $P$           & Menyimpan array dari \fakesc{Point} yang membentuk polygon terse
 Fungsi-fungsi yang terkandung dalam class ini adalah \fakesc{prev}, \fakesc{next}, \fakesc{perimeter}. Tabel \ref{tab:var-polygon} menjelaskan variabel dan kegunaannya dalam class \fakesc{Polygon}. 
 
 Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, variabel $P$ yang ada di dalam class \fakesc{Polygon} akan di inisialisasi. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P$, menyatakan array \fakesc{Point} dari titik pembentuk polygon tersebut.
-\newpage
+
 Fungsi \textit{next} bertanggung jawab untuk mencari index selanjutnya dari titik yang membentuk polygon. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-next}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-next}.
 
 \begin{table}[]
@@ -212,7 +212,7 @@ Fungsi \textit{next} bertanggung jawab untuk mencari index selanjutnya dari titi
 		\EndIf
 	\end{algorithmic}
 \end{algorithm}
-\newpage
+
 Fungsi \textit{prev} bertanggung jawab untuk mencari index sebelumnya dari titik yang membentuk polygon. Masukan, proses dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-prev}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-prev}.
 
 \begin{table}[]
@@ -238,7 +238,7 @@ Fungsi \textit{prev} bertanggung jawab untuk mencari index sebelumnya dari titik
 		\EndIf
 	\end{algorithmic}
 \end{algorithm}
-\newpage
+
 Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah polygon. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-perimeter}. Pseudocode funsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-perimeter}.
 \begin{table}[]
 	\Centering
@@ -262,7 +262,7 @@ Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah p
         \State \Return $ret$
 	\end{algorithmic}
 \end{algorithm}
-\newpage
+
 \section{Fungsi BetweenD}
 \label{sec:fungsi-betweend}
 Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ berada diantara bilangan $l$ dan bilangan$r$. Pseudocode dari fungsi \fakesc{BetweenD} dapat dilihat pada pseudocode \ref{psdo:fungsi-betweend}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-betweend}.
@@ -290,7 +290,7 @@ Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilan
 	\end{algorithmic}
 \end{algorithm}
 
-\newpage
+
 \section{Fungsi EDist}
 \label{sec:fungsi-edist}
 Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus Pythagoras. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-edist}.
