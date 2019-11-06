@@ -7,7 +7,7 @@ Pada bab ini akan dijelaskan desain algoritma yang akan digunakan untuk menyeles
 Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari algoritma yang dirancang. Sistem diawali dengan menerima masukan 2 buah bilangan bulat $N$ yang merupakan banyaknya vertex pembentuk polygon luar dan $M$ yang merupakan banyaknya titik yang ada di dalam polygon tersebut. $N$ baris berikutnya berisikan 2 buah bilangan bulat $x_i$, $y_i$ yang merupakan koordinat dari vertex pembentuk polygon luar terurut berlawanan arah jarum jam. $M$ baris berikutnya berisikan dua buah bilangan bulat $x1_i$, $y1_i$ yang merupakan koordinat dari titik yang ada di dalam polygon.
 
 \section{Desain Fungsi Main}
-Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masukan yang sudah dijelaskan pada \ref{sec:desain-umum-sistem} untuk dilakukan proses sekanjutnya. Pseudocode fungsi \fakesc{main} dapat dilihat pada pseudocode \ref{psdo:fungsi-main}. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
+Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masukan yang sudah dijelaskan pada \ref{sec:desain-umum-sistem} untuk dilakukan proses selanjutnya. Pseudocode fungsi \fakesc{main} dapat dilihat pada pseudocode \ref{psdo:fungsi-main}. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
 
 \begin{algorithm}
 	\caption{Fungsi \fakesc{main}}
@@ -44,7 +44,7 @@ Class \fakesc{Point} adalah class untuk menyimpan titik dalam diagram Kartesius.
 	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
 $x$           & Menyimpan ordinat dari titik tersebut  \\ \hline
 $y$           & Menyimpan absis dari titik tersebut          \\ \hline
-$fixed$             & untuk membedakan antara titik pembentuk polygon $P$ dan titik yang ada di dalam kumpulan titik $S$   \\ \hline
+$fixed$             & Untuk membedakan antara titik pembentuk polygon $P$ dan titik yang ada di dalam kumpulan titik $S$   \\ \hline
 	\end{tabular}
 	\caption{Nama dan Fungsi Variabel dalam Class \fakesc{Point}}
 	\label{tab:var-point}
@@ -62,7 +62,7 @@ $fixed$             & untuk membedakan antara titik pembentuk polygon $P$ dan ti
 
 Class \fakesc{Point} tidak memiliki fungsi karena class ini memang hanya untuk menyimpan suatu titik yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari dua jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Point} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y, \_fixed$, menyatakan nilai $x, y, fixed$ secara berurutan.
+Fungsi \textit{Constructor} dari class ini terdiri dari dua jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Point} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y, \_fixed$, menyatakan nilai $x, y, fixed$ secara berurutan.
 
 \section{Desain Class Vec}
 \label{sec:vec}
@@ -92,7 +92,7 @@ $y$           & Menyimpan arah vektor ordinat          \\ \hline
 
 Class \fakesc{Vec} tidak memiliki fungsi karena class ini hanya untuk menyimpan vector dari dua titik yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Vec} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y$, menyatakan nilai $x, y$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $x$ dan $y$ akan didapatkan dari pengurangan koordinat dari \fakesc{Point} $A$ dan \fakesc{Point} $B$.
+Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Vec} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y$, menyatakan nilai $x, y$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $x$ dan $y$ akan didapatkan dari pengurangan koordinat dari \fakesc{Point} $A$ dan \fakesc{Point} $B$.
 
 \section{Desain Class Line}
 \label{sec:line}
@@ -123,19 +123,19 @@ $c$           & Menyimpan nilai $c$ pada persamaan $ax + by + c =0$          \\ 
 
 Class \fakesc{Line} tidak memiliki fungsi karena class ini hanya untuk menyimpan nilai dari fungsi $ax+by+c=0$ yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Line} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_a, \_b, \_c$, menyatakan nilai $a, b, c$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $a$, $b$ dan $c$ akan didapatkan dengan mencari fungsi garis yang melewati \fakesc{Point} $A$ dan \fakesc{Point} $B$.
+Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Line} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_a, \_b, \_c$, menyatakan nilai $a, b, c$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $a$, $b$ dan $c$ akan didapatkan dengan mencari fungsi garis yang melewati \fakesc{Point} $A$ dan \fakesc{Point} $B$.
 
 \section{Desain Class Segment}
 \label{sec:segment}
-Class \fakesc{Segment} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada segment garis dalam diagram kartesian. Pseudocode \ref{psdo:class-segment} merupakan pseudocode dari class \fakesc{Segment}. 
+Class \fakesc{Segment} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada segmen garis dalam diagram kartesian. Pseudocode \ref{psdo:class-segment} merupakan pseudocode dari class \fakesc{Segment}. 
 
 \begin{table}[]
 	\Centering
 	\begin{tabular}{|c|p{7cm}|}
 	\hline
 	Nama Variabel & \multicolumn{1}{c|}{Fungsi Variabel}                               \\ \hline
-$P$           & Menyimpan \fakesc{Point} yang merupakan ujung awal dari sebuah segment garis \\ \hline
-$Q$           & Menyimpan \fakesc{Point} yang merupakan ujung akhir dari sebuah segment garis          \\ \hline
+$P$           & Menyimpan \fakesc{Point} yang merupakan ujung awal dari sebuah segmen garis \\ \hline
+$Q$           & Menyimpan \fakesc{Point} yang merupakan ujung akhir dari sebuah segmen garis          \\ \hline
 $L$           & Menyimpan fungsi dari garis yang melalui dua titik tersebut      \\ \hline
 	\end{tabular}
 	\caption{Nama dan Fungsi Variabel dalam Class \fakesc{Segment}}
@@ -154,7 +154,7 @@ $L$           & Menyimpan fungsi dari garis yang melalui dua titik tersebut     
 
 Class \fakesc{Segment} tidak memiliki fungsi karena class ini hanya untuk menyimpan data dari sebuah segmen garis yang akan digunakan nanti.
 
-Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Segment} akan di set $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P, \_Q$, menyatakan \fakesc{Point} dari titik $P$ dan \fakesc{Point} dari titik $Q$, yang merupakan titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ secara berturut, dan \fakesc{Line} $L$ didapar dengan menggunakan \textit{constructor} \fakesc{Line} dengan parameter $P$ dan $Q$.
+Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Segment} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P, \_Q$, menyatakan \fakesc{Point} dari titik $P$ dan \fakesc{Point} dari titik $Q$, yang merupakan titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ secara berturut, dan \fakesc{Line} $L$ didapar dengan menggunakan \textit{constructor} \fakesc{Line} dengan parameter $P$ dan $Q$.
 
 \section{Desain Class Polygon}
 \label{sec:polygon}
@@ -239,7 +239,7 @@ Fungsi \textit{prev} bertanggung jawab untuk mencari index sebelumnya dari titik
 	\end{algorithmic}
 \end{algorithm}
 
-Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah polygon. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-perimeter}. Pseudocode funsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-perimeter}.
+Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah polygon. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:class-polygon-perimeter}. Pseudocode fungsi ini dapat dilihat pada pseudocode \ref{psdo:class-polygon-perimeter}.
 \begin{table}[]
 	\Centering
 	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
@@ -272,7 +272,7 @@ Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilan
 	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
 	\hline
 	Masukan   & Proses     & Keluaran \\ \hline
-	tiga buah bilangan $x,l,r$, dimana bilangan $x$ merupakan bilangan yang ingin diketahui apakah berada diantara titik $l$ dan $r$ & Mencari tahu apakan bilangan $x$ berada diantara bilangan $l$ dan $r$ &   Sebuah boolean yang menyatakan apakah $x$ berada diantara $l$ dan $r$     \\ \hline
+	Tiga buah bilangan $x,l,r$, dimana bilangan $x$ merupakan bilangan yang ingin diketahui apakah berada diantara titik $l$ dan $r$ & Mencari tahu apakah bilangan $x$ berada diantara bilangan $l$ dan $r$ &   Sebuah boolean yang menyatakan apakah $x$ berada diantara $l$ dan $r$     \\ \hline
 	\end{tabular}
 	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{BetweenD} }
 	\label{tab:fungsi-betweend}
@@ -293,7 +293,7 @@ Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilan
 
 \section{Fungsi EDist}
 \label{sec:fungsi-edist}
-Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus Pythagoras. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-edist}.
+Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus \textit{Pythagoras}. Rumus \textit{Pythagoras} dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-edist}.
 
 \begin{table}[]
 	\Centering
@@ -375,7 +375,7 @@ Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga 
 
 \section{Fungsi OnSegment}
 \label{sec:fungsi-onsegment}
-Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segment garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-onsegment}.
+Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segmen garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-onsegment}.
 
 \begin{table}[]
 	\Centering
@@ -409,7 +409,7 @@ Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} 
 	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
 	\hline
 	Masukan   & Proses     & Keluaran \\ \hline
-    Sebuah array \fakesc{Point} $pts$ yang merupakan sekumpulan titik & Mencari \fakesc{Polygon} dengan keliling terkecil dari sekumpulan titik &   Sebuah \fakesc{Polygon} yang mengelilingin kumpulan \fakesc{Point} $pts$  \\ \hline
+    Sebuah array \fakesc{Point} $pts$ yang merupakan sekumpulan titik & Mencari \fakesc{Polygon} dengan keliling terkecil dari sekumpulan titik &   Sebuah \fakesc{Polygon} yang mengelilingi kumpulan \fakesc{Point} $pts$  \\ \hline
 	\end{tabular}
 	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{ConvexHull} }
 	\label{tab:fungsi-convexhull}
@@ -508,12 +508,12 @@ Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} y
 	\label{psdo:fungsi-getbetween}
     \begin{algorithmic}[1]
         \Require $triangle, q, trees$
-        \State $points \leftarrow$ Array \fakesc{Point}
+        \State $points,pts \leftarrow$ Array \fakesc{Point}
         \While{$q$ not \fakesc{Empty}}
             \If{\fakesc{InSimplepolygon}(q.\fakesc{front}(), $triangle$) $\neq 1$}
                 \State $points.$\fakesc{Insert}($q.$\fakesc{Front}())
             \EndIf
-            $q.$\fakesc{Pop}
+            \State $q.$\fakesc{Pop}
         \EndWhile
         \For{$pt$ in $trees$}
             \If{\fakesc{InSimplepolygon}($pt$, $triangle$) $\neq 1$}
@@ -521,7 +521,6 @@ Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} y
             \EndIf
         \EndFor
         \State $P \leftarrow$ \fakesc{ConvexHull}($points$)
-        \State $pts \leftarrow$ Array \fakesc{Point}
         \State $i \leftarrow 0$
         \While{\fakesc{True}}
             \If{$P.P[i]=triangle.P[0]$}

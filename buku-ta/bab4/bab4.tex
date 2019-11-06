@@ -20,10 +20,10 @@ Lingkungan implementasi dan pengembangan yang dilakukan adalah sebagai berikut.
 
 \section{Implementasi Program Utama}
 
-Subbab ini menjelaskan implementasi proses algoritma secara Keseluruhan berdasarkan desain yang telah dijelaskan pada Bab \ref{sec:desain}. Program ini merupakan program yang digunakan untuk menyelesaikan permasalahan \textit{LL and ErBao}.
+Subbab ini menjelaskan implementasi proses algoritma secara keseluruhan berdasarkan desain yang telah dijelaskan pada bab \ref{sec:desain}. Program ini merupakan program yang digunakan untuk menyelesaikan permasalahan LL and ErBao.
 
 \subsection{Header yang diperlukan}
-Implementasi algoritma ini membutuhkan lima buah \textit{header} yaitu \texttt{iostream}, \texttt{vector}, \texttt{cmat}, \texttt{functional} dan \texttt{algorithm} seperti yang terlihat pada Kode Sumber \ref{code:header_main}.
+Implementasi algoritma ini membutuhkan enam buah \textit{header} yaitu \texttt{iostream}, \texttt{vector}, \texttt{cmath}, \texttt{map}, \texttt{queue}, dan \texttt{algorithm} seperti yang terlihat pada kode sumber \ref{code:header_main}.
 
 \begin{code}[firstnumber=1]{\textit{Header} yang Diperlukan}{header_main}
 #pragma GCC optimize("O3")
@@ -38,10 +38,10 @@ Implementasi algoritma ini membutuhkan lima buah \textit{header} yaitu \texttt{i
 \end{code}
 
 Selain header, terdapat juga preprocessor \textit{pragma}, digunakan untuk mengganti flag kompiler yang digunakan pada daring SPOJ.
-\textit{Header} \texttt{iostream} berisi fungsi standar input output operasi yang digunakan oleh bahasa C++. \textit{Header} \texttt{vector} berisi struktur data yang digunakan untuk menyimpan data array secara dinamis. \textit{Header} \texttt{cmath} berisi fungsi-fungsi untuk operasi matematika seperti fungsi \texttt{hypot}. \textit{Header} \texttt{queue} berisi struktur data yang digunakan untuk menyimpan antrian data. \textit{Header} \texttt{algorithm} berisi modul yang memiliki fungsi-fungsii yang sangat berguna dalam membantu mengimplementasi algoritma yang telah dibangun, contohnya adalah fungsi \textit{reverse} dan \textit{sort}. \textit{Header} \texttt{map} berisi struktur data untuk menyimpan data \textit{key value}.
+\textit{Header} \texttt{iostream} berisi fungsi standar input output operasi yang digunakan oleh bahasa C++. \textit{Header} \texttt{vector} berisi struktur data yang digunakan untuk menyimpan data array secara dinamis. \textit{Header} \texttt{cmath} berisi fungsi-fungsi untuk operasi matematika seperti fungsi \texttt{hypot}. \textit{Header} \texttt{map} berisi struktur data untuk menyimpan data \textit{key value}. \textit{Header} \texttt{queue} berisi struktur data yang digunakan untuk menyimpan antrian data. \textit{Header} \texttt{algorithm} berisi modul yang memiliki fungsi-fungsi yang sangat berguna dalam membantu mengimplementasi algoritma yang telah dibangun, contohnya adalah fungsi \textit{reverse} dan \textit{sort}.
 
 \subsection{Preprocessor}
-Pre-processor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat tiga alias yang digunakan yaitu \texttt{push\_back(x)} sebagai \texttt{pb(x)}, \texttt{pop\_back(x)} sebagai \texttt{pob(x)}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Pre-processor dapat dilihat pada Kode Sumber \ref{code:preprocessor_main}.
+Preprocessor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat empat alias yang digunakan yaitu \texttt{push\_back(x)} sebagai \texttt{pb(x)}, \texttt{pop\_back(x)} sebagai \texttt{pob(x)}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Preprocessor dapat dilihat pada kode sumber \ref{code:preprocessor_main}.
 
 \begin{code}[firstnumber=1]{\textit{Preprocessor} yang Diperlukan}{preprocessor_main}
 #define pb(x) push_back(x)
@@ -52,17 +52,16 @@ using namespace std;
 \end{code}
 
 \subsection{Variabel Global}
-Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct. Kode sumber implementasi variabel global dapat dilihat pada kode sumber \ref{code:var_glob_main}. Variabel tersebut didefinisikan secara global agar dapat digunakan pada setiap fungsi.
+Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct. kode sumber implementasi variabel global dapat dilihat pada kode sumber \ref{code:var_glob_main}. Variabel tersebut didefinisikan secara global agar dapat digunakan pada setiap fungsi.
 
 \begin{code}[firstnumber=1]{Variabel Global yang Didefinisikan Setelah Definisi Struct Mod64}{var_glob_main}
-	
 const double EPS = 0.0;
 const double INF = 1E9;
 map<point, int> pool;
 \end{code}
 
 \subsection{Implementasi Fungsi Main}
-Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:fungsi-main}. Implementasi fungsi main dapat dilihat pada Kode Sumber \ref{code:main}. 
+Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:fungsi-main}. Implementasi fungsi main dapat dilihat pada kode sumber \ref{code:main}. 
 \begin{code}[firstnumber=1]{Fungsi Main}{main}
 int main(){
 	int kase = 1;
@@ -98,7 +97,7 @@ int main(){
 \end{code}
 
 \subsection{Implementasi Class Point}
-Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Point} pada subbab \ref{sec:point} dan pseudocode \ref{psdo:class-point}. Implementasi dari class \texttt{Point} dapat dilihat pada Kode Sumber \ref{code:class-point}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Point} pada subbab \ref{sec:point} dan pseudocode \ref{psdo:class-point}. Implementasi dari class \texttt{Point} dapat dilihat pada kode sumber \ref{code:class-point}.
 
 \begin{code}[firstnumber=1]{Struct Point}{class-point}
 struct point{
@@ -127,7 +126,7 @@ struct point{
 \end{code}
 
 \subsection{Implementasi Class Vec}
-Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Vec} pada subbab \ref{sec:vec} dan pseudocode \ref{psdo:class-vec}. Implementasi dari class \texttt{Vec} dapat dilihat pada Kode Sumber \ref{code:class-vec}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Vec} pada subbab \ref{sec:vec} dan pseudocode \ref{psdo:class-vec}. Implementasi dari class \texttt{Vec} dapat dilihat pada kode sumber \ref{code:class-vec}.
 
 \begin{code}[firstnumber=1]{Struct Vec}{class-vec}
 struct vec{
@@ -151,7 +150,7 @@ struct vec{
 \end{code}
 
 \subsection{Implementasi Class Line}
-Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Line} pada subbab \ref{sec:line} dan pseudocode \ref{psdo:class-line}. Implementasi dari class \texttt{Line} dapat dilihat pada Kode Sumber \ref{code:class-line}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Line} pada subbab \ref{sec:line} dan pseudocode \ref{psdo:class-line}. Implementasi dari class \texttt{Line} dapat dilihat pada kode sumber \ref{code:class-line}.
 
 \begin{code}[firstnumber=1]{Struct Line}{class-line}
 struct line{
@@ -189,7 +188,7 @@ struct line{
 \end{code}
 
 \subsection{Implementasi Class Segment}
-Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Segment} pada subbab \ref{sec:segment} dan pseudocode \ref{psdo:class-segment}. Implementasi dari class \texttt{Segment} dapat dilihat pada Kode Sumber \ref{code:class-segment}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Segment} pada subbab \ref{sec:segment} dan pseudocode \ref{psdo:class-segment}. Implementasi dari class \texttt{Segment} dapat dilihat pada kode sumber \ref{code:class-segment}.
 
 \begin{code}[firstnumber=1]{Struct Segment}{class-segment}
 struct segment{
@@ -219,7 +218,7 @@ struct segment{
 \end{code}
 
 \subsection{Implementasi Class Polygon}
-Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Polygon} pada subbab \ref{sec:polygon} dan pseudocode \ref{psdo:class-polygon}. Implementasi dari class \texttt{Polygon} dapat dilihat pada Kode Sumber \ref{code:class-polygon}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Polygon} pada subbab \ref{sec:polygon} dan pseudocode \ref{psdo:class-polygon}. Implementasi dari class \texttt{Polygon} dapat dilihat pada kode sumber \ref{code:class-polygon}.
 
 \begin{code}[firstnumber=1]{Struct Polygon}{class-polygon}
 struct polygon{
@@ -247,7 +246,7 @@ struct polygon{
 \end{code}
 
 \subsection{Implementasi Fungsi BetweenD}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{BetweenD} pada pseudocode \ref{psdo:fungsi-betweend}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-betweend}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{BetweenD} pada pseudocode \ref{psdo:fungsi-betweend}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-betweend}.
 
 \begin{code}[firstnumber=1]{Fungsi BetweenD}{fungsi-betweend}
 double between_d(double x, double l, double r){
@@ -256,7 +255,7 @@ double between_d(double x, double l, double r){
 \end{code}
 
 \subsection{Implementasi Fungsi EDist}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{EDist} pada pseudocode \ref{psdo:fungsi-edist}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-edist}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{EDist} pada pseudocode \ref{psdo:fungsi-edist}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-edist}.
 
 \begin{code}[firstnumber=1]{Fungsi EDist}{fungsi-edist}
 double e_dist(point P1, point P2){
@@ -265,7 +264,7 @@ double e_dist(point P1, point P2){
 \end{code}
 
 \subsection{Implementasi Fungsi Cross}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Cross} pada pseudocode \ref{psdo:fungsi-cross}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-cross}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Cross} pada pseudocode \ref{psdo:fungsi-cross}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-cross}.
 
 \begin{code}[firstnumber=1]{Fungsi Cross}{fungsi-cross}
 double cross(vec u, vec v){
@@ -274,7 +273,7 @@ double cross(vec u, vec v){
 \end{code}
 
 \subsection{Implementasi Fungsi Orientation}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Orientation} pada pseudocode \ref{psdo:fungsi-orientation}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-orientation}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Orientation} pada pseudocode \ref{psdo:fungsi-orientation}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-orientation}.
 
 \begin{code}[firstnumber=1]{Fungsi Orientation}{fungsi-orientation}
 double orientation(point O, point P, point Q){
@@ -285,7 +284,7 @@ double orientation(point O, point P, point Q){
 \end{code}
 
 \subsection{Implementasi Fungsi OnSegment}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{OnSegment} pada pseudocode \ref{psdo:fungsi-onsegment}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-onsegment}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{OnSegment} pada pseudocode \ref{psdo:fungsi-onsegment}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-onsegment}.
 
 \begin{code}[firstnumber=1]{Fungsi OnSegment}{fungsi-onsegment}
 bool onSegment(point P, segment S){
@@ -296,7 +295,7 @@ bool onSegment(point P, segment S){
 \end{code}
 
 \subsection{Implementasi Fungsi ConvexHull}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{ConvexHull} pada pseudocode \ref{psdo:fungsi-convexhull}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-convexhull}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{ConvexHull} pada pseudocode \ref{psdo:fungsi-convexhull}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-convexhull}.
 
 \begin{code}[firstnumber=1]{Fungsi ConvexHull}{fungsi-convexhull}
 polygon convexHull(vector<point> &pts){
@@ -320,7 +319,7 @@ polygon convexHull(vector<point> &pts){
 \end{code}
 
 \subsection{Implementasi Fungsi InSimplePolygon}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{inSimplePolygon} pada pseudocode \ref{psdo:fungsi-insimplepolygon}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-insimplepolygon}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{inSimplePolygon} pada pseudocode \ref{psdo:fungsi-insimplepolygon}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-insimplepolygon}.
 
 \begin{code}[firstnumber=1]{Fungsi InSimplePolygon}{fungsi-insimplepolygon}
 int inSimplePolygon(point P, polygon &A){
@@ -345,7 +344,7 @@ int inSimplePolygon(point P, polygon &A){
 \end{code}
 
 \subsection{Implementasi Fungsi GetBetween}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{GetBetween} pada pseudocode \ref{psdo:fungsi-getbetween}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-getbetween}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{GetBetween} pada pseudocode \ref{psdo:fungsi-getbetween}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-getbetween}.
 
 \begin{code}[firstnumber=1]{Fungsi GetBetween}{fungsi-getbetween}
 vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees){
@@ -392,7 +391,7 @@ vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees)
 \end{code}
 
 \subsection{Implementasi Fungsi Solve}
-Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Solve} pada pseudocode \ref{psdo:fungsi-solve}. Implementasi dapat dilihat pada Kode Sumber \ref{code:fungsi-solve}.
+Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Solve} pada pseudocode \ref{psdo:fungsi-solve}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-solve}.
 
 \begin{code}[firstnumber=1]{Fungsi Solve}{fungsi-solve}
 polygon solve(polygon &perimeter, vector<point> &trees){

@@ -5,14 +5,14 @@ Pada bab ini, akan dijelaskan mengenai latar belakang, rumusan masalah, batasan 
 
 \section{Latar Belakang}
 
-\par \textit{Computational geometry} adalah cabang dari ilmu komputer yang dikhususkan untuk mempelajari algoritma yang dapat dinyatakan dalam suatu geometri. Salah satu algoritma yang sering dipakai pada \CG adalah algoritma \CH. \textit{Convex hull} adalah sebuah set poligon dari titik pada bidang Euclidean atau ruang Euclidean, atau dapat disebut himpunan cembung terkecil yang berisi titik. Sebagai contoh, ketika suatu kumpulan titik merupakan bagian yang dibatasi dalam sebuah bidang, \CH dapat divisualisasikan sebagai bentuk yang tertutup oleh karet gelang yang membentang di sekitar titik - titik tersebut. Berikut merupakan contoh dari \CH :
+\par \textit{Computational geometry} adalah cabang dari ilmu komputer yang dikhususkan untuk mempelajari algoritma yang dapat dinyatakan dalam suatu geometri. Salah satu algoritma yang sering dipakai pada \CG adalah algoritma \CH. \textit{Convex hull} adalah sebuah set polygon dari titik pada bidang \textit{euclidean} atau ruang \textit{euclidean}, atau dapat disebut himpunan cembung terkecil yang berisi titik. Sebagai contoh, ketika suatu kumpulan titik merupakan bagian yang dibatasi dalam sebuah bidang, \CH dapat divisualisasikan sebagai bentuk yang tertutup oleh karet gelang yang membentang di sekitar titik - titik tersebut. Berikut merupakan contoh dari \CH :
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\textwidth]{bab1/img/ilustrasi-convex-hull}
 	\caption {Ilustrasi Convex Hull}
 	\label {fig:ilustrasi-convex-hull}
 \end{figure}
-\par \textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan kedalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
+\par \textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan ke dalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. Ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
 
 \begin{figure}[!h]
 	\Centering
@@ -28,13 +28,13 @@ Pada bab ini, akan dijelaskan mengenai latar belakang, rumusan masalah, batasan 
 Rumusan masalah yang diangkat dalam Tugas Akhir ini adalah sebagai berikut :
 
 \begin {enumerate}
-    \item Bagaimana mencari \RCH dari kumpulan titik di dalam sebuah poligon?
+    \item Bagaimana mencari \RCH dari kumpulan titik di dalam sebuah polygon?
     \item Bagaimana algoritma \textit{Melkman convex hull} yang dimodifikasi menyelesaikan masalah \RCH dari kumpulan titik?
 \end {enumerate}
 
 \section {Batasan Masalah}
 \label{sec:batasan_masalah}
-Permalsahan yang dibahas pada Tugas Akhir ini memiliki beberapa batasan, yaitu sebagai berikut :
+Permasalahan yang dibahas pada Tugas Akhir ini memiliki beberapa batasan, yaitu sebagai berikut :
 \begin{enumerate}
     \item Implementasi algoritma \textit{Melkman convex hull} yang di modifikasi sebagai penyelesaian permasalahan \RCH pada soal ISUN1.
     \item Algoritma \RCH terbatas pada analisis intuitif yang logis.
@@ -42,8 +42,8 @@ Permalsahan yang dibahas pada Tugas Akhir ini memiliki beberapa batasan, yaitu s
 Berikut merupakan batasan pada situs Sphere Online Judge: 
 \begin {enumerate}
     \item Implementasi dilakukan menggunakan bahasa pemrograman C++.
-    \item Banyaknya sisi pada poligon pembatas ($n$) diantara 3 sampai 500.
-    \item banyaknya pohon yang berada dalam taman ($m$) diantara 0 sampai 500.
+    \item Banyaknya sisi pada polygon pembatas ($n$) diantara 3 sampai 500.
+    \item Banyaknya pohon yang berada dalam taman ($m$) diantara 0 sampai 500.
     \item Batas maksimum untuk tiap vertex memenuhi($ x $, $ y $) dimana nilai |$x$|, |$y$| $\leq 10000$. 
     \item Banyak soal tidak diketahui karena program berhenti sampai EOF.
     \item Batas waktu yang diberikan adalah $ 0.142 $ detik.
@@ -86,7 +86,7 @@ Sistematika laporan Tugas Akhir yang akan digunakan adalah sebagai berikut :
     \item BAB III : DESAIN\\
     Bab ini berisi desain algoritma dan struktur data yang digunakan dalam penyelesaian permasalahan.
     \item BAB IV : IMPLEMENTASI\\
-    Bab ini berisi implementasi berdasarkan desain algortima yang telah dilakukan pada tahap desain.
+    Bab ini berisi implementasi berdasarkan desain algoritma yang telah dilakukan pada tahap desain.
     \item BAB V : UJI COBA DAN EVALUASI\\
     Bab ini berisi uji coba dan evaluasi dari hasil implementasi yang telah dilakukan pada tahap implementasi.
     \item BAB VI : PENUTUP\\

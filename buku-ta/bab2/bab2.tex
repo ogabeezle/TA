@@ -1,6 +1,6 @@
 \chapter {DASAR TEORI}
 
-Pada bab ini, akan dijelaskan dasar teori yang digunakan sebagai landasaan pengerjaan Tugas Akhir ini.
+Pada bab ini, akan dijelaskan dasar teori yang digunakan sebagai landasan pengerjaan Tugas Akhir ini.
 
 \section{Deskripsi Permasalahan}
 Permasalahan yang dibahas pada Tugas Akhir ini adalah perhitungan untuk mencari nilai $x$ yang didefinisikan oleh persamaan \eqref{eq:perimeter-polygon}.
@@ -25,7 +25,7 @@ $\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon} menyatakan sisi polyg
 \section{Convex Polygon}
 \textit{Convex polygon} merupakan sebuah polygon sederhana yang memiliki sudut maksimal 180 derajat pada tiap edgenya. \textit{Convex polygon} memiliki beberapa properti, yaitu:
 \begin{enumerate}
-    \item Sebuah garis lurus yang di gambar melewati sebuah \textit{convex} polygon akan berpotongan maksimal 2 kali. Ilustrasi dapat dilihat pada gambar \ref{fig:ilustrasi-properti-convex-polygon-1}.
+    \item Sebuah garis lurus yang di gambar melewati sebuah \textit{convex polygon} akan berpotongan maksimal 2 kali. Ilustrasi dapat dilihat pada gambar \ref{fig:ilustrasi-properti-convex-polygon-1}.
     \item Jika dua titik sembarang diambil dan ditarik garis antara keduanya, tidak ada bagian dari garis yang berada di luar polygon. Ilustrasi dapat dilihat pada gambar \ref{fig:ilustrasi-properti-convex-polygon-2}.
 \end{enumerate}
 \begin{figure}[!h]
@@ -42,7 +42,7 @@ $\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon} menyatakan sisi polyg
 \end{figure}
 
 \subsection{Relative Convex Polygon}
-\textit{Relative convex polygon} merupakan penurunan dari \textit{convex polygon} tetapi ada beberapa sisi dari polygon tersebut berbentuk \textit{convace} atau cekung kedalam dikarenakan adanya batasan dari luar seperti polygon atau segmen garis lainnya. Ilustrasi \textit{relative convex polygon} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-polygon}.
+\textit{Relative convex polygon} merupakan penurunan dari \textit{convex polygon} tetapi ada beberapa sisi dari polygon tersebut berbentuk \textit{convace} atau cekung ke dalam dikarenakan adanya batasan dari luar seperti polygon atau segmen garis lainnya. Ilustrasi \textit{relative convex polygon} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-polygon}.
 \begin{figure}[!h]
     \Centering
     \includegraphics[width=0.5\columnwidth]{bab2/img/ilustrasi-relative-convex-polygon}
@@ -53,7 +53,7 @@ $\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon} menyatakan sisi polyg
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode ISUN1 menggunakan algoritma reduksi polygon. Secara singkat, strategi penyelesaian masalah dari ISUN1 menggunakan algoritma reduksi polygon menjadi 2 bagian besar, yaitu :
 \begin{enumerate}
     \item Pemrosesan titik pembentuk polygon yang membentuk \textit{Convex}.
-    \item \textit{Convex Hull} dari titik yang berada didalam polygon.
+    \item \textit{Convex Hull} dari titik yang berada di dalam polygon.
 \end{enumerate}
 Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma \textit{Melkman convex hull} dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buah titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengah dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
 
@@ -61,7 +61,7 @@ Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai polygon luar yang m
 \subsection{Pemrosesan Titik Pembentuk Polygon yang Membentuk Convex}
 \label{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}
 Pemrosesan titik pembentuk polygon dapat dilakukan dengan cara melakukan \textit{traversing} terhadap semua vertex pembentuk polygon. Untuk setiap vertex $p_i$ yang di periksa, hitung orientasi(secara berlawanan arah jarum jam) titik $p_i$ dengan $p_{i-1}$ dan $ p_{i+1}$. Jika orientasinya membentuk \textit{convex}, maka titik $p_i$ akan dibuang.
-\par Sebelum membuang titik $p_i$, kita akan membuat sebuah segitiga $ABC$ dimana $A=p_i$, $B=p_{i-1}$, dan $C=p_{i+1}$ karena triangulation of polygon(Teorema \ref{theo:triangulation-of-polygon}).
+\par Sebelum membuang titik $p_i$, kita akan membuat sebuah segitiga $ABC$ dimana $A=p_i$, $B=p_{i-1}$, dan $C=p_{i+1}$ karena \textit{triangulation of polygon} (Teorema \ref{theo:triangulation-of-polygon}).
 \begin{theo}[Triangulation of Polygon]
     \label{theo:triangulation-of-polygon}
 	Semua polygon dapat di buat dari beberapa segitiga.
@@ -70,11 +70,11 @@ Kemudian cari $T(ABC)$ dimana $T(ABC)$ merupakan semua titik $S$ yang berada di 
 
 \subsection{Convex Hull dari Titik yang Berada di Dalam Polygon}
 \label{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}
-Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}, ketika sudah mendapatkan $T(ABC)$, lakukan pencarian \textit{Convex Hull} dari titik - titik tersebut menggunakan algoritma \textit{monotone chain} (dapat dilihat pada subbab \ref{sec:algoritma-monotone-chain}). Kemudian sisipkan semua titik yang membentuk \textit{Convex Hull} diantara vertex $p_{i-1}$, $p_{i+1}$ untuk me-rekonstruksi polygon luar yang sudah di reduksi.
+Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}, ketika sudah mendapatkan $T(ABC)$, lakukan pencarian \textit{Convex Hull} dari titik-titik tersebut menggunakan algoritma \textit{monotone chain} (dapat dilihat pada subbab \ref{sec:algoritma-monotone-chain}). Kemudian sisipkan semua titik yang membentuk \textit{Convex Hull} di antara vertex $p_{i-1}$, $p_{i+1}$ untuk me-rekonstruksi polygon luar yang sudah direduksi.
 
 \section{Convex Hull}
 \label{sec:convex-hull}
-\textit{Convex Hull} dari sekumpulan titik $S$ adalah sebuah set dari semua kombinasi \textit{convex} dari titik - titik tersebut. Setiap titik $s_i$ pada $S$ diberikan sebuah koefisien $a_i$ dimana $a_i$ merupakan bialangan non negatif dan jika semua $a_i$ dijumlahkan hasilnya satu. Dan koefisien ini digunakan untuk menghitung berat rata - rata untuk setiap titik. Untuk setiap koefisien yang dipilih akan dikombinasikan dan menghasilkan \textit{convex hull}. Set \textit{convex hull} ini dapat di ekspresikan dengan formula \eqref{eq:convex-hull} dan ilustrasi \textit{convex hull} ada pada gambar \ref{fig:ilustrasi-convex-hull}.
+\textit{Convex Hull} dari sekumpulan titik $S$ adalah sebuah set dari semua kombinasi \textit{convex} dari titik-titik tersebut. Setiap titik $s_i$ pada $S$ diberikan sebuah koefisien $a_i$ dimana $a_i$ merupakan bilangan non negatif dan jika semua $a_i$ dijumlahkan hasilnya satu. Dan koefisien ini digunakan untuk menghitung berat rata-rata untuk setiap titik. Untuk setiap koefisien yang dipilih akan dikombinasikan dan menghasilkan \textit{convex hull}. Set \textit{convex hull} ini dapat diekspresikan dengan formula \eqref{eq:convex-hull} dan ilustrasi \textit{convex hull} ada pada gambar \ref{fig:ilustrasi-convex-hull}.
 
 \begin{equation}
     \label{eq:convex-hull}
@@ -89,7 +89,7 @@ Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membent
 
 
 \subsection{Relative Convex Hull}
-\textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan kedalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. Ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
+\textit{Relative convex hull} merupakan penurunan dari \textit{convex hull}. \textit{Relative convex hull} merupakan \textit{convex hull} yang mempunyai \textit{cavity} (cekungan ke dalam) yang diakibatkan atau relatif terhadap sesuatu yang membatasi \textit{convex hull} tersebut. Ilustrasi \textit{relative convex hull} dapat dilihat pada gambar \ref{fig:ilustrasi-relative-convex-hull}.
 
 \begin{figure}[!h]
 	\Centering
@@ -124,11 +124,12 @@ Ada beberapa algoritma yang dapat digunakan untuk mencari sebuah \textit{convex 
     \end{tabular}
 \end{table}
 Berdasarkan tabel \ref{tab:tabel-algoritma-convex-hull}, penulis memilih 2 algoritma yang akan digunakan pada buku ini.
+
 \subsubsection{Algoritma Melkman Convex Hull}
 \label{sec:algoritma-melkman-convex-hull}
-Algoritma melkman \textit{convex hull} merupakan algoritma untuk menghitung rantai polygonal ataupun polygon sederhana dengan waktu linear $\mathcal{O}(n)$\cite{melkman_algorithm}. Asumsikan sebuah polygon sederhana $P$, dengan vertex $p_i$ dan edge $p_i p_{i+1}$. Algoritma ini menggunakan deque, $D = \left \langle d_1, d_2, ..., d_n \right \rangle$, untuk mereprentasikan \CH, $Q_i = CH(P_i)$, dimana $P_i = (p_0, p_1, ..., p_i)$. Deque mempunyai fungsi \textit{push} dan \textit{pop} dari atas/depan dan \textit{insert} dan \textit{remove} dari bawah/belakang. Secara spesifiknya yang dilakukan \textit{push} $v$ ke deque melakukan $(l \leftarrow l+1; d_t \leftarrow v)$, untuk \textit{pop} $d_t$ dari deque melakukan $(t \leftarrow t-1)$, untuk insert $v$ ke deque melakukan $(b \leftarrow b-1; d_b \leftarrow v)$, dan \textit{remove} $d_b$ dari deque melakukan $(b \leftarrow b+1)$.
+Algoritma \textit{Melkman convex hull} merupakan algoritma untuk menghitung rantai polygonal ataupun polygon sederhana dengan waktu linear $\mathcal{O}(n)$\cite{melkman_algorithm}. Asumsikan sebuah polygon sederhana $P$, dengan vertex $p_i$ dan edge $p_i p_{i+1}$. Algoritma ini menggunakan deque, $D = \left \langle d_1, d_2, ..., d_n \right \rangle$, untuk merepresentasikan \CH, $Q_i = CH(P_i)$, dimana $P_i = (p_0, p_1, ..., p_i)$. Deque mempunyai fungsi \textit{push} dan \textit{pop} dari atas/depan dan \textit{insert} dan \textit{remove} dari bawah/belakang. Secara spesifiknya yang dilakukan \textit{push} $v$ ke deque melakukan $(l \leftarrow l+1; d_t \leftarrow v)$, untuk \textit{pop} $d_t$ dari deque melakukan $(t \leftarrow t-1)$, untuk \textit{insert} $v$ ke deque melakukan $(b \leftarrow b-1; d_b \leftarrow v)$, dan \textit{remove} $d_b$ dari deque melakukan $(b \leftarrow b+1)$.
 \par Algoritma ini menggunakan konvensi dimana vertexnya berurutan secara berlawanan arah jarum jam di sekitar \CH $Q$.
-\par Setiap $d_t$ dan $d_b$ mengacu kepada vertex yang sama pada rantai polygon $C$, dan vertex ini akan selalu menjadi vertex yang kita tambahkan terakhir pada \CH. Pseudocode Melkman Convex Hull dapat dilihat pada pseudocode \ref{psdo:Melkman-Convex-Hull}.
+\par Setiap $d_t$ dan $d_b$ mengacu kepada vertex yang sama pada rantai polygon $C$, dan vertex ini akan selalu menjadi vertex yang kita tambahkan terakhir pada \CH. Pseudocode \textit{Melkman convex hull} dapat dilihat pada pseudocode \ref{psdo:Melkman-Convex-Hull}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab2/img/ilustrasi-algoritma-melkman}
@@ -167,7 +168,7 @@ Algoritma melkman \textit{convex hull} merupakan algoritma untuk menghitung rant
 
 \subsubsection{Algoritma Monotone Chain}
 \label{sec:algoritma-monotone-chain}
-Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan kompleksitas $\mathcal{O}(n$ log$(n))$\cite{monotone_chain_algorithm}. Asumsikan sekumpulan titik $S$ sejumlah $n$ ,$S = \left \langle s_1, s_2, ..., s_n\right \rangle$ algoritma ini menggunakan list untuk membentuk sebuah rantai (\textit{monotone chain}), dimana list $L(S)$ menampung semua titik yang ada di $S$ yang terurut berdasarkan nilai koordinatnya terhadap sumbu $x$. Algoritma ini memeriksa setiap 3 vertex yang berurutan, jika 3 vertex tersebut membuat \textit{convex} maka ketiga vertex tersebut disimpan, dan sebaliknya jika ketiga vertex tersebut membuat \textit{concave} maka vertex ke 2 akan dibuang dari vertex penyusun \textit{convex hull}. Lalu lakukan hal yang sama dengan membalikan urutan pada $L$ untuk mendapatkan \textit{lower hull}. Pseudocode algoritma \textit{Monotone Chain} dapat dilihat pada pseudocode \ref{psdo:Monotone-Chain-Algorithm}.
+Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan kompleksitas $\mathcal{O}(n$ log$(n))$\cite{monotone_chain_algorithm}. Asumsikan sekumpulan titik $S$ sejumlah $n$ ,$S = \left \langle s_1, s_2, ..., s_n\right \rangle$ algoritma ini menggunakan list untuk membentuk sebuah rantai (\textit{monotone chain}), dimana list $L(S)$ menampung semua titik yang ada di $S$ yang terurut berdasarkan nilai koordinatnya terhadap sumbu $x$. Algoritma ini memeriksa setiap 3 vertex yang berurutan, jika 3 vertex tersebut membuat \textit{convex} maka ketiga vertex tersebut disimpan, dan sebaliknya jika ketiga vertex tersebut membuat \textit{concave} maka vertex ke 2 akan dibuang dari vertex penyusun \textit{convex hull}. Lalu lakukan hal yang sama dengan membalikkan urutan pada $L$ untuk mendapatkan \textit{lower hull}. Pseudocode algoritma \textit{Monotone Chain} dapat dilihat pada pseudocode \ref{psdo:Monotone-Chain-Algorithm}.
 
 \begin{figure}[!h]
 	\Centering
