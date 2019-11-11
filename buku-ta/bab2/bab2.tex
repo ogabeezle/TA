@@ -8,7 +8,7 @@ Permasalahan yang dibahas pada Tugas Akhir ini adalah perhitungan untuk mencari 
     \label{eq:perimeter-polygon}
     x=\sum_{i=0}^{n-1} \text{RCH}_i
 \end{equation}
-$\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon} menyatakan sisi polygon dari RCH yang merupakan \textit{relative convex hull} yang didapatkan dari sekumpulan titik yang dibatasi di dalam polygon sederhana\cite{isun1}. Permasalahan pada tugas akhir ini adalah mencari \textit{relative convex hull} dari sekumpulan titik yang dibatasi oleh polygon sederhana. Gambar \ref{fig:ilustrasi-contoh-kasus-tanpa-solusi} dan \ref{fig:ilustrasi-contoh-kasus} merupakan contoh dari permasalahan ISUN1.
+Sisi polygon dari RCH yang merupakan \textit{relative convex hull} yang didapatkan dari sekumpulan titik yang dibatasi di dalam polygon sederhana\cite{isun1} dinyatakan dalam $\text{RCH}_i$ pada persamaan \eqref{eq:perimeter-polygon}. Permasalahan pada tugas akhir ini adalah mencari \textit{relative convex hull} dari sekumpulan titik yang dibatasi oleh polygon sederhana. Gambar \ref{fig:ilustrasi-contoh-kasus-tanpa-solusi} dan \ref{fig:ilustrasi-contoh-kasus} merupakan contoh dari permasalahan ISUN1.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=0.5\columnwidth]{bab2/img/contoh-kasus-tanpa-solusi}
@@ -55,7 +55,7 @@ Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pa
     \item Pemrosesan titik pembentuk polygon yang membentuk \textit{Convex}.
     \item \textit{Convex Hull} dari titik yang berada di dalam polygon.
 \end{enumerate}
-Sebagai contoh, pada subbab ini akan menggunakan $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma \textit{Melkman convex hull} dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buah titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengah dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
+Sebagai contoh, pada subbab ini akan digunakan beberapa variabel seperti, $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma \textit{Melkman convex hull} dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buah titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengah dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
 
 
 \subsection{Pemrosesan Titik Pembentuk Polygon yang Membentuk Convex}
@@ -136,6 +136,7 @@ Algoritma \textit{Melkman convex hull} merupakan algoritma untuk menghitung rant
 	\caption {Ilustrasi Algoritma Melkman}
 	\label {fig:ilustrasi-algoritma-melkman}
 \end{figure}
+\par Algoritma \textit{Melkman convex hull} sendiri tidak dapat dapat digunakan untuk mencari \textit{relative convex hull}, tetapi beberapa ide dari \textit{Melkman convex hull} nantinya akan digunakan untuk mendapatkan solusi dalam mencari \textit{relative convex hull}. Ide yang diambil penulis dari \textit{Melkman convex hull} adalah cara algoritma tersebut dalam melakukan \textit{traversing} polygon atau segmen garis dan cara algoritma tersebut menyimpan atau membuang suatu titik yang dianggap tidak berguna dalam pembentukan polygon yang diinginkan. Ide yang pertama adalah \textit{traversing} pada vertex dapat dilakukan dengan queue ataupun deque. Ide yang kedua adalah untuk masing-masing vertex yang di \textit{traverse} dapat dicari tahu apakah titik atau vertex tersebut dapat dibuang atau tidak dengan melihat orientasinya dengan titik sebelum dan sesudahnya.
 \begin{algorithm}
 	\caption{Melkman Convex Hull}
 	\label{psdo:Melkman-Convex-Hull}
@@ -198,6 +199,8 @@ Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan komp
         \EndFor
 	\end{algorithmic}
 \end{algorithm}
+\par Algoritma \textit{monotone chain} ini nantinya akan digunakan pada saat pencarian titik pengganti ketika suatu titik pembentuk polygon akan dibuang.
+
 \section{Point Inside Polygon}
 \label{sec:point-inside-polygon}
 \textit{Point inside polygon} merupakan algoritma untuk menentukan apakah suatu polygon berada di dalam sebuah polygon atau tidak \cite{point_inside_polygon}. Ide utama dari algoritma ini adalah dengan cara menarik garis sejajar dengan sumbu $x$ dimana garis tersebut berujung pada titik yang ingin dicari lokasinya kemudian hitung ada berapa edge dari polygon yang berpotongan dengan garis tersebut. Jika jumlah edge polygon yang berpotongan adalah ganjil, maka titik tersebut berada dalam polygon, dan sebaliknya, jika jumlahnya genap maka titik tersebut berada di luar polygon.

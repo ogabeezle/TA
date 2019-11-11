@@ -12,7 +12,7 @@ Lingkungan implementasi dan pengembangan yang dilakukan adalah sebagai berikut.
 	\item Perangkat Lunak
 	\begin{enumerate}
 		\item Sistem Operasi Windows 10 Home Single Language 64-bit
-		\item Dev C++
+		\item Visual Studio Code
 		\item Bahasa Pemrograman C++
 		\item Kompiler GCC 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) untuk Windows Subsystem Linux
 	\end{enumerate}
@@ -25,6 +25,7 @@ Subbab ini menjelaskan implementasi proses algoritma secara keseluruhan berdasar
 \subsection{Header yang diperlukan}
 Implementasi algoritma ini membutuhkan enam buah \textit{header} yaitu \texttt{iostream}, \texttt{vector}, \texttt{cmath}, \texttt{map}, \texttt{queue}, dan \texttt{algorithm} seperti yang terlihat pada kode sumber \ref{code:header_main}.
 
+\newpage
 \begin{code}[firstnumber=1]{\textit{Header} yang Diperlukan}{header_main}
 #pragma GCC optimize("O3")
 #pragma GCC target("avx")
@@ -43,6 +44,7 @@ Selain header, terdapat juga preprocessor \textit{pragma}, digunakan untuk mengg
 \subsection{Preprocessor}
 Preprocessor seperti \texttt{using} digunakan untuk membuat alias dari tipe data sesungguhnya. Terdapat empat alias yang digunakan yaitu \texttt{push\_back(x)} sebagai \texttt{pb(x)}, \texttt{pop\_back(x)} sebagai \texttt{pob(x)}, \texttt{getchar(x)} sebagai \texttt{gc(x)}, dan \texttt{for (int i = 0; i < n; i++)} sebagai \texttt{FOR(i,n)}. Preprocessor dapat dilihat pada kode sumber \ref{code:preprocessor_main}.
 
+\newpage
 \begin{code}[firstnumber=1]{\textit{Preprocessor} yang Diperlukan}{preprocessor_main}
 #define pb(x) push_back(x)
 #define pob(x) pop_back(x)
@@ -54,7 +56,7 @@ using namespace std;
 \subsection{Variabel Global}
 Variabel global digunakan untuk memudahkan dalam mengakses data yang digunakan lintas fungsi/struct. kode sumber implementasi variabel global dapat dilihat pada kode sumber \ref{code:var_glob_main}. Variabel tersebut didefinisikan secara global agar dapat digunakan pada setiap fungsi.
 
-\begin{code}[firstnumber=1]{Variabel Global yang Didefinisikan Setelah Definisi Struct Mod64}{var_glob_main}
+\begin{code}[firstnumber=1]{Variabel Global yang Didefinisikan Untuk Program}{var_glob_main}
 const double EPS = 0.0;
 const double INF = 1E9;
 map<point, int> pool;
@@ -62,6 +64,7 @@ map<point, int> pool;
 
 \subsection{Implementasi Fungsi Main}
 Fungsi main adalah implementasi algoritma yang dirancang pada pseudocode \ref{psdo:fungsi-main}. Implementasi fungsi main dapat dilihat pada kode sumber \ref{code:main}. 
+\newpage
 \begin{code}[firstnumber=1]{Fungsi Main}{main}
 int main(){
 	int kase = 1;
@@ -128,6 +131,7 @@ struct point{
 \subsection{Implementasi Class Vec}
 Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Vec} pada subbab \ref{sec:vec} dan pseudocode \ref{psdo:class-vec}. Implementasi dari class \texttt{Vec} dapat dilihat pada kode sumber \ref{code:class-vec}.
 
+\newpage
 \begin{code}[firstnumber=1]{Struct Vec}{class-vec}
 struct vec{
 	double x, y;
@@ -152,6 +156,7 @@ struct vec{
 \subsection{Implementasi Class Line}
 Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Line} pada subbab \ref{sec:line} dan pseudocode \ref{psdo:class-line}. Implementasi dari class \texttt{Line} dapat dilihat pada kode sumber \ref{code:class-line}.
 
+\newpage
 \begin{code}[firstnumber=1]{Struct Line}{class-line}
 struct line{
 	double a, b, c;
@@ -219,7 +224,7 @@ struct segment{
 
 \subsection{Implementasi Class Polygon}
 Pada subbab ini akan dijelaskan mengenai implementasi dari class \texttt{Polygon} pada subbab \ref{sec:polygon} dan pseudocode \ref{psdo:class-polygon}. Implementasi dari class \texttt{Polygon} dapat dilihat pada kode sumber \ref{code:class-polygon}.
-
+\newpage
 \begin{code}[firstnumber=1]{Struct Polygon}{class-polygon}
 struct polygon{
 	vector<point> P;
@@ -304,16 +309,13 @@ polygon convexHull(vector<point> &pts){
 	for (int i = 0; i < 2; i++){
 		int start = (int)hull.size();
 		for (int i = 0; i < pts.size(); i++){
-			point pt = pts[i];
-			while ((int)hull.size() >= start + 2 && orientation(hull[(int)hull.size() - 1], hull[(int)hull.size() - 2], pt) <= 0.0)
+			while ((int)hull.size() >= start + 2 && orientation(hull[(int)hull.size() - 1], hull[(int)hull.size() - 2], pts[i]) <= 0.0)
 				hull.pob();
-			hull.pb(pt);
+			hull.pb(pts[i]);
 		}
 		hull.pop_back();
 		reverse(pts.begin(), pts.end());
 	}
-	if ((int)hull.size() == 2 && hull[0] == hull[1])
-		hull.pob();
 	return polygon(hull);
 }
 \end{code}
@@ -346,10 +348,10 @@ int inSimplePolygon(point P, polygon &A){
 \subsection{Implementasi Fungsi GetBetween}
 Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{GetBetween} pada pseudocode \ref{psdo:fungsi-getbetween}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-getbetween}.
 
+\newpage
 \begin{code}[firstnumber=1]{Fungsi GetBetween}{fungsi-getbetween}
 vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees){
-	vector<point> points;
-
+	vector<point> points,pts;
 	while (!q.empty()){
 		if (inSimplePolygon(q.front(), triangle) != 1){
 			points.pb(q.front());
@@ -361,25 +363,20 @@ vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees)
 			points.pb(trees[i]);
 		}
 	}
-
 	polygon P = convexHull(points);
-
-	vector<point> pts;
 	int i = 0;
 	while (1){
 		if (P.P[i] == triangle.P[0]){
 			if (P.P[P.next(i)] == triangle.P[2]){
 				i = P.prev(i);
 				while (!(P.P[i] == triangle.P[2])){
-					pts.pb(P.P[i]);
-					i = P.prev(i);
+					pts.pb(P.P[i]);i = P.prev(i);
 				}
 			}
 			else{
 				i = P.next(i);
 				while (!(P.P[i] == triangle.P[2])){
-					pts.pb(P.P[i]);
-					i = P.next(i);
+					pts.pb(P.P[i]);i = P.next(i);
 				}
 			}
 			break;

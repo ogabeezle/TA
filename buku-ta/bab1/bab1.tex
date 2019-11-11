@@ -21,7 +21,7 @@ Pada bab ini, akan dijelaskan mengenai latar belakang, rumusan masalah, batasan 
 	\label {fig:ilustrasi-relative-convex-hull}
 \end{figure}
 
-\par Pada topik Tugas Akhir ini akan dijelaskan algoritma penyelesaian untuk mencari \textit{relative convex hull} dari sekumpulan titik yang berada di dalam sebuah polygon sederhana dengan menggunakan algoritma \textit{Melkman Convex Hull} yang dimodifikasi dengan studi kasus pada Sphere Online Judge 5637 LL and ErBao.
+\par Pada topik Tugas Akhir ini akan dijelaskan algoritma penyelesaian untuk mencari \textit{relative convex hull} dari sekumpulan titik yang berada di dalam sebuah polygon sederhana dengan menggunakan reduksi polygon pada studi kasus pada Sphere Online Judge 5637 LL and ErBao.
 
 \section {Rumusan Masalah}
 
@@ -29,14 +29,14 @@ Rumusan masalah yang diangkat dalam Tugas Akhir ini adalah sebagai berikut :
 
 \begin {enumerate}
     \item Bagaimana mencari \RCH dari kumpulan titik di dalam sebuah polygon?
-    \item Bagaimana algoritma \textit{Melkman convex hull} yang dimodifikasi menyelesaikan masalah \RCH dari kumpulan titik?
+    \item Bagaimana reduksi polygon menyelesaikan masalah \RCH dari kumpulan titik?
 \end {enumerate}
 
 \section {Batasan Masalah}
 \label{sec:batasan_masalah}
 Permasalahan yang dibahas pada Tugas Akhir ini memiliki beberapa batasan, yaitu sebagai berikut :
 \begin{enumerate}
-    \item Implementasi algoritma \textit{Melkman convex hull} yang di modifikasi sebagai penyelesaian permasalahan \RCH pada soal ISUN1.
+    \item Implementasi reduksi polygon sebagai penyelesaian permasalahan \RCH pada soal ISUN1.
     \item Algoritma \RCH terbatas pada analisis intuitif yang logis.
 \end{enumerate}
 Berikut merupakan batasan pada situs Sphere Online Judge: 
@@ -54,7 +54,7 @@ Berikut merupakan batasan pada situs Sphere Online Judge:
 \section {Tujuan}
 Tujuan Tugas Akhir ini adalah sebagai berikut :
 \begin{enumerate}
-    \item Mengevaluasi kinerja algoritma \textit{Melkman Convex Hull} yang dimodifikasi untuk menyelesaikan permasalahan komputasi \textit{relative convex hull} pada LL and ErBao.
+    \item Mengevaluasi kinerja reduksi polygon untuk menyelesaikan permasalahan komputasi \textit{relative convex hull} pada LL and ErBao.
 \end{enumerate}
 
 \section {Manfaat}

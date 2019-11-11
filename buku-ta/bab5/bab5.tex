@@ -25,7 +25,7 @@ Lingkungan uji coba yang digunakan untuk melakukan uji coba kinerja menggunakan 
 	\item Perangkat Lunak
 	\begin{enumerate}
 		\item Sistem Operasi Windows 10 Home Single Language 64-bit
-		\item Dev C++
+		\item Visual Studio Code
 		\item Bahasa Pemrograman C++
 		\item Kompiler GCC 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1) untuk Windows Subsystem Linux
 	\end{enumerate}
@@ -39,7 +39,7 @@ Subbab ini akan menjelaskan hasil pengujian program untuk menyelesaikan permasal
 	\item Pengujian lokal. Pengujian ini menggunakan mesin yang digunakan dalam pengembangan untuk mengukur kinerja program.
 \end{enumerate}
 Dalam pengujian lokal, dibuat beberapa kasus uji berdasarkan batasan yang ada pada soal.
-\par Untuk pengujian luar, uji coba dilakukan dengan mengirimkan kode program dengan algoritma \textit{Melkman convex hull} yang dimodifikasi ke situs penilaian daring Sphere Online Judge sebanyak 10 kali.
+\par Untuk pengujian luar, uji coba dilakukan dengan mengirimkan kode program dengan algoritma reduksi polygon ke situs penilaian daring Sphere Online Judge sebanyak 10 kali.
 
 \section{Uji Coba Kebenaran}
 Pada subbab ini akan dibahas mengenai uji coba kebenaran yang dilakukan dengan mengirim kode sumber terkait ke dalam situs penilaian daring Sphere Online Judge. Bukti hasil pengujian dapat dilihat pada gambar \ref{fig:hasil-uji-coba-kebenaran-situs-penilaian-spoj}.
@@ -51,7 +51,7 @@ Pada subbab ini akan dibahas mengenai uji coba kebenaran yang dilakukan dengan m
 \end{figure}
 
 \section{Uji Coba Kinerja Lokal}
-Pada subbab ini akan ditampilkan hasil uji coba kinerja dari algoritma \textit{Melkman convex hull} yang di modifikasi untuk menyelesaikan permasalahan LL and ErBao. Pengujian dilakukan terhadap kelompok masukan yang telah dijelaskan pada subbab \ref{sec:skenario-uji-coba}. Detil masukan dapat dilihat pada Lampiran A. Langkah pengujian kinerja dilakukan dengan langkah sebagai berikut:
+Pada subbab ini akan ditampilkan hasil uji coba kinerja dari algoritma reduksi polygon untuk menyelesaikan permasalahan LL and ErBao. Pengujian dilakukan terhadap kelompok masukan yang telah dijelaskan pada subbab \ref{sec:skenario-uji-coba}. Detil masukan dapat dilihat pada Lampiran A. Langkah pengujian kinerja dilakukan dengan langkah sebagai berikut:
 \begin{enumerate}
 	\item Rekam waktu tepat sebelum komputasi penyelesaian masalah.
 	\item Melakukan komputasi penyelesaian masalah untuk masukan kasus uji yang sama sebanyak 10 kali secara berturut-turut.
@@ -88,7 +88,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:kondisi-awal}
 \end{figure}
 
-\par Pada awal iterasi ke-1, memeriksa titik $(0,0)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-1 dapat dilihat pada gambar \ref{fig:iterasi-1}.
+\par Pada awal iterasi ke-1, memeriksa titik $(0,0)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-1 dapat dilihat pada gambar \ref{fig:iterasi-1}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-1}
@@ -96,7 +96,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-1}
 \end{figure}
 
-\par Pada awal iterasi ke-2, memeriksa titik $(30,0)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-2 dapat dilihat pada gambar \ref{fig:iterasi-2}.
+\par Pada awal iterasi ke-2, memeriksa titik $(30,0)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-2 dapat dilihat pada gambar \ref{fig:iterasi-2}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-2}
@@ -104,7 +104,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-2}
 \end{figure}
 
-\par Pada awal iterasi ke-3, memeriksa titik $(30,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-3 dapat dilihat pada gambar \ref{fig:iterasi-3}.
+\par Pada awal iterasi ke-3, memeriksa titik $(30,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-3 dapat dilihat pada gambar \ref{fig:iterasi-3}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-3}
@@ -112,7 +112,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-3}
 \end{figure}
 
-\par Pada awal iterasi ke-4, memeriksa titik $(20,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-4 dapat dilihat pada gambar \ref{fig:iterasi-4}.
+\par Pada awal iterasi ke-4, memeriksa titik $(20,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-4 dapat dilihat pada gambar \ref{fig:iterasi-4}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-4}
@@ -120,7 +120,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-4}
 \end{figure}
 
-\par Pada awal iterasi ke-5, memeriksa titik $(20,10)$. Titik tersebut akan tidak akan dibuang karena titik tersebut merupakan titik luar tetapi orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{concave}. kondisi setelah iterasi ke-5 dapat dilihat pada gambar \ref{fig:iterasi-5}.
+\par Pada awal iterasi ke-5, memeriksa titik $(20,10)$. Titik tersebut tidak akan dibuang karena titik tersebut merupakan titik luar tetapi orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{concave}. Kondisi setelah iterasi ke-5 dapat dilihat pada gambar \ref{fig:iterasi-5}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-5}
@@ -128,7 +128,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-5}
 \end{figure}
 
-\par Pada awal iterasi ke-6, memeriksa titik $(10,10)$. Titik tersebut akan tidak akan dibuang karena titik tersebut merupakan titik luar tetapi orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{concave}. kondisi setelah iterasi ke-6 dapat dilihat pada gambar \ref{fig:iterasi-6}.
+\par Pada awal iterasi ke-6, memeriksa titik $(10,10)$. Titik tersebut tidak akan dibuang karena titik tersebut merupakan titik luar tetapi orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{concave}. Kondisi setelah iterasi ke-6 dapat dilihat pada gambar \ref{fig:iterasi-6}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-6}
@@ -136,7 +136,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-6}
 \end{figure}
 
-\par Pada awal iterasi ke-7, memeriksa titik $(10,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-7 dapat dilihat pada gambar \ref{fig:iterasi-7}.
+\par Pada awal iterasi ke-7, memeriksa titik $(10,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-7 dapat dilihat pada gambar \ref{fig:iterasi-7}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-7}
@@ -144,7 +144,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 	\label {fig:iterasi-7}
 \end{figure}
 
-\par Pada awal iterasi ke-8, memeriksa titik $(0,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. kondisi setelah iterasi ke-8 dapat dilihat pada gambar \ref{fig:iterasi-8}.
+\par Pada awal iterasi ke-8, memeriksa titik $(0,20)$. Titik tersebut akan dibuang karena titik tersebut merupakan titik luar dan orientasi terhadap titik sebelumnya dan sesudahnya membentuk \textit{convex}. Sebelum membuang titik tersebut, program membuat segitiga dengan titik sebelumnya, titik tersebut dan titik sesudahnya. Kemudian program mencari semua titik yang berada di dalam segitiga tersebut. Selanjutnya program mencari \textit{convex hull} dari semua titik yang didapatkan dan disisipkan ke queue polygon luar untuk menggantikan titik yang dibuang. Kondisi setelah iterasi ke-8 dapat dilihat pada gambar \ref{fig:iterasi-8}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/iterasi-8}
@@ -153,7 +153,7 @@ Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan co
 \end{figure}
 
 \section{Uji Coba Kinerja Luar}
-Pada subbab ini akan ditampilkan hasil uji coba kinerja dari algoritma \textit{Melkman Convex Hull} yang dimodifikasi. Pengujian dilakukan dengan cara mengirimkan kode program ke situs penilaian daring Sphere Online Judge. Detil mengenai hasil uji kinerja dapat dilihat pada Lampiran. Rata-rata hasil pengumpulan kode berkas dengan algoritma \textit{Melkman Convex Hull} adalah 0.08 detik dengan memori 4.6 MB. Hasil uji coba pada situs Sphere Online Judge dapat dilihat pada gambar \ref{fig:grafik-waktu-uji-coba-spoj} dan \ref{fig:grafik-memori-uji-coba-spoj}.
+Pada subbab ini akan ditampilkan hasil uji coba kinerja dari algoritma reduksi polygon. Pengujian dilakukan dengan cara mengirimkan kode program ke situs penilaian daring Sphere Online Judge. Detil mengenai hasil uji kinerja dapat dilihat pada Lampiran. Rata-rata hasil pengumpulan kode berkas dengan algoritma \textit{Melkman Convex Hull} adalah 0.08 detik dengan memori 4.6 MB. Hasil uji coba pada situs Sphere Online Judge dapat dilihat pada gambar \ref{fig:grafik-waktu-uji-coba-spoj} dan \ref{fig:grafik-memori-uji-coba-spoj}.
 \begin{figure}[!h]
 	\Centering
 	\includegraphics [width=\columnwidth]{bab5/img/grafik-waktu-uji-coba-spoj}
