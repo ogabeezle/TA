@@ -2,7 +2,7 @@
 
 Pada bab ini, akan dijelaskan dasar teori yang digunakan sebagai landasan pengerjaan tugas akhir ini akan dijabarkan. Pertama, bab ini akan menjelaskan mengenai deskripsi soal \textit{Factorial Modulo Prime}. Kemudian, pembahasan mengenai analisis soal beserta dengan beberapa metode penyelesaian yang dapat digunakan akan dijabarkan.
 
-\section{Deskripsi Permasalahan}
+\section{ Deskripsi Permasalahan}
 Permasalahan yang akan dibahas pada tugas akhir ini adalah komputasi nilai dari $ N! $ dalam modulo $ P $, dimana $ P $ adalah bilangan prima. Faktorial didefinisikan pada persamaan \eqref{eq:persamaan_faktorial}.
 \begin{equation}
 	N! = \prod_{i=1}^{N} i
@@ -12,11 +12,11 @@ Besarnya batasan pada permasalahan ini adalah $ 0 \leq N \leq 10^{11} $, $ P = \
 
 Penulis menemukan terdapat dua algoritma yang bisa diadaptasikan untuk menyelesaikan permasalahan komputasi ini yaitu \textit{Multipoint Evaluation} dan \textit{Shifting Evaluation Values}.
 
-\section{Deskripsi Umum}
+\section{ Deskripsi Umum}
 
 Subbab ini akan memaparkan definisi, deskripsi dan landasan yang akan digunakan pada keseluruhan penyelesaian masalah.
 
-\subsection{Modulo}
+\subsection{ Modulo}
 Didalam matematika, modulo adalah sebuah operasi yang menghasilkan sisa pembagian (\textit{remainder}) dari suatu bilangan terhadap bilangan lainnya. Operasi pembagian bilangan $ a $ dengan $ b $ pada dasarnya merupakan bentuk lanjut dari persamaan \eqref{eq:persamaan_umum_pembagian}
 \begin{equation}
 	\begin{aligned}
@@ -42,10 +42,10 @@ Kongruensi memiliki beberapa sifat.\cite{stallings_cryptography}
 	\item Kongruensi bersifat transitif. Yaitu $ a\equiv b \Mod{n} $ dan $ b\equiv c \Mod{n} $ mengindikasikan bahwa $a \equiv c \Mod{n} $.
 \end{enumerate}
 
-\subsection{Aritmatika Modular}
+\subsection{ Aritmatika Modular}
 Sistem kongruensi dapat dioperasikan menggunakan operasi matematika pada umumnya \cite{stallings_cryptography}, yang selanjutnya disebut aritmatika modular.
 
-\subsubsection{Operasi Dasar}
+\subsubsection{ Operasi Dasar}
 Operasi dasar yang dapat dioperasikan pada sistem kongruensi yaitu penjumlahan, pengurangan, perkalian, dan pembagian.
 
 \begin{enumerate}
@@ -110,7 +110,7 @@ Operasi dasar yang dapat dioperasikan pada sistem kongruensi yaitu penjumlahan, 
 
 \end{enumerate}
 
-\subsubsection{Modulo Inverse}
+\subsubsection{ Modulo Inverse}
 Untuk menghitung nilai modulo inverse dari $ b $ dalam modulo $ n $, dimana $ n $ disini merupakan bilangan prima, mengacu pada soal \nomorsoal\ \soal, sehingga bisa menggunakan Teorema \ref{theo:fermat_little_theorem}, untuk membantu menyelesaikan pencarian modulo inverse.
 
 \begin{theo}[Fermat's Little Theorem]
@@ -132,7 +132,7 @@ $$ \frac{a^{P-1}}{a} \equiv \frac{1}{a} \Mod{P} \\ $$
 \end{equation}
 Sehingga modulo inverse dari $ b $ kongruen dengan $ b^{n-2} $ dalam modulo $ n $, dimana $ n $ merupakan bilangan prima.
 
-\subsection{Perpangkatan Modular}
+\subsection{ Perpangkatan Modular}
 Operasi perpangkatan diperlukan dalam perhitungan modulo inverse dari $ b $ dalam modulo $ n $, dengan menggunakan properti persamaan \eqref{eq:mod_kali_long} dapat dilakukan perpangkatan secara \textit{na\"ive}. Tetapi jika mempertimbangkan efisiensi dalam perpangkatan, misal untuk menghitung $ a^n $, solusi \textit{na\"ive} memerlukan kompleksitas $ \mathcal{O}{(n)} $.
 $$ a^n = a \cdot a \cdots a\ (n\ kali) $$
 
@@ -195,7 +195,7 @@ Bedasarkan penjelasan diatas bisa disusun pseudocode \textit{fast modular expone
 
 Pada subbab berikutnya akan dibahas metode efisien dalam perkalian modular, serta implementasi dalam operasi aritmatika modular lainnya.
 
-\subsection{Perkalian Modular Montgomery}
+\subsection{ Perkalian Modular Montgomery}
 Perkalian Modular \textit{Montgomery} atau reduksi \textit{montgomery} adalah metode efisien untuk menghitung $ u = a \cdot b \Mod{n} $ dengan $ a, b, $ dan $ n $ adalah  bilangan $k$-bit, yang dikenalkan oleh Peter L. Montgomery pada tahun 1985 \cite{montgomery}. 
 
 Algoritma ini cocok digunakan dalam implementasi pada software dan hardware komputer karena kemampuannya dalam melakukan operasi modulo pangkat 2 dengan cepat. Reduksi untuk menghasilkan $ u $ tidak dilakukan dengan cara pembagian dengan $ n $ seperti pada perkalian modulo pada umumnya, tetapi dengan $ 2^r $ dalam representasi \textit{Montgomery World}.
@@ -257,7 +257,7 @@ $$ ar - bR = (a-b)r $$
 Sementara untuk operasi pembagian, hampir sama dengan pembagian modular biasa, dengan mengalikan dalam \textit{Montgomery World} dengan inversenya.
 $$ \frac{a}{b}r = ar \cdot b^{-1}r $$
 
-\subsection{Fast Fourier Transform}
+\subsection{ Fast Fourier Transform}
 Pada tahun 1965, James W. Cooley dan John W. Tukey berhasil merumuskan suatu teknik perhitungan algoritma \textit{Fourier Transform} yang efisien\cite{fft}. Teknik perhitungan algoritma ini dikenal dengan sebutan \textit{Fast Fourier Transform} atau lebih populer dengan istilah FFT. \textit{Fast Fourier Transform} dalam bahasa indonesia adalah Transformasi Fourier Cepat adalah sumber dari suatu algoritma untuk menghitung \textit{Discrete Fourier Transform (DFT)} atau Transformasi Fourier Diskrit dengan cepat dan efisien beserta dengan inversenya.
 
 Transformasi Fourier Cepat diterapkan dalam berbagai bidang mulai dari pengolahan signal digital, memecahkan persamaan differensial parsial, sampai dalam perkalian polinomial. Ada pun kelas dasar dari algoritma FFT yaitu \textit{Decimation in Time (DIT)} dan \textit{Decimation in Frequency (DIF)}. Pada subbab ini akan dijelaskan FFT yang digunakan untuk perkalian polinomial dengan \textit{Decimation in Time (DIT)}.
@@ -347,7 +347,7 @@ Proses komputasi dari persamaan \eqref{eq:kupu-kupu-1} dan \eqref{eq:kupu-kupu-2
 \end{figure}
 Perhatikan bahwa \textit{Inverse Fast Fourier Transform} hampir sama dengan proses FFT, perbedaannya pada urutan serta $ \omega_N $.
 
-\subsection{Number Theoretic Transform} \label{ssec:ntt}
+\subsection{ Number Theoretic Transform} \label{ssec:ntt}
 \textit{Number Theoretic Transform} atau NTT didapatkan dengan megeneralisasikan DFT pada $ \mathbb{Z}/p\mathbb{Z} $. NTT biasanya digunakan dalam mengalikan 2 polinomial dalam modulo prima tertentu. Kelebihan NTT adalah tidak ada \textit{precision error} yang sering terjadi pada FFT, karena kalkulasinya menggunakan bilangan integer. Kelemahan utama dari NTT adalah kita hanya dapat mengimplementasikan NTT dengan modulo prima yang memenuhi $ p = k \cdot n + 1 $, dimana $ k $ dan $ n $ adalah konstanta tertentu. Sehingga mengimplementasikan NTT dengan bilangan prima acak memerlukan CRT \textit{(Chinese Remainder Theorem)}.
 
 Pertama, $ \omega_N $ harus berada dalam $ \mathbb{Z}/p\mathbb{Z} $, sedemikian hingga memenuhi persamaan \eqref{eq:root_of_unity_in_z_pz}.
@@ -372,7 +372,7 @@ Oleh karena itu $ \omega_n $ merupakan n\textit{-th primitive root of unity}, ya
 
 Perhitungan NTT memerlukan banyak sekali perkalian modular dengan modulo tetap, oleh karena itu NTT dapat diimplementasikan dengan perkalian modular \textit{Montgomery}, untuk mempercepat aritmatika modular dalam NTT.
 
-\subsection{Chinese Remainder Theorem}
+\subsection{ Chinese Remainder Theorem}
 \textit{Chinese Remainder Theorem} atau CRT merupakan sebuah teorema dalam teori bilangan yang dikembangkan oleh Sunzi pada tahun 201 - 300.
 \begin{theo}[Chinese Remainder Theorem]
 	\label{theo:chinese_remainder_theorem}
@@ -413,7 +413,7 @@ Sehingga solusi sistem kongruensi diberikan $ x = a_1 m_2 n_2 + a_2 m_1 n_1 $, d
 	\label{eq:crt_2_modulo}
 \end{equation}
 
-\subsection{Polinomial}
+\subsection{ Polinomial}
 Dalam matmatika, polinomial atau suku banyak merupakan jumlah dari beberapa perkalian dari sebuah variabel konstan dengan koefisiennya\cite{}. Secara umum polinomial dinyatakan seperti persamaan \label{eq:persamaan_umum_polinomial}
 \begin{equation}
 	f_n(x) = \sum_{i=0}^{n} a_i x^i = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0
@@ -421,7 +421,7 @@ Dalam matmatika, polinomial atau suku banyak merupakan jumlah dari beberapa perk
 \end{equation}
 Pangkat tertinggi dari variabel $ x $ dari fungsi polinomial disebut dengan order/derajat dari polinomial.
 
-\subsubsection{Pertambahan dan Pengurangan Polinomial}
+\subsubsection{ Pertambahan dan Pengurangan Polinomial}
 Polinomial juga bisa diterapkan operasi pertambahan dan pengurangan dalam aritmatika. 
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
@@ -438,7 +438,7 @@ Kemudian operasi pengurangan polinomial $ f(x) - g(x) $ dinyatakan seperti dalam
 \end{equation}
 Secara umum kompleksitas operasi pertambahan dan pengurangan dari polinomial adalah $ \mathcal{O}{(max(n,m))} $ dengan $ n , m $ adalah derajat polinomial $ f(x) \text{ dan } g(x) $.
 
-\subsubsection{Perkalian Polinomial}
+\subsubsection{ Perkalian Polinomial}
 Selain pertambahan dan pengurangan, polinomial juga terdapat operasi perkalian.
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
@@ -459,7 +459,7 @@ Operasi perkalian polinomial dapat dioptimasi menggunakan \textit{Number Theoret
 	\item \textbf{Interpolasi NTT / Inversi NTT} Melakukan interpolasi titik menggunakan inversi NTT dari $ h(x) $ untuk mendapatkan polinomial dalam representasi koefisien kembali.
 \end{enumerate}
 
-\subsubsection{Pembagian Polinomial}
+\subsubsection{ Pembagian Polinomial}
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
 $$ g(x) = b_m x^m + b_{m-1}^{m-1} + \cdots + b_2x^2 + b_1x + b_0 $$
@@ -547,7 +547,7 @@ Menggunakan definisi diatas, dapat didefinisikan teorema \ref{theo:middle_produc
 
 Optimasi ini mengurangi jumlah pemanggilan FFT/NTT dengan mengurangi ukuran \textit{array} pada perkalian FFT/NTT dari $ 2n $ menjadi $ n $.
 
-\section{Strategi Penyelesaian Permasalahan FACTMODP dengan Multipoint Evaluation}
+\section{ Strategi Penyelesaian Permasalahan FACTMODP dengan Multipoint Evaluation}
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode FACTMODP. Secara singkat, strategi penyelesaian masalah dari FACTMODP menggunakan Multipoint Evaluation terbagi menjadi 4 bagian besar yaitu :
 \begin{enumerate}
 	\item Perumusan Transformasi Faktorial
@@ -558,7 +558,7 @@ Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pa
 
 Sebagai contoh, pada subbab ini akan menggunakan parameter $ N = 10 $ serta $ P = 10^9 + 7 $. Nilai $ N $ dan $ P $ yang dipilih berada didalam batasan yang didefinisikan dalam subbab \ref{sec:batasan_masalah}. Persoalan utama dalam tugas akhir ini adalah memodelkan faktorial sedemikian hingga dapat dikomputasi dengan kompleksitas dibawah $ \mathcal{O}{(N)} $.
 
-\subsection{Perumusan Transformasi Faktorial}
+\subsection{ Perumusan Transformasi Faktorial}
 \label{sec:perumusan_transformasi_faktorial}
 Misal $ v = \lfloor \sqrt{N} \rfloor $ dan polinomial $ g(x) = \prod_{i=0}^v (x + vi + 1) $, sehingga bisa didefinisikan persamaan \eqref{eq:persamaan_faktorial_baru}
 \begin{equation}
@@ -580,7 +580,7 @@ Menggunakan \textit{Multipoint Evaluation}, nilai $ g(0), g(1), \cdots , g(v) $ 
 
 Dengan menggunakan teorema \ref{theo:wilson}, komputasi $ N! $  mod $ P $ memiliki kompleksitas $ \mathcal{O}{(\sqrt{min(N,P-N-1)}\ log^2 (min(N,P-N-1)) )}$.
 
-\subsection{Membangun Pohon Polinomial}
+\subsection{ Membangun Pohon Polinomial}
 \label{sec:membangun_pohon_polinomial}
 Membangun pohon polinomial merupakan tahap selanjutnya setelah kita menemukan polinomial $ g(x) $. Pada tahap ini kita akan membangun pohon polinomial yang menjadi dasar dalam \textit{Multipoint Evaluation}. Misal $ u_0, u_1, \cdots , u_{n-1} $ adalah titik yang akan dievaluasi pada polinomial $ g(x) $. Untuk membangun pohon polinomial, kita dapat menggunakan polinomial $( x - u_i) $ untuk $ 0 \leq i < n $ sebagai \textit{leaves}.
 
@@ -615,7 +615,7 @@ Sehingga \textit{root} dalam tree menampung nilai $ M_{k,0} = \prod_{i=0}^{n-1} 
 	\label {fig:pohon-polinomial-n-10}
 \end{figure}
 
-\subsection{Evaluasi Pohon Polinomial}
+\subsection{ Evaluasi Pohon Polinomial}
 \label{sec:evaluasi_pohon_polinomial}
 Setelah pohon polinomial terbentuk, kita dapat menjalankan algoritma \textit{Multipoint Evaluation}. Algoritma ini merupakan algoritma dengan tipe \textit{divide-and-conquer} menggunakan \textit{Chineese Remainder Theorem}. Misal $ R  = \mathbb{Z}_p $, $ f = g(x) $ dan untuk $ 0 \leq i < n $, $ m_i = z - u_i $, maka terdefinisikan homomorfisme ring surjektif 
 \begin{equation}
@@ -675,7 +675,7 @@ Menggunakan pseudocode \ref{psdo:general_evaluasi_pohon_polinomial}, untuk $ N =
 \end{figure}
 
 
-\subsection{Komputasi Faktorial bedasarkan Hasil Evaluasi}
+\subsection{ Komputasi Faktorial bedasarkan Hasil Evaluasi}
 Mengacu pada subbab \ref{sec:perumusan_transformasi_faktorial}, didapatkan rumus faktorial sebagai berikut.
 $$ N ! = \left( \prod_{i=0}^{v-1} g(i) \right) \cdot \prod_{i=v^2+1}^n i $$
 
@@ -728,14 +728,14 @@ Berdasarkan penjelasan yang telah dijabarkan, hal-hal yang diperlukan untuk meny
 	\item Strategi perkalian modular (penghitungan nilai $ a * b\ mod\ p $), akan dibahas pada subbab \ref{sec:Strategi Perkalian Modular}.
 \end{enumerate}
 
-\section{Strategi Penyelesaian Pemangkatan Modular}
+\section{ Strategi Penyelesaian Pemangkatan Modular}
 Bagian ini akan menjelaskan beberapa variasi penyelesaian pencarian hasil pemangkatan pada persamaan kongruen yang dijabarkan pada persamaan \eqref{eq:pemangkatan_modular}.
 \begin{equation}
 h \equiv a^k\ mod\ m,\text{untuk a, k, dan m yang ditentukan}
 \label{eq:pemangkatan_modular}
 \end{equation}
 
-\subsection{Strategi Penyelesaian Pemangkatan Modular secara Naif}
+\subsection{ Strategi Penyelesaian Pemangkatan Modular secara Naif}
 Pencarian hasil persamaan \eqref{eq:pemangkatan_modular} dapat dicari secara iteratif. Hasil perkalian disimpan pada sebuah variabel sementara, $temp_h$. Nilai $temp_h$ secara berkala dikalikan dengan $a$ sebanyak $k$ kali. Setelah pemangkatan selesai dilakukan, nilai $temp_h$ dimodulus dengan $ m $. Prosedur ini ditunjukkan pada pseudocode \ref{psdo:modex_naive}.
 
 \begin{figure}
@@ -753,7 +753,7 @@ return temp_h
 
 Strategi ini membutuhkan $O(k)$ iterasi. Untuk nilai $k$ yang besar, metode ini tidak cukup baik untuk digunakan mengingat ada tahapan lain yang membutuhkan waktu komputasi yang tinggi. Untuk itu sebuah strategi alternatif akan diajukan pada subbab \ref{sec:Strategi Penyelesaian Pemangkatan Modular dengan Repeated Squaring}.
 
-\subsection{Strategi Penyelesaian Pemangkatan Modular dengan Repeated Squaring}
+\subsection{ Strategi Penyelesaian Pemangkatan Modular dengan Repeated Squaring}
 
 Metode ini memanfaatkan representasi biner indeks pangkat $k$ dalam melakukan pemangkatan. Diberikan tiga masukan: \textit{generator}, \textit{exponent}, dan $p$ yang mengikuti persamaan \eqref{eq:pemangkatan_modular}.
 \begin{equation}
@@ -770,7 +770,7 @@ Gambar \ref{fig:repeated_squaring} menjabarkan prosedur metode ini.
 
 Strategi ini memiliki kompleksitas $O\left(log_2\ p\right)$.
 
-\subsection{Penjelasan Strategi Penyelesaian Pemangkatan Modular dengan Repeated Squaring}
+\subsection{ Penjelasan Strategi Penyelesaian Pemangkatan Modular dengan Repeated Squaring}
 
 Strategi ini berangkat dari perkalian berulang sebuah nilai $a$ (pada Gambar \ref{fig:repeated_squaring} dinotasikan dengan $ generator $) sebanyak $ k $ (pada Gambar \ref{rig:repeated_squaring} dinotasikan dengan $ exponent $) kali. Dengan kata lain, dibutuhkan $k$ proses perkalian dengan nilai $ a $. Hal ini ditunjukkan pada strategi pemangkatan modular naif. Kendati begitu, ada cara lain dimana walaupun proses pemangkatan membutuhkan $ k $ proses perkalian, pada praktiknya proses perkalian yang terjadi tidak sampai $ k $ kali.
 
@@ -863,7 +863,7 @@ Hasil pemangkatan (yaitu nilai $ f_y(i) $) digabungkan ke $ temp $ dengan cara d
 
 Dari penjabaran tersebut, penghitungan persamaan \eqref{eq:generalisasi_dekomposisi_biner_pemangkatan} dengan metode ini membutuhkan hanya satu kali perhitungan nilai $ y_i $, yaitu penghitungan $ y_i $ pada $ i=n $. Proses penghitungan $ y_n $ juga menghitung nilai $ y_0 $ hingga $ y_{n-1} $. Sehingga dengan menghitung $ y_n $, nilai $ y_0 $ hingga $ y_{n-1} $ juga didapat. Jumlah perkalian menggunakan relasi rekurens \eqref{eq:relasi_rekurens_y_i} adalah $ O(n) $ dimana $ n=log_2\ r$ untuk sebuah indeks pangkat $ r $ (atau bisa ditulis $ O\left(log_2\ (r)\right) $). Cara pemangkatan ini lebih cepat dibandingkan cara pemangkatan naif.
 
-\section{Strategi Penyelesaian Invers Modulus}
+\section{ Strategi Penyelesaian Invers Modulus}
 
 Permasalahan pencarian invers modulus adalah mencari nilai $ a' $ pada persamaan \eqref{eq:persamaan_umum_invers_modulus}.
 \begin{equation}
@@ -874,7 +874,7 @@ Invers modulus adalah analog dari pembagian pada $ \mathbb{Z}_n $.
 
 Sebelum mencari nilai $ a' $, hal yang perlu diketahui terlebih dahulu adalah apakah benar ada nilai $ a' $ yang bisa membuat persamaan \eqref{eq:persamaan_umum_invers_modulus} bernilai benar. Pertanyaan ini bisa dijawab dengan menggunakan Identitas Bezout.
 
-\subsection{Identitas Bezout}
+\subsection{ Identitas Bezout}
 
 Identitas Bezout berbicara mengenai persamaan berkaitan dengan faktor persekutuan terbesar dua bilangan \cite{brilliant_bezout}. Notasi yang digunakan untuk menyatakan faktor persekutuan terbesar dapat dilihat pada persamaan \eqref{eq:gcd}.
 \begin{equation}
@@ -898,7 +898,7 @@ aa' &= qm + 1 \\
 \end{align}
 Persamaan \eqref{eq:proof_bezout_koprima} memiliki bentuk persamaan \eqref{eq:identitas_bezout}. Sisi kiri persamaan \eqref{eq:proof_bezout_koprima} merupakan sisi kanan persamaan \eqref{eq:identitas_bezout}, atau dengan kata lain $ \gcd (a, m) = 1 $. Perhatikan bahwa hasil akhir penjabaran di atas merupakan persamaan \eqref{eq:identitas_bezout}, yaitu Identitas Bezout. Dari sini dapat disimpulkan bahwa $ \gcd (a, m)=1 $. Artinya syarat untuk sebuah nilai $ a $ memiliki invers modulus adalah $ a $ harus koprima dengan modulus $ m $. \hfill $ \eop $
 
-\subsection{Strategi Penyelesaian Invers Modulus secara Naif}
+\subsection{ Strategi Penyelesaian Invers Modulus secara Naif}
 
 Pencarian invers modulus dapat dilakukan dengan \textit{brute force}. Semua nilai $ a' $ dicoba dan diperiksa apakah hasil perkalian persamaan \eqref{eq:persamaan_umum_invers_modulus} menghasilkan $ 1\ (mod\ m) $. Gambar \ref{psdo:modinv_naive} memaparkan langkah yang dijelaskan.
 \begin{figure}[h!]
@@ -939,7 +939,7 @@ return (EQUATION[1].x, EQUATION[1].y)
 
 Strategi ini membutuhkan $ O((log_2\ n)^2) $ operasi bit. \cite{hac_math}
 
-\subsection{Penjelasan Strategi Penyelesaian Invers Modulus dengan Extended Euclidean}
+\subsection{ Penjelasan Strategi Penyelesaian Invers Modulus dengan Extended Euclidean}
 
 Ide strategi ini adalah dengan mentransformasi nilai $ a $ dan $ b $ menjadi sebuah nilai dimana $ a $ habis dibagi oleh $ b $. Tiap langkah transformasi akan ditulis menggunakan persamaan \eqref{eq:persamaan_umum_pembagian}, yaitu bentuk umum pembagian.
 \begin{equation*}
@@ -1021,7 +1021,7 @@ Tabel \ref{tab:pengangkatan_ext_euclid} berisi contoh pengangkatan berdasarkan h
 Maka didapat persamaan akhir $ 1=97(13)-35(36) $. Persamaan ini dapat ditulis agar mengikuti persamaan \eqref{eq:identitas_bezout}. Penulisan persamaan tersebut yaitu $ 1=97(13)-35(36) \Rightarrow 1=97(13)+35(-36) $. Pasangan setiap konstanta -- variabel merupakan invers untuk satu sama lain. $ 97 $ merupakan invers dari $ 13 $, dan $ 35 $ merupakan invers dari $ -36 $. Seringkali nilai invers yang diinginkan berupa nilai positif. Untuk mengatasi hal itu, cukup mencari kelas residu dari $ -36 $. Pada kasus ini $ -36\in[3]_{13}$ dan $ -36\in[61]_{97} $. Maka $ -36\equiv3\ (mod\ 13) $ dan $ -36\equiv61\ (mod\ 97) $.
 Efisiensi strategi ini jauh lebih baik daripada strategi naif.
 
-\section{Strategi Penyelesaian Logaritma Diskret}
+\section{ Strategi Penyelesaian Logaritma Diskret}
 
 Permasalahan logaritma diskret adalah mencari nilai $ x $ pada persamaan \eqref{eq:persamaan_umum_log_diskret}
 \[
@@ -1084,7 +1084,7 @@ a^{\phi(n)} &\equiv a^0\ \Mod{n} \\
 
 Perhatikan perubahan persamaan \eqref{eq:teorema_euler} menjadi \eqref{eq:teorema_euler_logaritmik} mengubah nilai modulus. Hal ini disebabkan terdapat perubahan domain dimana persamaan \eqref{eq:teorema_euler_logaritmik} bekerja, yaitu dari domain hasil pemangkatan menjadi domain indeks pangkat. Teorema Euler memicu perubahan nilai modulus, dimana pemangkatan sebuah bilangan dengan $ \phi(n) $ bermakna sama dengan pemangkatan sebuah bilangan dengan $ 0 $. Penjelasan ini merupakan definisi persamaan \eqref{eq:teorema_euler_logaritmik}.
 
-\subsection{Order Sebuah Elemen}
+\subsection{ Order Sebuah Elemen}
 
 Definisi order sebuah elemen $ a $ adalah sebuah nilai $ h $ positif terkecil dimana apabila $ a $ dioperasikan dengan $ a $ sebanyak $ h $ kali akan menghasilkan elemen identitas operasi $ e $.\cite{harald_applied_number_theory}
 \begin{equation}
@@ -1141,7 +1141,7 @@ Dari pemaparan di atas, hubungan himpunan $ \mathbb{Z}_n^* $, $ \mathbb{H}_{(a, 
 
 $ \mathbb{H}_{(a, n)} $ akan sama dengan $ \mathbb{Z}_n^* $ apabila $ a $ merupakan \textit{primitive root}. $ \mathbb{H}_{(\omega, n)} $ akan sama dengan $ \mathbb{H}_{(a, n)} $ apabila order $ {\omega} $ adalah $ \phi(n) $.
 
-\subsection{Strategi Penyelesaian Naif Untuk Logaritma Diskret}
+\subsection{ Strategi Penyelesaian Naif Untuk Logaritma Diskret}
 Pencarian nilai $ x $ pada persamaan \eqref{eq:persamaan_umum_log_diskret} bisa dilakukan dengan mencoba semua nilai $ x = 0 $ hingga $ n-1 $. Hitung setiap nilai $ g^x\ \Mod{n} $ dan bandingkan dengan $ y $. Apabila keduanya bernilai sama, maka nilai $ x $ tersebut merupakan nilai logaritma diskret dari $ y $. Gambar \ref{psdo:disc_log_naive} menggambarkan prosedur yang dijelaskan.
 \begin{figure}[h!]
 \begin{lstlisting}[firstnumber=0]
@@ -1214,7 +1214,7 @@ y*g^r &\equiv g^{q\sqrt{a}}\ \Mod{n}
 Dengan menggunakan persamaan \eqref{eq:bsgs_persamaan_utama}, logaritma diskret $ y $ dapat dicari tanpa harus mencari invers modulus $ g^r $. Yang perlu dilakukan sekarang adalah mencari pasangan $ r $ dan $ q $ yang memenuhi persamaaan \eqref{eq:bsgs_persamaan_utama}. Disinilah alasan metode ini disebut \textit{Baby-step Giant-step}. Pada sisi kiri persamaan \eqref{eq:bsgs_persamaan_utama}, nilai $ y*g^r $ dicari. Bagian ini merupakan \textit{baby-step} karena interval pangkat untuk basis $ g $ yang digunakan adalah $ 1 $ (nilai pangkat yang digunakan adalah $ \{0,1,2,\ldots,\allowbreak\sqrt{a}-1\} $). Bagian sisi kanan persamaan \eqref{eq:bsgs_persamaan_utama} disebut \textit{giant-step} karena untuk mencari nilai $ g^{q\sqrt{a}} $, interval pangkat untuk basis $ g $ yang digunakan adalah $ \sqrt{a} $ (nilai pangkat yang digunakan adalah $ \{0,\sqrt{a},2\sqrt{a},\ldots,(\sqrt{a}-1) \sqrt{a}\} $).
 Persamaan \eqref{eq:bsgs_persamaan_utama_dengan_invers_r} dan persamaan \eqref{eq:bsgs_persamaan_utama} menyebabkan daerah pencarian $ r $ dan $ q $ turun menjadi $ O(\sqrt{a}) $.
 
-\subsection{Strategi Penyelesaian Logaritma Diskret dengan Pollard Rho}
+\subsection{ Strategi Penyelesaian Logaritma Diskret dengan Pollard Rho}
 Metode \textit{Pollard Rho} awalnya adalah metode untuk melakukan faktorisasi bilangan \cite{brent_montecarlo}. Namun metode ini dapat dimodifikasi agar dapat digunakan untuk melakukan pencarian logaritma diskret.
 Diberikan sebuah \textit{random function} $ f_n (x) $.
 \begin{subequations}
@@ -1257,7 +1257,7 @@ Dengan memasukkan nilai $ \alpha=g $ dan $ \beta=y $, persamaan \eqref{eq:persam
 
 Untuk menggunakan metode ini, dibutuhkan sebuah cara untuk mencari $ f_n (x_s) $ dan $ f_n (x_t) $ secara efisien. Subbab selanjutnya akan menjelaskan cara untuk menemukan $ f_n (x_s) $ dan $ f_n (x_t) $.
 
-\subsection{Brent Cycle Detection}
+\subsection{ Brent Cycle Detection}
 Cara ini menggunakan dua buah \textit{pointer}, $ p_{\text{turtle}} $ dan $ p_{\text{hare}} $. Setiap proses \textit{step}, $ p_{\text{turtle}} $ melakukan 1 \textit{step}. Pointer $ p_{\text{hare}} $ bergerak setiap iterasi step ke $ 2^i $ dengan menyamakan posisinya dengan $ p_1 $. Gambar \ref{fig:brent_pollard_rho} menjabarkan metode ini secara detail.
 \begin{figure}[h!]
 	\Centering
@@ -1268,7 +1268,7 @@ Cara ini menggunakan dua buah \textit{pointer}, $ p_{\text{turtle}} $ dan $ p_{\
 
 Cara ini bisa gagal apabila selisih indeks pangkat $ \beta $ bernilai $ 0\ \Mod{n} $. Apabila hal tersebut terjadi, ulangi pencarian nilai $ p_{\text{turtle}} = p_{\text{hare}} $ dari awal, namun kedua \textit{pointer} dimulai dari $ f(x)=\alpha^i \beta^j\ \Mod{n} $, dimana $ 0 \leq i < n $ dan $ 0 \leq j < n $. \textit{Brent Cycle Detection} memiliki kompleksitas sebesar $ O(\sqrt{n}) $.
 
-\section{Strategi Perkalian Modular}
+\section{ Strategi Perkalian Modular}
 
 Perkalian modular adalah persamaan \eqref{eq:persamaan_umum_perkalian_modular}.
 \begin{equation}
@@ -1278,7 +1278,7 @@ a*b=c\ \Mod{n}
 
 Sebelumnya telah dijelaskan bahwa terdapat kemungkinan terjadinya \textit{integer overflow} karena besarnya nilai $ p $. Maka perlu digunakan sebuah metode perkalian yang dapat menghindari kasus \textit{integer overflow}. Mengingat proses perkalian merupakan proses yang sering terjadi, metode tersebut juga sebaiknya memiliki kecepatan yang tinggi. Pada subbab ini akan dijabarkan dua metode perkalian yang dapat digunakan.
 
-\subsection{Strategi Naif Perkalian Modular}
+\subsection{ Strategi Naif Perkalian Modular}
 
 Strategi naif ini sebenarnya adalah persamaan \eqref{eq:mod_kali} yang ditulis dalam bentuk persamaan \eqref{eq:mod_kali_long}. Hal ini berguna untuk menekan nilai $ a $ dan $ b $ yang tinggi. Setelah dilakukan perkalian, terdapat kemungkinan hasil perkalian melebihi nilai modulus $ n $. Maka dari itu, hasil perkalian $ a $ dan $ b $ kembali dimodulus sekali lagi dengan $ n $. Gambar \ref{psdo:modmul_naive} memaparkan strategi yang dimaksud.
 
@@ -1293,7 +1293,7 @@ return ((a mod n) * (b mod n)) mod n
 
 Metode ini dapat digunakan untuk $ n \leq 2^{32} $ karena hasil terbesar yang mungkin didapat dari perkalian modular dimana $ n \leq 2^{32} $ adalah $ a*b = c \Rightarrow ( 2^{32}-1 ) * ( 2^{32}-1 ) = 2^{64} - 2^{33} + 1 $. Nilai ini masih dapat ditampung menggunakan 64-bit \textit{integer}.
 
-\subsection{Strategi Perkalian Modular dengan Logarithmic Modular Multiplication} 
+\subsection{ Strategi Perkalian Modular dengan Logarithmic Modular Multiplication} 
 Metode \textit{Logarithmic Modular Multiplication} merupakan analog dari \textit{Modular Expontiation} \cite{geeks_modular_multiplication}. Yang membedakan adalah ketimbang pemangkatan, \textit{Logarithmic Modular Multiplication} melakukan perkalian seperti yang ditunjukkan persamaan \eqref{eq:persamaan_umum_perkalian_modular}. Gambar \ref{fig:log_mod_mul} menjelaskan langkah metode ini.
 
 \begin{figure}
@@ -1305,7 +1305,7 @@ Metode \textit{Logarithmic Modular Multiplication} merupakan analog dari \textit
 
 Strategi ini memiliki kompleksitas $ O(log\ b) $.
 
-\subsection{Penjelasan Strategi Perkalian Modular dengan Logarithmic Modular Multiplication}
+\subsection{ Penjelasan Strategi Perkalian Modular dengan Logarithmic Modular Multiplication}
 
 Nilai $ b $ pada persamaan \eqref{eq:persamaan_umum_perkalian_modular} pertama-tama diubah menjadi sebuah polinomial \eqref{eq:dekomposisi_biner_perkalian}.
 \begin{equation}
@@ -1350,10 +1350,10 @@ Sehingga persamaan \eqref{eq:generalisasi_dekomposisi_biner_perkalian} dapat dit
 
 Untuk menghitung nilai $ a_i $, kalikan nilai $ a_{i-1} $ yang tersimpan dengan 2. Cara ini dapat digunakan hingga $ a_{(\log b)} $ sehingga penghitungan $ f(n) $ akan membutuhkan $ O(\log b) $ proses perkalian dengan dua. Konsekuensinya, persamaan \eqref{eq:relasi_termx} membutuhkan $ O(\allowbreak\log b) $ proses perkalian. Metode ini dapat digunakan untuk perkalian hingga 63-bit.
 
-\section{Landasan Terkait Pengujian Kebenaran Program}
+\section{ Landasan Terkait Pengujian Kebenaran Program}
 Keluaran program yang akan digunakan untuk menyelesaikan permasalahan perlu diujikan kebenarannya. Untuk itu perlu dibuat masukan yang mengikuti penjelasan soal seperti yang telah diterangkan pada subbab \ref{sec:Parameter Masukan}. Beberapa teori dan landasan yang akan dimanfaatkan untuk membuat parameter masukan akan dijabarkan pada subbab ini.
 
-\subsection{Miller-Rabin Primality Test}
+\subsection{ Miller-Rabin Primality Test}
 
 Subbab ini menjelaskan sebuah metode untuk melakukan pengecekan keprimaan sebuah bilangan, yaitu \textit{Miller-Rabin Primality Test}. Metode ini akan digunakan untuk membangun beberapa parameter.
 
@@ -1396,7 +1396,7 @@ Kemungkinan terjadinya galat pada metode \textit{Miller-Rabin} dapat diperkecil 
 	\end{tabularx}
 \end{table}
 
-\subsection{Polinomial Pembuat Bilangan Prima}
+\subsection{ Polinomial Pembuat Bilangan Prima}
 
 Pencarian bilangan prima dapat dilakukan dengan mencoba nilai satu per satu dan mengecek apakah nilai tersebut merupakan bilangan prima atau bukan. Cara ini cenderung tidak efektif. Untuk mempersingkat waktu pencarian bilangan prima, digunakan sebuah polinomial penghasil prima.
 

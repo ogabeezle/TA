@@ -100,7 +100,7 @@
 \titleformat {\section}
 [hang]
 {\bfseries}
-{\thesection. }
+{\thesection }
 {0ex}
 {}
 [\vspace{-0.9em}]
@@ -109,7 +109,7 @@
 \titleformat {\subsection}
 [hang]
 {\bfseries}
-{\thesubsection. }
+{\thesubsection }
 {0ex}
 {}
 [\vspace{-0.6em}]
@@ -118,7 +118,7 @@
 \titleformat {\subsubsection}
 [hang]
 {\bfseries}
-{\thesubsubsection. }
+{\thesubsubsection }
 {0ex}
 {}
 [\vspace{-0.6em}]
@@ -170,13 +170,13 @@
 
 % Prefix each segment
 \renewcommand{\cfttabpresnum}{Tabel }
-\renewcommand{\cfttabaftersnum}{:}
+\renewcommand{\cfttabaftersnum}{}
 \renewcommand{\cftfigpresnum}{Gambar }
-\renewcommand{\cftfigaftersnum}{:}
+\renewcommand{\cftfigaftersnum}{}
 \renewcommand{\cftalgorithmspresnum}{Pseudocode }
-\renewcommand{\cftalgorithmsaftersnum}{:}
+\renewcommand{\cftalgorithmsaftersnum}{}
 \renewcommand{\cftlistingspresnum}{Kode Sumber }
-\renewcommand{\cftlistingsaftersnum}{:}
+\renewcommand{\cftlistingsaftersnum}{}
 
 
 % Set each segment's indentation such that none will overlap
@@ -197,3 +197,15 @@
 % Modulo 
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 \renewcommand{\mod}[1]{\ \mathrm{mod}\ #1}
+
+% Bib
+\renewcommand*{\newunitpunct}{,\space}
+
+% Algorithm
+\captionsetup[algorithm]{labelsep=space}
+\lstset{ 
+  deletekeywords={...}, 
+  keywordstyle=\bfseries,
+  language=c++,
+  otherkeywords={*,vector,function,pair},
+}

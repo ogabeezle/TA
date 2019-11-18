@@ -2,7 +2,7 @@
 
 Pada bab ini, akan dijelaskan dasar teori yang digunakan sebagai landasaan pengerjaan Tugas Akhir ini.
 
-\section{Deskripsi Permasalahan}
+\section{ Deskripsi Permasalahan}
 Permasalahan yang dibahas pada Tugas Akhir ini adalah perhitungan untuk mencari perimeter polygon terkecil dari sekumpulan titik yang dibatasi di dalam polygon sederhana.
 \begin{figure}
 	\Centering
@@ -34,7 +34,7 @@ Permasalahan yang dibahas pada Tugas Akhir ini adalah perhitungan untuk mencari 
 
 Dikarenakan nilai batasan $ N $ pada deskripsi soal cukup besar yaitu $ 10^{11} $, sehingga algoritma naif akan memberikan verdict \textit{Time Limit Excedeed} karena melampaui batas waktu yang telah ditentukan.
 
-\section{Strategi Penyelesaian dengan Multipoint Evaluation}
+\section{ Strategi Penyelesaian dengan Multipoint Evaluation}
 \label{sec:penyelesaian_multipoint_evaluation}
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode FACTMODP dengan \textit{Multipoint Evaluation}. Secara singkat, strategi penyelesaian masalah dari FACTMODP menggunakan \textit{Multipoint Evaluation} terbagi menjadi 4 bagian besar yaitu :
 \begin{enumerate}
@@ -46,7 +46,7 @@ Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pa
 
 Sebagai contoh, pada subbab ini akan menggunakan $ N = 10 $ serta $ P = 10^9 + 7 $ sebagai modulo. Nilai $ N $ dan $ P $ yang dipilih berada didalam batasan yang didefinisikan dalam subbab \ref{sec:batasan_masalah}. Persoalan utama dalam Tugas Akhir ini adalah memodelkan faktorial sedemikian hingga dapat dikomputasi dengan kompleksitas dibawah $ \mathcal{O}{(N)} $.
 
-\subsection{Perumusan Transformasi Faktorial}
+\subsection{ Perumusan Transformasi Faktorial}
 \label{sec:perumusan_transformasi_faktorial}
 Dimisalkan bilangan bulat positif $ v = \lfloor \sqrt{N} \rfloor $ serta polinomial $ g(x) = \prod_{i=0}^{v-1} (x + vi + 1) $, sehingga didefinisikan persamaan faktorial baru pada persamaan \eqref{eq:persamaan_faktorial_baru}.
 \begin{equation}
@@ -65,7 +65,7 @@ Dalam algoritma \textit{Multipoint Evaluation}, dibutuhkan pembangunan pohon bin
 	\label {fig:ilustrasi-pohon-polinomial}
 \end{figure}
 
-\subsection{Membangun Pohon Polinomial}
+\subsection{ Membangun Pohon Polinomial}
 \label{sec:membangun_pohon_polinomial}
 Dimisalkan $ u_0, u_1, \cdots , u_{n-1} $ adalah titik yang akan dievaluasi pada polinomial $ g(x) $. Dalam membangun pohon polinomial, diperlukan polinomial $( x - u_i) $ untuk $ 0 \leq i < n $ sebagai \textit{leaf} dan \textit{node} yang merepresentasikan hasil perkalian dari semua \textit{node} atau \textit{leaf} dibawahnya. 
 
@@ -111,7 +111,7 @@ Secara umum pada step ke-$ m $ dalam membangun pohon polinomial dengan tinggi $ 
 	\label {fig:pohon-polinomial-n-10}
 \end{figure}
 
-\subsection{Evaluasi Pohon Polinomial}
+\subsection{ Evaluasi Pohon Polinomial}
 \label{sec:evaluasi_pohon_polinomial}
 Setelah pohon polinomial dibangun, langkah selanjutnya adalah mengevaluasi polinomial $ g(x) $ dengan \textit{Multipoint Evaluation}. Algoritma ini merupakan algoritma \textit{divide-and-conquer} yang menggunakan \textit{Chineese Remainder Theorem} sebagai dasar.
 \begin{theo}[Teorema Sisa Polinomial]
@@ -179,7 +179,7 @@ Pada pseudocode \ref{psdo:general_evaluasi_pohon_polinomial}, bagian yang memili
 	\label{eq:kompleksitas_evaluasi_pohon_polinomial}
 \end{equation}
 
-\subsection{Komputasi Faktorial berdasarkan Hasil Evaluasi}
+\subsection{ Komputasi Faktorial berdasarkan Hasil Evaluasi}
 \label{sec:komputasi_faktorial_multipoint}
 Setelah mendapatkan nilai dari $ g(0), g(1), \cdots, g(v-1) $, langkah selanjutnya adalah menghitung nilai dari $ N! $. Mengulang dari subbab \ref{sec:perumusan_transformasi_faktorial} dan persamaan \eqref{eq:persamaan_faktorial_baru}, didapatkan persamaan faktorial baru sebagai berikut.
 $$ N ! = \left( \prod_{i=0}^{v-1} g(i) \right) \cdot \prod_{i=v^2+1}^n i $$
@@ -227,7 +227,7 @@ Karena derajat polinomial terbesar pada algoritma ini adalah $ p = \sqrt{\frac{P
 
 \newpage
 
-\section{Strategi Penyelesaian dengan Shifting Evaluation Values}
+\section{ Strategi Penyelesaian dengan Shifting Evaluation Values}
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode FACTMODP menggunakan \textit{Shifting Evaluation Values}. Secara singkat, strategi penyelesaian masalah dari FACTMODP menggunakan \textit{Shifting Evaluation Values} terbagi menjadi 3 bagian besar yaitu :
 \begin{enumerate}
 	\item Shifting Evaluation Values
@@ -237,7 +237,7 @@ Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pa
 
 Sebagai contoh, pada subbab ini akan menggunakan $ N = 17 $ serta $ P = 10^9 + 7 $ sebagai modulo. Nilai $ N $ dan $ P $ yang dipilih berada didalam batasan yang didefinisikan dalam subbab \ref{sec:batasan_masalah}. Persoalan utama dalam Tugas Akhir ini adalah memodelkan faktorial sedemikian hingga dapat dikomputasi dengan kompleksitas dibawah $ \mathcal{O}{(N)} $.
 
-\subsection{Shifting Evaluation Values}
+\subsection{ Shifting Evaluation Values}
 Pada subbab ini akan dibahas mengenai algoritma \textit{Shifting Evaluation Values} secara umum. Pada subbab \ref{sec:penyelesaian_multipoint_evaluation}, dikatakan bahwa polinomial $ g(x) $ dievaluasi pada $ 0, 1, \cdots, v-1 $, sehingga membentuk deret aritmatika. Pseudocode \ref{psdo:shifting_evaluation_values} menjelaskan bagaimana secara umum algoritma \textit{Shifting Evaluation Values} bekerja dalam $ \mathbb{R} $. Dimisalkan $ a $ dan $ r_0, r_1, \cdots, r_d $ merupakan titik dalam $ \mathbb{R} $, sehingga diketahui nilai dari $$ P(r_0), P(r_1), \cdots, P(r_d) $$ maka \textit{Shifting Evaluation Values} menghitung nilai dari $$ P(r_0 + a), P(r_1 + a), \cdots, P(r_d + a) $$ dengan kompleksitas $ \mathcal{M}{(2d)} + \mathcal{O}{(d)} $.
 \begin{algorithm}
 	\caption{Shifting Evaluation Values (General)}
@@ -316,7 +316,7 @@ untuk $ k=0, \cdots, d$ , maka $ \sum_{i=0}^d \tilde{P_i} \frac{1}{a+k-i} $ adal
 Fungsi pada pseudocode \ref{psdo:shifting_evaluation_values} hanya mengembalikan \textit{middle product} dari perkalian polinomial $ Q = \tilde{P}S $. Untuk menghitung \textit{middle product}, dapat menggunakan algoritma bernama \textit{Middle Product Optimization}.\textit{ Midlle Product Optimization} merupakan teknik optimasi dalam menemukan \textit{middle product} dari perkalian polinomial $ A , B $ dengan derajat $ d $ dan $ 2d $, sehingga $$ AB = C_0 + C_1X^{d+1} + C_2X^{2d+2}. $$ $ C_1 $ disebut sebagai \textit{midlle product} dari $ AB $. Pada subbab berikutnya akan dijelaskan mengenai algoritma \textit{midlle product optimization} lebih lengkapnya. 
 % TODO : subbab berapaahh
 
-\subsection{Implementasi Shifting Evaluation Values pada Perhitungan Faktorial}
+\subsection{ Implementasi Shifting Evaluation Values pada Perhitungan Faktorial}
 
 \begin{figure}
 	\Centering
@@ -398,7 +398,7 @@ Tetapi karena \textit{grid} tersebut sudah tidak memiliki nilai kosong, maka pro
 	\label{eq:kompleksitas_grid}.
 \end{equation}
 
-\subsection{Komputasi Faktorial berdasarkan Hasil Evaluasi}
+\subsection{ Komputasi Faktorial berdasarkan Hasil Evaluasi}
 Setelah \textit{grid} sudah tidak memiliki nilai kosong, didefinisikan \textit{array} $ G $ berukuran $ 1 \times v $, dengan nilai $ \{ row_1, row_2, \cdots, row_3 \} $, dimana $ row_i $ menyatakan nilai dari baris ke-$i$ dari \textit{grid} yang sudah dihitung sebelumnya. Maka didefinisikan rumus faktorial baru untuk \textit{Shifting Evaluation Values} seperti pada persamaan \eqref{eq:persamaan_faktorial_baru_2}
 \begin{equation}
 	N! = \text{faktorial}(n) = \left( \prod_{i=0}^{v-1} G(i) \right) \cdot \prod_{i=v^2+1}^n i
@@ -429,7 +429,7 @@ Karena derajat polinomial terbesar pada algoritma ini adalah $ p = \sqrt{\frac{P
 	\label{eq:kompleksitas_shifting_eval_faktorial}
 \end{equation}
 
-\section{Strategi Penyelesaian Operasi Polinomial}
+\section{ Strategi Penyelesaian Operasi Polinomial}
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian operasi polinomial yang sering digunakan dalam dua algoritma yang dibahas pada subbab sebelumnya. Secara singkat, strategi penyelesaian operasi polinomial terbagi menjadi 3 bagian besar yaitu :
 \begin{enumerate}
 	\item Penjumlahan dan Pengurangan Polinomial
@@ -437,7 +437,7 @@ Pada subbab ini akan dipaparkan mengenai strategi penyelesaian operasi polinomia
 	\item Pembagian Polinomial
 \end{enumerate}
 
-\subsection{Penjumlahan dan Pengurangan Polinomial}
+\subsection{ Penjumlahan dan Pengurangan Polinomial}
 Polinomial juga bisa diterapkan operasi pertambahan dan pengurangan dalam aritmatika. 
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
@@ -454,7 +454,7 @@ Kemudian operasi pengurangan polinomial $ f(x) - g(x) $ dinyatakan seperti dalam
 \end{equation}
 Secara umum kompleksitas operasi pertambahan dan pengurangan dari polinomial adalah $ \mathcal{O}{(max(n,m))} $ dengan $ n , m $ adalah derajat polinomial $ f(x) \text{ dan } g(x) $.
 
-\subsection{Perkalian Polinomial}
+\subsection{ Perkalian Polinomial}
 Selain pertambahan dan pengurangan, polinomial juga terdapat operasi perkalian.
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
@@ -466,7 +466,7 @@ Pada umumnya operasi perkalian polinomial $ f(x) \cdot g(x) $ dinyatakan seperti
 \end{equation}
 Secara umum kompleksitas operasi perkalian polinomial adalah $ \mathcal{O}{(nm)} $ dengan $ n , m $ adalah derajat polinomial $ f(x) \text{ dan } g(x) $. Kompleksitas operasi perkalian ini dapat dikurangi menggunakan FFT atau \textit{Fast Fourier Transform}.
 
-\subsubsection{Fast Fourier Transform}
+\subsubsection{ Fast Fourier Transform}
 Pada tahun 1965, James W. Cooley dan John W. Tukey berhasil merumuskan suatu teknik perhitungan algoritma \textit{Fourier Transform} yang efisien\cite{fft}. Teknik perhitungan algoritma ini dikenal dengan sebutan \textit{Fast Fourier Transform} atau lebih populer dengan istilah FFT. \textit{Fast Fourier Transform} dalam bahasa indonesia adalah Transformasi Fourier Cepat adalah sumber dari suatu algoritma untuk menghitung \textit{Discrete Fourier Transform (DFT)} atau Transformasi Fourier Diskrit dengan cepat dan efisien beserta dengan inversenya.
 
 Transformasi Fourier Cepat diterapkan dalam berbagai bidang mulai dari pengolahan signal digital, memecahkan persamaan differensial parsial, sampai dalam perkalian polinomial. Terdapat dua pendekatan dari algoritma FFT yaitu \textit{Decimation in Time (DIT)} dan \textit{Decimation in Frequency (DIF)}. Pada subbab ini akan dijelaskan FFT yang digunakan untuk perkalian polinomial dengan pendekatan \textit{Decimation in Time (DIT)}.
@@ -543,7 +543,7 @@ Ketika persamaan \eqref{eq:fft-kiri} dan \eqref{eq:fft-kanan} diselesaikan secar
 \end{equation}
 Proses perhitungan dari persamaan \eqref{eq:kupu-kupu-1} dan \eqref{eq:kupu-kupu-2} merupakan operasi yang disebut dengan \textit{FFT Butterfly Cooley-Tukey} atau \textit{FFT Butterfly}. Skema \textit{FFT Butterfly} dengan metode pemecahan persamaan \textit{bit-reverse-index} ditunjukan pada gambar \ref{fig:bit-reverse-fft-butterfly}.
 
-\subsubsection{Inverse Fast Fourier Transform} Inverse Fast Fourier Transform merupakan metode untuk mengembalikan hasil dari transformasi fourier cepat pada domain frekuensi menjadi domain waktu kembali, sehingga proses ini akan menghasilkan deret bilangan kompleks pada domain waktu kembali. Pada perkalian polinomial, inversi dari transformasi fourier dilakukan untuk merubah representasi titik dari polinomial setelah dilakukan perkalian secara $ \mathcal{O}{(N)} $ menjadi bentuk polinomial dengan representasi koefisien kembali. Transformasi inverse pada polinomial $ f(x) $ dilakukan menurut transformasi yang ditunjukan pada gambar \ref{fig:inverse-fft}.
+\subsubsection{ Inverse Fast Fourier Transform} Inverse Fast Fourier Transform merupakan metode untuk mengembalikan hasil dari transformasi fourier cepat pada domain frekuensi menjadi domain waktu kembali, sehingga proses ini akan menghasilkan deret bilangan kompleks pada domain waktu kembali. Pada perkalian polinomial, inversi dari transformasi fourier dilakukan untuk merubah representasi titik dari polinomial setelah dilakukan perkalian secara $ \mathcal{O}{(N)} $ menjadi bentuk polinomial dengan representasi koefisien kembali. Transformasi inverse pada polinomial $ f(x) $ dilakukan menurut transformasi yang ditunjukan pada gambar \ref{fig:inverse-fft}.
 \begin{figure}
 	\Centering
 	\includegraphics [scale=0.7]{bab2/img/bit-reverse-fft-butterfly}
@@ -559,7 +559,7 @@ Proses perhitungan dari persamaan \eqref{eq:kupu-kupu-1} dan \eqref{eq:kupu-kupu
 \end{figure}
 Perhatikan bahwa \textit{Inverse Fast Fourier Transform} hampir sama dengan proses FFT, perbedaannya pada urutan serta $ \omega_N $.
 
-\subsubsection{Number Theoretic Transform} \label{ssec:ntt}
+\subsubsection{ Number Theoretic Transform} \label{ssec:ntt}
 \textit{Number Theoretic Transform} atau NTT didapatkan dengan megeneralisasikan DFT pada $ \mathbb{Z}/p\mathbb{Z} $. NTT biasanya digunakan dalam mengalikan 2 polinomial dalam modulo prima tertentu. Kelebihan NTT adalah tidak ada \textit{precision error} yang sering terjadi pada FFT, karena kalkulasinya menggunakan bilangan integer. Kelemahan utama dari NTT adalah hanya dapat di implementasikan dengan modulo prima yang memenuhi $ p = k \cdot n + 1 $, dimana $ k $ dan $ n $ adalah konstanta tertentu. Sehingga mengimplementasikan NTT dengan bilangan prima acak memerlukan CRT \textit{(Chinese Remainder Theorem)}.
 
 \begin{theo}[Fermat's Little Theorem]
@@ -596,7 +596,7 @@ Oleh karena itu $ \omega_n $ merupakan n\textit{-th primitive root of unity}, ya
 
 Perhitungan NTT memerlukan banyak sekali perkalian modular dengan modulo tetap, oleh karena itu NTT dapat diimplementasikan dengan perkalian modular \textit{Montgomery}, untuk mempercepat perkalian modular dalam NTT.
 
-\subsubsection{Perkalian Polinomial menggunakan Number Theoretic Transform}
+\subsubsection{ Perkalian Polinomial menggunakan Number Theoretic Transform}
 \label{ssec:langkah_perkalian_ntt}
 Operasi perkalian polinomial dapat dioptimasi menggunakan \textit{Number Theoretic Transform} yang telah dibahas pada subbab \ref{ssec:ntt}. Langkah langkah untuk mengalikan polinomial $f(x)$ dan $g(x)$ (konvolusi) dalam modulo $ P $ adalah sebagai berikut :
 \begin{enumerate}
@@ -607,14 +607,14 @@ Operasi perkalian polinomial dapat dioptimasi menggunakan \textit{Number Theoret
 	\item \textbf{Interpolasi NTT / Inversi NTT} Melakukan interpolasi titik menggunakan inversi NTT dari $ h(x) $ untuk mendapatkan polinomial dalam representasi koefisien kembali.
 \end{enumerate}
 
-\subsection{Pembagian Polinomial}
+\subsection{ Pembagian Polinomial}
 Didefinisikan 2 buah polinomial $f(x)$ dan $g(x)$ sebagai berikut.
 $$ f(x) = a_n x^n + a_{n-1}^{n-1} + \cdots + a_2x^2 + a_1x + a_0 $$
 $$ g(x) = b_m x^m + b_{m-1}^{m-1} + \cdots + b_2x^2 + b_1x + b_0 $$
 Pembagian ini akan menghasilkan dua polinomial baru $ q(x) $ sebagai hasil bagi dan $ r(x) $ sebagai sisa hasil bagi. Sisa hasil bagi polinomial memiliki beberapa sifat khusus seperti dalam teorema \ref{theo:teorema_sisa_poli}.
 Pada umumnya pembagian polinomial dapat dilakukan dengan pembagian secara klasik maupun dengan metode \textit{Horner}, akan tetapi kedua cara tersebut memiliki kompleksitas yang tinggi, oleh karena itu diperlukan algoritma lain dengan kompleksitas lebih rendah. Iterasi Newton dan \textit{Middle Product Optimization} merupakan dua algoritma yang digunakan dalam pembagian polinomial.
 
-\subsubsection{Iterasi Newton}
+\subsubsection{ Iterasi Newton}
 \indent Misalkan terdapat 2 buah polinomial $f(x)$ dan $g(x)$ dalam $ \mathbb{Z}/p\mathbb{Z} $ sebagai berikut.
 $$ f(x) = a_{2n-2} x^{2n-2} + \cdots + a_2x^2 + a_1x + a_0 $$
 $$ g(x) = b_{n-1} x^{n-1} + \cdots + b_2x^2 + b_1x + b_0 $$
@@ -654,7 +654,7 @@ Sehingga untuk menghitung nilai dari $ q* $ dapat menggunakan persamaan \eqref{e
 \end{equation}
 Sehingga pada setiap step memerlukan 3 kali perkalian polinomial dan 1 kali perkalian polinomial untuk mendapatkan nilai dari $ q* $. Untuk mendapatkan nilai dari $ r $ menggunakan persamaan $ r = f-gq $ memerlukan 1 kali perkalian polinomial kembali. Sehingga iterasi newton memerlukan banyak sekali perkalian polinomial. Operasi ini dapat dioptimasi apabila digunakan perkalian polinomial berbasis FTT/NTT.
 
-\subsubsection{Middle Product Optimization}
+\subsubsection{ Middle Product Optimization}
 \indent Misal $ n = 2^k $, kemudian diketahui bahwa
 $$ y_k \equiv 2y_{k-1} - y_{k-1}^2 b^* \mod{x^{2^{k}}} = y_{k-1} + y_{k-1}(1 - b^* y_{k-1}) \mod{x^{2^k}}. $$
 Dalam keadaan normal, perkalian polinomial dengan derajat $ 2n - 1 $ dan $ n - 1 $ memerlukan perkalian polinomial berbasis NTT dengan \textit{array} yang bisa menampung setidaknya $ 3n $ elemen. Tetapi perkalian polinomial berbasis NTT memerlukan input dengan ukuran pangkat dua, sehingga memerlukan \textit{array} dengan ukuran $ 4n $. Diketahui bahwa $ 1-y_kb^* \equiv 0 \mod{x^{2^k}} $, sehingga perkalian $ y_kb^* $ akan menghasilkan polinomial seperti dalam persamaan \eqref{eq:persamaan_asal_mula_m(x)}, dengan $ h(x) = 1 + 0 \cdot x + \cdots + 0 \cdot x^{n-1}. $
@@ -703,7 +703,7 @@ Menggunakan metode optimasi ini dapat mengurangi jumlah pemanggilan FFT/NTT deng
 \end{algorithm}
 
 
-\subsubsection{Pembagian Polinomial menggunakan Iterasi Newton dan Middle Product Optimization}
+\subsubsection{ Pembagian Polinomial menggunakan Iterasi Newton dan Middle Product Optimization}
 Pada subbab ini akan dibahas mengenai pembagian polinomial menggunakan Iterasi Newton dan Middle Product Optimization. Didefinisikan operasi $ rev_k(a) = x^ka(1/x) $. Ketika $ k = n $ maka akan didapatkan polinomial a dengan koefisien yang dibalik. Apabila persamaan \eqref{eq:persamaan_reversal} ditulis kembali dengan melibatkan operasi $ rev_k(a) $, maka didapatkan persamaan \eqref{eq:persamaan_reversal_baru}.
 \begin{equation}
 	rev_n(f) = rev_{n-m}(q).rev_m(g)+x^{n-m+1}rev_{m-1}(r)
@@ -736,7 +736,7 @@ Selain menggunakan rumus diatas, nilai dari $ q $ dapat dihitung dengan memanfaa
 	\end{algorithmic}
 \end{algorithm}
 
-\section{Strategi Optimasi}
+\section{ Strategi Optimasi}
 Pada subbab ini akan dipaparkan metode optimasi yang digunakan dalam tugas akhir ini. Secara singkat terdapat 2 strategi optimasi yang digunakan dalam tugas akhir ini yaitu :
 \begin{enumerate}
 	\item Optimasi Operasi Perkalian Modulo
@@ -744,7 +744,7 @@ Pada subbab ini akan dipaparkan metode optimasi yang digunakan dalam tugas akhir
 	\item Optimasi Perhitungan Prima yang digunakan dalam NTT
 \end{enumerate}
 
-\subsection{Optimasi Operasi Perkalian Modulo}
+\subsection{ Optimasi Operasi Perkalian Modulo}
 Optimasi Perkalian Modulo dapat dilakukan dengan menerapkan Perkalian Modular \textit{Montgomery}. Perkalian Modular \textit{Montgomery} atau reduksi \textit{montgomery} adalah metode efisien untuk menghitung $ u = a \cdot b \Mod{n} $ dengan $ a, b, $ dan $ n $ adalah  bilangan $k$-bit, yang dikenalkan oleh Peter L. Montgomery pada tahun 1985 \cite{montgomery}. 
 
 Algoritma ini cocok digunakan dalam implementasi pada software dan hardware komputer karena kemampuannya dalam melakukan operasi modulo pangkat 2 dengan cepat. Reduksi untuk menghasilkan $ u $ tidak dilakukan dengan cara pembagian dengan $ n $ seperti pada perkalian modulo pada umumnya, tetapi dengan $ 2^r $ dalam representasi \textit{Montgomery World}.
@@ -806,7 +806,7 @@ $$ ar - br = (a-b)r $$
 Sementara untuk operasi pembagian, hampir sama dengan pembagian modular biasa, dengan mengalikan dalam \textit{Montgomery World} dengan inversenya.
 $$ \frac{a}{b}r = ar \cdot b^{-1}r $$
 
-\subsection{Optimasi Operasi Pemangkatan Modulo}
+\subsection{ Optimasi Operasi Pemangkatan Modulo}
 Operasi perpangkatan diperlukan dalam perhitungan modulo inverse dari $ b $ dalam modulo $ n $. Dengan metode naif, operasi pemangkatan memerlukan kompleksitas $ \mathcal{O}{(n)} $.
 $$ a^n = a \cdot a \cdots a\ (n\ kali) $$
 
@@ -863,7 +863,7 @@ Dengan persamaan \eqref{eq:modular_expo_f_y} dapat dibuktikan perhitungan $ a^b 
 	\end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Optimasi Perhitungan Prima yang digunakan dalam NTT}
+\subsubsection{ Optimasi Perhitungan Prima yang digunakan dalam NTT}
 
 Dikarenakan permasalahan \soal, terdapat modulo yang berbeda untuk kasus uji yang berbeda, sehingga untuk setiap kasus uji diharuskan untuk mencari generator baru untuk NTT, yang mana akan memiliki kompleksitas lebih. Oleh karena itu penulis menggunakan algoritma \textit{Chineese Remainder Theorem} atau CRT untuk mengeneralisasikan hasil berdasarkan beberapa kongruensi prima tetap. Bilangan prima yang digunakan harus lebih besar dari batas prima yang menjadi masukan pada permasalahan.
 
