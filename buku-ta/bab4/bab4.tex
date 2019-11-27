@@ -390,7 +390,7 @@ vector<point> getBetween(polygon &triangle, queue<point> q, vector<point> trees)
 \subsection{ Implementasi Fungsi Solve}
 Pada subbab ini akan dijelaskan mengenai implementasi dari fungsi \texttt{Solve} pada pseudocode \ref{psdo:fungsi-solve}. Implementasi dapat dilihat pada kode sumber \ref{code:fungsi-solve}.
 
-\begin{code}[firstnumber=1]{Fungsi Solve}{fungsi-solve}
+\begin{code}[firstnumber=1]{}{}
 polygon solve(polygon &perimeter, vector<point> &trees){
 	queue<point> q;
 	for (int i = 0; i < perimeter.P.size(); i++){
@@ -418,6 +418,9 @@ polygon solve(polygon &perimeter, vector<point> &trees){
 					bef = points[i];
 				}
 			}
+\end{code}
+\newpage
+\begin{code}[firstnumber=28]{Fungsi Solve}{fungsi-solve}
 			else{
 				q.push(cur);
 				pool[cur]++;
