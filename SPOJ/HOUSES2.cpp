@@ -33,6 +33,9 @@ struct Point{
 	bool operator== (Point other) const {
 		return same_d(x,other.x)&&same_d(y,other.y);
 	}
+	bool operator !=(Point other)const{
+		return !(Point(x,y)==other);
+	}
 
 };
 
@@ -79,7 +82,7 @@ struct Line {
 		if (same_d(P1.x,P2.x)) a=1.0, b=0.0, c=-P1.x;
 		else a=-(P1.y-P2.y)/(P1.x-P2.x), b=1.0, c=-(a*P1.x)-P1.y;
 	}
-	line (Point P,double slope) {
+	Line (Point P,double slope) {
 		if (same_d(slope,INF)) a=1.0, b=0.0, c=-P.x;
 		else a=-slope, b=1.0, c=-(a*P.x)-P.y;
 	}
@@ -153,36 +156,100 @@ double e_dist(Point P1,Point P2) {
 
 void generate_graph(Point arr[]){
 	generate_segment(arr);
+	map<Point,bool> check;
 	for(int i=0;i<11;i++){
+		if(check[arr[i]]) continue;
 		for(int j=i+1;j<11;j++){
+			if(check[arr[j]]) continue;
+			if(arr[i]==arr[j]) continue;
 			int count =0;
+			int segCount=0,segCountRev=0;
+			vector<Point> collision,collisionRev;
+			bool kill=false;
 			for(int k=0;k<9;k++){
 				if(s_intersection(Segment(arr[i],arr[j]),segment[k])){
 					count++;
+					if(segment[k].P!=arr[i]&&segment[k].Q!=arr[i]&&segment[k].P!=arr[j]&&segment[k].Q!=arr[j]){
+//						&&(onSegment(segment[k].P,Segment(arr[i],arr[j]))||onSegment(segment[k].P,Segment(arr[i],arr[j]))))
+//						cout<<i<<" "<<j<<" "<<k<<endl;
+						kill=true;
+						break;
+					}
+					if((segment[k].P==arr[i]&&segment[k].Q==arr[j])||(segment[k].P==arr[j]&&segment[k].Q==arr[i])) continue;
+					if(segment[k].P==arr[j]){
+						segCount++;
+						collision.push_back(segment[k].Q);
+					}
+					else if(segment[k].Q==arr[j]){
+						segCount++;
+						collision.push_back(segment[k].P);
+					}
+					if(segment[k].P==arr[i]){
+						segCountRev++;
+						collisionRev.push_back(segment[k].Q);
+					}
+					else if(segment[k].Q==arr[i]){
+						segCountRev++;
+						collisionRev.push_back(segment[k].P);
+					}
 //					cout<<k<<endl;
 //					cout<<arr[i].x<<" "<<arr[i].y<<" "<<arr[j].x<<" "<<arr[j].y<<" "<<segment[k].P.x<<" "<<segment[k].P.y<<" "<<segment[k].Q.x<<" "<<segment[k].Q.y<<endl;
 				}
 			}
+			if(kill) continue;
 //			cout<<i<<j<<count<<endl;
 			if(i==0&&j==1){
-				if(count==0){
+				if(segCount==count){
 					double dist=e_dist(arr[i],arr[j]);
+//					cout<<i<<" 1 "<<j<<" "<<dist<<endl;
 					graph[i][j]=dist;
 					graph[j][i]=dist;
 				}
 			}
 			else{
-				if(i<2&&count<3){
-					double dist=e_dist(arr[i],arr[j]);
-					graph[i][j]=dist;
-					graph[j][i]=dist;
+				int kd=0,ld=0;
+				int kd1=0,ld1=0;
+				int ori=orientation(arr[i],arr[j],arr[1]);
+				for(int l=0;l<collision.size();l++){
+					if(ori>orientation(arr[i],arr[j],collision[l])){
+						kd++;
+					}
+					else if(ori<orientation(arr[i],arr[j],collision[l])){
+						ld++;
+					}
+					if(onSegment(collision[l],Segment(arr[i],arr[j]))&&collision[l]!=arr[i]&&arr[i]!=arr[j]&&collision[l]!=arr[j]){
+						kd++;
+						ld++;
+					}
 				}
-				else if(i>1&&count<5){
+				ori=orientation(arr[j],arr[i],arr[1]);
+				for(int l=0;l<collisionRev.size();l++){
+					if(ori>orientation(arr[j],arr[i],collisionRev[l])){
+						kd1++;
+					}
+					else if(ori<orientation(arr[j],arr[i],collisionRev[l])){
+						ld1++;
+					}
+					if(onSegment(collisionRev[l],Segment(arr[i],arr[j]))&&collisionRev[l]!=arr[i]&&arr[i]!=arr[j]&&collisionRev[l]!=arr[j]){
+						kd1++;
+						ld1++;
+					}
+				}
+//				cout<<ld<<" "<<kd<<" "<<count<<endl;
+//				double dist=e_dist(arr[i],arr[j]);
+//				cout<<i<<" 2 "<<j<<" "<<dist<<endl;
+				if((ld==0||kd==0)&&(ld1==0||kd1==0)){
+//					cout<<ld<<" "<<kd<<" "<<count<<endl;
 					double dist=e_dist(arr[i],arr[j]);
+//					cout<<i<<" 2 "<<j<<" "<<dist<<endl;
 					graph[i][j]=dist;
-					graph[j][i]=dist;
+					graph[j][i]=dist;					
+				}
+				else if(segCount>4){
+					check[arr[j]]=true;
 				}
 			}
+			
 		}
 		
 	}
@@ -199,12 +266,12 @@ int minDistance(double dist[], bool sptSet[]) {
     return min_index; 
 }
 
-int printSolution(double dist[]) 
-{ 
-    printf("Vertex \t\t Distance from Source\n"); 
-    for (int i = 0; i < V; i++) 
-        printf("%d \t\t %lf\n", i, dist[i]); 
-} 
+ int printSolution(double dist[]) 
+ { 
+     printf("Vertex \t\t Distance from Source\n"); 
+     for (int i = 0; i < V; i++) 
+         printf("%d \t\t %lf\n", i, dist[i]); 
+ } 
 
 double dijkstra(double graph[V][V], int src) 
 { 
@@ -246,6 +313,7 @@ int main(){
 //			cout<<node[j].x<<node[j].y<<endl;
 		}
 		generate_graph(node);
-		cout<<dijkstra(graph, 0)<<endl; 
+		printf("%.5lf\n",dijkstra(graph,0));
+//		cout<<dijkstra(graph, 2)<<endl;
 	}
 }
