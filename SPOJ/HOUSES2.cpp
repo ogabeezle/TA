@@ -156,11 +156,8 @@ double e_dist(Point P1,Point P2) {
 
 void generate_graph(Point arr[]){
 	generate_segment(arr);
-	map<Point,bool> check;
 	for(int i=0;i<11;i++){
-		if(check[arr[i]]) continue;
 		for(int j=i+1;j<11;j++){
-			if(check[arr[j]]) continue;
 			if(arr[i]==arr[j]) continue;
 			int count =0;
 			int segCount=0,segCountRev=0;
@@ -170,12 +167,9 @@ void generate_graph(Point arr[]){
 				if(s_intersection(Segment(arr[i],arr[j]),segment[k])){
 					count++;
 					if(segment[k].P!=arr[i]&&segment[k].Q!=arr[i]&&segment[k].P!=arr[j]&&segment[k].Q!=arr[j]){
-//						&&(onSegment(segment[k].P,Segment(arr[i],arr[j]))||onSegment(segment[k].P,Segment(arr[i],arr[j]))))
-//						cout<<i<<" "<<j<<" "<<k<<endl;
 						kill=true;
 						break;
 					}
-					if((segment[k].P==arr[i]&&segment[k].Q==arr[j])||(segment[k].P==arr[j]&&segment[k].Q==arr[i])) continue;
 					if(segment[k].P==arr[j]){
 						segCount++;
 						collision.push_back(segment[k].Q);
@@ -192,16 +186,12 @@ void generate_graph(Point arr[]){
 						segCountRev++;
 						collisionRev.push_back(segment[k].P);
 					}
-//					cout<<k<<endl;
-//					cout<<arr[i].x<<" "<<arr[i].y<<" "<<arr[j].x<<" "<<arr[j].y<<" "<<segment[k].P.x<<" "<<segment[k].P.y<<" "<<segment[k].Q.x<<" "<<segment[k].Q.y<<endl;
 				}
 			}
 			if(kill) continue;
-//			cout<<i<<j<<count<<endl;
 			if(i==0&&j==1){
 				if(segCount==count){
 					double dist=e_dist(arr[i],arr[j]);
-//					cout<<i<<" 1 "<<j<<" "<<dist<<endl;
 					graph[i][j]=dist;
 					graph[j][i]=dist;
 				}
@@ -209,7 +199,7 @@ void generate_graph(Point arr[]){
 			else{
 				int kd=0,ld=0;
 				int kd1=0,ld1=0;
-				int ori=orientation(arr[i],arr[j],arr[1]);
+				int ori=orientation(arr[i],arr[j],arr[j]);
 				for(int l=0;l<collision.size();l++){
 					if(ori>orientation(arr[i],arr[j],collision[l])){
 						kd++;
@@ -217,12 +207,8 @@ void generate_graph(Point arr[]){
 					else if(ori<orientation(arr[i],arr[j],collision[l])){
 						ld++;
 					}
-					if(onSegment(collision[l],Segment(arr[i],arr[j]))&&collision[l]!=arr[i]&&arr[i]!=arr[j]&&collision[l]!=arr[j]){
-						kd++;
-						ld++;
-					}
 				}
-				ori=orientation(arr[j],arr[i],arr[1]);
+				ori=orientation(arr[j],arr[i],arr[i]);
 				for(int l=0;l<collisionRev.size();l++){
 					if(ori>orientation(arr[j],arr[i],collisionRev[l])){
 						kd1++;
@@ -230,23 +216,11 @@ void generate_graph(Point arr[]){
 					else if(ori<orientation(arr[j],arr[i],collisionRev[l])){
 						ld1++;
 					}
-					if(onSegment(collisionRev[l],Segment(arr[i],arr[j]))&&collisionRev[l]!=arr[i]&&arr[i]!=arr[j]&&collisionRev[l]!=arr[j]){
-						kd1++;
-						ld1++;
-					}
 				}
-//				cout<<ld<<" "<<kd<<" "<<count<<endl;
-//				double dist=e_dist(arr[i],arr[j]);
-//				cout<<i<<" 2 "<<j<<" "<<dist<<endl;
 				if((ld==0||kd==0)&&(ld1==0||kd1==0)){
-//					cout<<ld<<" "<<kd<<" "<<count<<endl;
 					double dist=e_dist(arr[i],arr[j]);
-//					cout<<i<<" 2 "<<j<<" "<<dist<<endl;
 					graph[i][j]=dist;
 					graph[j][i]=dist;					
-				}
-				else if(segCount>4){
-					check[arr[j]]=true;
 				}
 			}
 			
@@ -259,45 +233,34 @@ int minDistance(double dist[], bool sptSet[]) {
     double min = INT_MAX;
 	int min_index; 
   
-    for (int v = 0; v < V; v++) 
-        if (sptSet[v] == false && dist[v] <= min) 
-            min = dist[v], min_index = v; 
+    for (int v = 0; v < V; v++){
+        if (sptSet[v] == false && dist[v] <= min) {
+            min = dist[v], min_index = v;        	
+		}
+	}
   
     return min_index; 
 }
 
- int printSolution(double dist[]) 
- { 
-     printf("Vertex \t\t Distance from Source\n"); 
-     for (int i = 0; i < V; i++) 
-         printf("%d \t\t %lf\n", i, dist[i]); 
- } 
-
-double dijkstra(double graph[V][V], int src) 
-{ 
+double dijkstra(double graph[V][V], int src) { 
     double dist[V];
   
     bool sptSet[V];
-    for (int i = 0; i < V; i++) 
+    for (int i = 0; i < V; i++){
         dist[i] = INT_MAX, sptSet[i] = false; 
+	}
         
     dist[src] = 0; 
     
-    for (int count = 0; count < V - 1; count++) { 
-    
-        int u = minDistance(dist, sptSet); 
-  
-  
-        sptSet[u] = true; 
-  
-  
-        for (int v = 0; v < V; v++) 
-        
+    for (int count = 0; count < V - 1; count++) {
+        int u = minDistance(dist, sptSet);   
+        sptSet[u] = true;   
+        for (int v = 0; v < V; v++) {
             if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX 
                 && dist[u] + graph[u][v] < dist[v]) 
-                dist[v] = dist[u] + graph[u][v]; 
-    } 
-//    printSolution(dist);
+                dist[v] = dist[u] + graph[u][v];
+		} 
+    }
     return dist[1];
 } 
 
@@ -310,10 +273,8 @@ int main(){
 		Point node[11];
 		for(int j=0;j<11;j++){
 			cin>>node[j].x>>node[j].y;
-//			cout<<node[j].x<<node[j].y<<endl;
 		}
 		generate_graph(node);
 		printf("%.5lf\n",dijkstra(graph,0));
-//		cout<<dijkstra(graph, 2)<<endl;
 	}
 }
