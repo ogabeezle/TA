@@ -6,7 +6,7 @@ Pada bab ini akan dijelaskan desain algoritma yang akan digunakan untuk menyeles
 \label{sec:desain-umum-sistem}
 Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari algoritma yang dirancang. Sistem diawali dengan menerima masukan 2 buah bilangan bulat $N$ yang merupakan banyaknya vertex pembentuk polygon luar dan $M$ yang merupakan banyaknya titik yang ada di dalam polygon tersebut. $N$ baris berikutnya berisikan 2 buah bilangan bulat $x_i$, $y_i$ yang merupakan koordinat dari vertex pembentuk polygon luar terurut berlawanan arah jarum jam. $M$ baris berikutnya berisikan dua buah bilangan bulat $x1_i$, $y1_i$ yang merupakan koordinat dari titik yang ada di dalam polygon.
 
-\section{ Desain Fungsi Main}
+\subsection{ Desain Fungsi Main}
 Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masukan yang sudah dijelaskan pada \ref{sec:desain-umum-sistem} untuk dilakukan proses selanjutnya. Pseudocode fungsi \fakesc{main} dapat dilihat pada pseudocode \ref{psdo:fungsi-main}. Fungsi \fakesc{Input} merupakan fungsi untuk menerima masukan, dan fungsi \fakesc{Print} merupakan fungsi untuk menampilkan hasil. 
 
 \begin{algorithm}
@@ -34,7 +34,7 @@ Fungsi \fakesc{main} merupakan fungsi yang bertanggung jawab untuk menerima masu
         \EndWhile
 	\end{algorithmic}
 \end{algorithm}
-\section{ Desain Class Point}
+\subsection{ Desain Class Point}
 \label{sec:point}
 Class \fakesc{Point} adalah class untuk menyimpan titik dalam diagram Kartesius. Pseudocode \ref{psdo:class-point} merupakan pseudocode dari class \fakesc{Point}. Nantinya pada implementasi, class ini akan melakukan \textit{override} terhadap operator perbandingan.
 \begin{table}[htb]
@@ -64,7 +64,7 @@ Class \fakesc{Point} tidak memiliki fungsi karena class ini memang hanya untuk m
 
 Fungsi \textit{Constructor} dari class ini terdiri dari dua jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Point} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y, \_fixed$, menyatakan nilai $x, y, fixed$ secara berurutan.
 
-\section{ Desain Class Vec}
+\subsection{ Desain Class Vec}
 \label{sec:vec}
 Class \fakesc{Vec} merupakan class yang menyimpan vector dari dua buah titik pada diagram kartesian. Pseudocode \ref{psdo:class-vec} merupakan pseudocode dari class \fakesc{Vec}. 
 
@@ -94,7 +94,7 @@ Class \fakesc{Vec} tidak memiliki fungsi karena class ini hanya untuk menyimpan 
 
 Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Vec} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_x, \_y$, menyatakan nilai $x, y$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $x$ dan $y$ akan didapatkan dari pengurangan koordinat dari \fakesc{Point} $A$ dan \fakesc{Point} $B$.
 
-\section{ Desain Class Line}
+\subsection{ Desain Class Line}
 \label{sec:line}
 Class \fakesc{Line} merupakan class yang bertanggung jawab untuk melakukan operasi-operasi pada garis dalam diagram kartesian. Pseudocode \ref{psdo:class-line} merupakan pseudocode dari Class \fakesc{Line}. 
 
@@ -125,7 +125,7 @@ Class \fakesc{Line} tidak memiliki fungsi karena class ini hanya untuk menyimpan
 
 Fungsi \textit{Constructor} dari class ini terdiri dari 3 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Line} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_a, \_b, \_c$, menyatakan nilai $a, b, c$ secara berurutan. Fungsi \textit{constructor} ketiga adalah fungsi dengan parameter $A, B$, menyatakan \fakesc{Point} dari titik $A$ dan \fakesc{Point} dari titik $B$, dimana nantinya nilai $a$, $b$ dan $c$ akan didapatkan dengan mencari fungsi garis yang melewati \fakesc{Point} $A$ dan \fakesc{Point} $B$.
 
-\section{ Desain Class Segment}
+\subsection{ Desain Class Segment}
 \label{sec:segment}
 Class \fakesc{Segment} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada segmen garis dalam diagram kartesian. Pseudocode \ref{psdo:class-segment} merupakan pseudocode dari class \fakesc{Segment}. 
 
@@ -156,7 +156,7 @@ Class \fakesc{Segment} tidak memiliki fungsi karena class ini hanya untuk menyim
 
 Fungsi \textit{Constructor} dari class ini terdiri dari 2 jenis. Fungsi \textit{constructor} yang pertama adalah fungsi dengan tanpa parameter, pada \textit{constructor} ini, semua variabel yang ada di dalam class \fakesc{Segment} akan di inisialisasi dengan $0$. Fungsi \textit{constructor} kedua adalah fungsi dengan parameter $\_P, \_Q$, menyatakan \fakesc{Point} dari titik $P$ dan \fakesc{Point} dari titik $Q$, yang merupakan titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ secara berturut, dan \fakesc{Line} $L$ didapar dengan menggunakan \textit{constructor} \fakesc{Line} dengan parameter $P$ dan $Q$.
 
-\section{ Desain Class Polygon}
+\subsection{ Desain Class Polygon}
 \label{sec:polygon}
 Class \fakesc{Polygon} merupakan class yang bertanggung jawab untuk menyimpan dan melakukan operasi-operasi pada polygon pada diagram kartesian. Pseudocode \ref{psdo:class-polygon} merupakan pseudocode dari class \fakesc{Polygon}. 
 
@@ -263,7 +263,7 @@ Fungsi \textit{perimeter} bertanggung jawab untuk mencari keliling dari sebuah p
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi BetweenD}
+\subsection{ Desain Fungsi BetweenD}
 \label{sec:fungsi-betweend}
 Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilangan $x$ berada diantara bilangan $l$ dan bilangan$r$. Pseudocode dari fungsi \fakesc{BetweenD} dapat dilihat pada pseudocode \ref{psdo:fungsi-betweend}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-betweend}.
 
@@ -291,7 +291,7 @@ Fungsi \fakesc{BetweenD} bertanggung jawab untuk mencari tahu apakah suatu bilan
 \end{algorithm}
 
 
-\section{ Fungsi EDist}
+\subsection{ Desain Fungsi EDist}
 \label{sec:fungsi-edist}
 Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fakesc{Point} $A$ dan \fakesc{Point} $B$ dengan menggunakan rumus \textit{Pythagoras}. Rumus \textit{Pythagoras} dapat di lihat pada persamaan \ref{eq:pythagoras}. Pseudocode fungsi \fakesc{EDist} dapat dilihat pada pseudocode \ref{psdo:fungsi-edist}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-edist}.
 
@@ -320,7 +320,7 @@ Fungsi \fakesc{EDist} bertanggung jawab untuk mencari jarak antara dua titik \fa
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi Cross}
+\subsection{ Desain Fungsi Cross}
 \label{sec:fungsi-cross}
 Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cross} dari dua buah vector. Rumus Pythagoras dapat di lihat pada persamaan \ref{eq:cross}. Pseudocode fungsi \fakesc{Cross} dapat dilihat pada pseudocode \ref{psdo:fungsi-cross}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-cross}.
 
@@ -349,7 +349,7 @@ Fungsi \fakesc{Cross} bertanggung jawab untuk mencari nilai perkalian \textit{cr
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi Orientation}
+\subsection{ Desain Fungsi Orientation}
 \label{sec:fungsi-orientation}
 Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga titik. Pseudocode fungsi \fakesc{Orientation} dapat dilihat pada pseudocode \ref{psdo:fungsi-orientation}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-orientation}.
 
@@ -374,7 +374,7 @@ Fungsi \fakesc{Orientation} bertanggung jawab untuk mencari orientasi dari tiga 
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi OnSegment}
+\subsection{ Desain Fungsi OnSegment}
 \label{sec:fungsi-onsegment}
 Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ bersentuhan dengan sebuah segmen garis \fakesc{Segment} $S$ atau tidak. Pseudocode fungsi \fakesc{OnSegment} dapat dilihat pada pseudocode \ref{psdo:fungsi-onsegment}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-onsegment}.
 
@@ -401,7 +401,7 @@ Fungsi \fakesc{OnSegment} bertanggung jawab untuk mencari tahu apakah sebuah tit
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi ConvexHull}
+\subsection{ Desain Fungsi ConvexHull}
 \label{sec:fungsi-convexhull}
 Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} dari sekumpulan titik $pts$. Algoritma yang digunakan oleh fungsi ini adalah algoritma \textit{Monotone Chain} yang dapat dilihat pada bagian \ref{sec:algoritma-monotone-chain}. Pseudocode dari fungsi \fakesc{ConvexHull} yang digunakan dapat dilihat pada Pseudocode \ref{psdo:fungsi-convexhull}.  Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-convexhull}.
 
@@ -437,7 +437,7 @@ Fungsi \fakesc{ConvexHull} bertanggung jawab untuk mencari \textit{convex hull} 
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi InSimplePolygon}
+\subsection{ Desain Fungsi InSimplePolygon}
 \label{sec:fungsi-insimplepolygon}
 Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebuah titik \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$ atau tidak. Algoritma yang digunakan pada fungsi ini adalah algoritma \textit{point inside polygon} yang dapat dilihat pada bagian \ref{sec:point-inside-polygon}. Pada desain fungsi \fakesc{InSimplePolygon} ada 3 macam keluaran yaitu $-1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di dalam \fakesc{Polygon} $A$, $0$ untuk menandakan bahwa \fakesc{Point} $P$ berada di salah satu sisi \fakesc{Polygon} $A$, dan $1$ untuk menandakan bahwa \fakesc{Point} $P$ berada di luar \fakesc{Polygon} $A$. Pseudocode fungsi \fakesc{InSimplePolygon} dapat dilihat pada pseudocode \ref{psdo:fungsi-insimplepolygon}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-insimplepolygon}.
 
@@ -489,7 +489,7 @@ Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebu
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi GetBetween}
+\subsection{ Desain Fungsi GetBetween}
 \label{sec:fungsi-getbetween}
 Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} yang akan menggantikan \fakesc{Point} yang akan dibuang. Pseudocode fungsi \fakesc{GetBetween} dapat dilihat pada pseudocode \ref{psdo:fungsi-getbetween}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-getbetween}.
 
@@ -546,7 +546,7 @@ Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} y
 	\end{algorithmic}
 \end{algorithm}
 
-\section{ Fungsi Solve}
+\subsection{ Desain Fungsi Solve}
 \label{sec:fungsi-solve}
 Fungsi \fakesc{Solve} bertanggung jawab untuk mencari \textit{relative convex polygon} yang mengelilingi semua titik yang ada di dalam polygon luar. Pseudocode fungsi \fakesc{Solve} dapat dilihat pada pseudocode \ref{psdo:fungsi-solve}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-solve}.
 \begin{table}[htb]
@@ -601,5 +601,48 @@ Fungsi \fakesc{Solve} bertanggung jawab untuk mencari \textit{relative convex po
 			\State $q.$\fakesc{Pop}()
 		\EndWhile
 		\State \Return \fakesc{Polygon}($hull$)
+	\end{algorithmic}
+\end{algorithm}
+
+
+\section{ Desain Pembangkit Kasus Uji}
+\label{sec:pembangkit-kasus-uji}
+Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari pembangkit kasus uji untuk melakukan uji coba lokal pada Tugas Akhir ini.
+Sistem \fakesc{GenerateTestCase} bertanggung jawab untuk membuat kasus uji berdasarkan banyaknya titik yang ingin di uji. Pseudocode fungsi \fakesc{GenerateTestCase} dapat dilihat pada pseudocode \ref{psdo:pembangkit-kasus-uji}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:pembangkit-kasus-uji}.
+\begin{table}[htb]
+	\Centering
+	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{GenerateTestCase} }
+	\begin{tabular}{|p{3cm}|p{3cm}|p{3cm}|}
+	\hline
+	Masukan   & Proses     & Keluaran \\ \hline
+	Sebuah bilangan bulat $N$ dan $M$ yang merupakan banyaknya vertex polygon dan banyaknya titik di dalam polygon & Membangun kasus uji sebanyak masukan  &   Sebuah polygon sederhana dan sekumpulan titik acak sebanyak $N$ yang berada di dalam polygon sederhana\\ \hline
+	\end{tabular}
+	\label{tab:pembangkit-kasus-uji}
+\end{table}
+
+
+\begin{algorithm}
+    \caption{Fungsi \fakesc{GenerateTestCase}}
+	\label{psdo:pembangkit-kasus-uji}
+    \begin{algorithmic}[1]
+        \Require $N, M$
+        \State $polygon \leftarrow$ \fakesc{Array}
+        \State $trees \leftarrow$ \fakesc{Array}
+        \For{$i \leftarrow 0$ to $N/4$} 
+        	\State $polygon.$\fakesc{Push} ([$-10000+(i*20000/N), -10000$])
+		\EndFor
+        \For{$i \leftarrow 0$ to $N/4$} 
+        	\State $polygon.$\fakesc{Push} ([10000, $-10000+(i*20000/N)$])
+		\EndFor
+        \For{$i \leftarrow 0$ to $N/4$} 
+        	\State $polygon.$\fakesc{Push} ([$10000-(i*20000/N), 10000$])
+		\EndFor
+        \For{$i \leftarrow 0$ to $N-3*N/4$} 
+        	\State $polygon.$\fakesc{Push} ([$10000, 10000-(i*20000/N)$])
+		\EndFor
+        \For{$i \leftarrow 0$ to $N-3*N/4$} 
+        	\State $trees.$\fakesc{Push} ([\fakesc{Random}()$%20001-10000$,\fakesc{Random}()$%20001-10000$])
+		\EndFor
+		\State \Return (N, M, polygon, trees)
 	\end{algorithmic}
 \end{algorithm}

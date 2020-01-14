@@ -1,0 +1,9 @@
+1. penjelasan relevansi antar persoalan dan algoritma (done)
+2. ganti grafik dengan batang (gunakan trend) (Done)
+3. legend grafik PENTING! garis mean (done)
+4. buat bab pembuatan data generator (done)
+5. skenario di taruh sebelum grafik (done)
+6. tambah rank di spoj (done)
+7. uji coba waktu presentasi
+
+kalau bisa optomasi
