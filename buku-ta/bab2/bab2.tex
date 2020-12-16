@@ -53,9 +53,9 @@ Sisi polygon dari RCH yang merupakan \textit{relative convex hull} yang didapatk
 Pada subbab ini akan dipaparkan mengenai strategi penyelesaian masalah klasik pada daring SPOJ dengan kode ISUN1 menggunakan algoritma reduksi polygon. Secara singkat, strategi penyelesaian masalah dari ISUN1 menggunakan algoritma reduksi polygon menjadi 2 bagian besar, yaitu :
 \begin{enumerate}
     \item Pemrosesan titik pembentuk polygon yang membentuk \textit{Convex}.
-    \item \textit{Convex Hull} dari titik yang berada di dalam polygon.
+    \item Pembentukan \textit{Convex Hull} dari titik yang berada di dalam polygon.
 \end{enumerate}
-Sebagai contoh, pada subbab ini akan digunakan beberapa variabel seperti, $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang mempunyai titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(A)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didasari dari algoritma \textit{Melkman convex hull} dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buah titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengah dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
+Sebagai contoh, pada subbab ini akan digunakan beberapa variabel seperti, $P$ sebagai polygon luar yang mempunyai $n$ vertex, dimana $P = \left \langle p_1, p_2, ..., p_n \right \rangle$ yang di dalamnya terdapat kumpulan titik sebanyak $m$ ($S = \left \langle s_1, s_2, ..., s_m \right \rangle$), dan $D(P)$ merupakan sebuah deque (\textit{doubly-ended queue}) yang menampung vertex dari polygon $P$. Reduksi polygon didapatkan dari ide algoritma \textit{Melkman convex hull} dengan sedikit modifikasi. Modifikasi yang dilakukan adalah ketika 3 buah titik pembentuk polygon yang konsekutif membuat \textit{convex} maka titik tengah dari ketiga titik tersebut dibuang, dan jika \textit{concave} maka titik tengahnya tetap disimpan. Pada saat sebuah titik dibuang, maka luas dari polygon akan tereduksi. Langkah-langkah reduksi dilakukan dengan mengulangi 2 langkah yang akan dijelaskan pada subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex} dan \ref{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}.
 
 
 \subsection{ Pemrosesan Titik Pembentuk Polygon yang Membentuk Convex}
@@ -68,7 +68,7 @@ Pemrosesan titik pembentuk polygon dapat dilakukan dengan cara melakukan \textit
 \end{theo}
 Kemudian cari $T(ABC)$ dimana $T(ABC)$ merupakan semua titik $S$ yang berada di dalam segitiga $ABC$ dengan menggunakan algoritma \textit{Point Inside Polygon} (dapat dilihat pada subbab \ref{sec:point-inside-polygon}). Pencarian titik yang berada di dalam segitiga $ABC$ berguna untuk mencari pengganti vertex $p_i$ sebagai pembentuk polygon luarnya.
 
-\subsection{ Convex Hull dari Titik yang Berada di Dalam Polygon}
+\subsection{ Pembentukan Convex Hull dari Titik yang Berada di Dalam Polygon}
 \label{sec:convex-hull-dari-titik-yang-berada-di-dalam-polygon}
 Melanjutkan dari subbab \ref{sec:pemrosesan-titik-pembentuk-polygon-yang-membentuk-convex}, ketika sudah mendapatkan $T(ABC)$, lakukan pencarian \textit{Convex Hull} dari titik-titik tersebut menggunakan algoritma \textit{monotone chain} (dapat dilihat pada subbab \ref{sec:algoritma-monotone-chain}). Kemudian sisipkan semua titik yang membentuk \textit{Convex Hull} di antara vertex $p_{i-1}$, $p_{i+1}$ untuk me-rekonstruksi polygon luar yang sudah direduksi.
 
@@ -207,7 +207,7 @@ Algoritma \MC merupakan proses pembentukan \CH dari sekumpulan titik dengan komp
 
 \begin{figure}[!h]
 	\Centering
-	\includegraphics [width=0.5\columnwidth]{bab2/img/ilustrasi-algoritma-point-inside-polygon}
+	\includegraphics [width=\columnwidth]{bab2/img/ilustrasi-algoritma-point-inside-polygon}
 	\caption {Ilustrasi Algoritma Point Inside Polygon}
 	\label {fig:ilustrasi-algoritma-point-inside-polygon}
 \end{figure}

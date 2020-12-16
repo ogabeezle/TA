@@ -489,10 +489,10 @@ Fungsi \fakesc{InSimplePolygon} bertanggung jawab untuk mencari tahu apakah sebu
 	\end{algorithmic}
 \end{algorithm}
 
+\newpage
 \subsection{ Desain Fungsi GetBetween}
 \label{sec:fungsi-getbetween}
 Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} yang akan menggantikan \fakesc{Point} yang akan dibuang. Pseudocode fungsi \fakesc{GetBetween} dapat dilihat pada pseudocode \ref{psdo:fungsi-getbetween}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-getbetween}.
-
 \begin{table}[htb]
 	\Centering
 	\caption{Masukan, Proses, dan Keluaran dari Fungsi \fakesc{GetBetween} }
@@ -545,7 +545,7 @@ Fungsi \fakesc{getBetween} bertanggung jawab untuk mencari list \fakesc{Point} y
         \State \Return $pts$
 	\end{algorithmic}
 \end{algorithm}
-
+\newpage
 \subsection{ Desain Fungsi Solve}
 \label{sec:fungsi-solve}
 Fungsi \fakesc{Solve} bertanggung jawab untuk mencari \textit{relative convex polygon} yang mengelilingi semua titik yang ada di dalam polygon luar. Pseudocode fungsi \fakesc{Solve} dapat dilihat pada pseudocode \ref{psdo:fungsi-solve}. Masukan, proses, dan keluaran dari fungsi ini tercantum pada tabel \ref{tab:fungsi-solve}.
@@ -604,7 +604,7 @@ Fungsi \fakesc{Solve} bertanggung jawab untuk mencari \textit{relative convex po
 	\end{algorithmic}
 \end{algorithm}
 
-
+\newpage
 \section{ Desain Pembangkit Kasus Uji}
 \label{sec:pembangkit-kasus-uji}
 Pada subbab ini akan dijelaskan mengenai gambaran secara umum dari pembangkit kasus uji untuk melakukan uji coba lokal pada Tugas Akhir ini.
@@ -641,7 +641,7 @@ Sistem \fakesc{GenerateTestCase} bertanggung jawab untuk membuat kasus uji berda
         	\State $polygon.$\fakesc{Push} ([$10000, 10000-(i*20000/N)$])
 		\EndFor
         \For{$i \leftarrow 0$ to $N-3*N/4$} 
-        	\State $trees.$\fakesc{Push} ([\fakesc{Random}()$%20001-10000$,\fakesc{Random}()$%20001-10000$])
+        	\State $trees.$\fakesc{Push} ([(\fakesc{Random}() mod $20001$)-$10000$,(\fakesc{Random}() mod $20001$)-$10000$])
 		\EndFor
 		\State \Return (N, M, polygon, trees)
 	\end{algorithmic}

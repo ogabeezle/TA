@@ -38,7 +38,7 @@ Subbab ini akan menjelaskan hasil pengujian program untuk menyelesaikan permasal
 	\item Pengujian luar. Pengujian ini menggunakan Online Judge untuk menguji kebenaran dan kinerja program.
 	\item Pengujian lokal. Pengujian ini menggunakan mesin yang digunakan dalam pengembangan untuk mengukur kinerja program.
 \end{enumerate}
-Dalam pengujian lokal, dibuat beberapa kasus uji berdasarkan batasan yang ada pada soal.
+Dalam pengujian lokal, dibuat beberapa kasus uji berdasarkan batasan yang ada pada soal yang dibuat menggunakan pembangkit kasus uji pada subbab \ref{sec:implementasi-pembangkit-kasus-uji}.
 \par Untuk pengujian luar, uji coba dilakukan dengan mengirimkan kode program dengan algoritma reduksi polygon ke situs penilaian daring Sphere Online Judge sebanyak 10 kali.
 
 \section{ Uji Coba Kebenaran}
@@ -48,6 +48,12 @@ Pada subbab ini akan dibahas mengenai uji coba kebenaran yang dilakukan dengan m
 	\includegraphics [width=\columnwidth]{bab5/img/hasil-uji-coba-kebenaran-situs-penilaian-spoj}
 	\caption {Hasil Uji Coba Kebenaran Situs Penilaian Sphere Online Judge}
 	\label {fig:hasil-uji-coba-kebenaran-situs-penilaian-spoj}
+\end{figure}
+\begin{figure}[!h]
+	\Centering
+	\includegraphics [width=\columnwidth]{bab5/img/rank}
+	\caption {Peringkat pada Situs Sphere Online Judge}
+	\label {fig:peringkat-situs-spoj}
 \end{figure}
 
 \section{ Uji Coba Kinerja Lokal}
@@ -70,13 +76,13 @@ Pada subbab ini akan ditampilkan hasil uji coba kinerja dari algoritma reduksi p
 Evaluasi dilakukan dengan memeriksa hasil keluaran program apakah sama dengan contoh keluaran pada Sphere Online Judge 5637 LL and ErBao. Tabel kebenaran dapat dilihat pada gambar \ref{tab:masukan-dan-keluaran-contoh-1}
 
 \begin{table}[]
+	\caption{Tabel Data Uji Coba Kebenaran Lokal dengan Sampel Data }
 	\Centering
 	\begin{tabular}{|l|c|}
 	\hline
 	\multicolumn{1}{|l|}{Data Masukan}  & Hasil Keluaran \\ \hline
 	\begin{tabular}[l]{@{}l@{}}8 2\\ 0 0\\ 30 0\\ 30 20\\ 20 20\\ 20 10\\ 10 10\\ 10 20\\ 0 20\\ 5 15\\ 25 15\end{tabular} & Case \#1: 48.284          \\ \hline
 	\end{tabular}
-	\caption{Tabel Data Uji Coba Kebenaran Lokal dengan Sampel Data }
 	\label{tab:masukan-dan-keluaran-contoh-1}
 \end{table}
 

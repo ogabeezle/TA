@@ -1,15 +1,16 @@
-\chapter{KESIMPULAN}
+\chapter{KESIMPULAN DAN SARAN}
 Pada bab ini dijelaskan mengenai kesimpulan dari hasil uji coba yang telah dilakukan serta saran-saran tentang pengembangan yang dapat dilakukan terhadap Tugas Akhir ini di masa yang akan datang.
 \section{ Kesimpulan}
 Berdasarkan penjabaran di bab-bab sebelumnya, dapat disimpulkan beberapa poin terkait penyelesaian permasalahan LL and Erbao.
 \begin{enumerate}
-\item Permasalahan LL and ErBao dapat diselesaikan dengan melakukan reduksi polygon luar terhadap titik di dalamnya.
-\item Permasalahan LL and Erbao dapat diselesaikan dengan batasan pada soal dapat diselesaikan dengan reduksi polygon dengan waktu minimum 0.08 detik, waktu maksimum 0.08 detik, dan memori minimum 4.4 MB, memori maksimum 4.7 MB.
-\item Algoritma \textit{Melkman convex hull} terbukti efektif untuk melakukan reduksi polygon untuk mencari \textit{relative convex polygon}.
+\item Permasalahan pencarian \textit{relative convex hull} dapat diselesaikan dengan melakukan reduksi polygon luar terhadap titik di dalamnya dengan kompleksitas \textit{O}($MN$\texttt{log} $(N)$).
+\item Permasalahan LL and Erbao dapat diselesaikan dengan batasan pada soal dapat diselesaikan dengan reduksi polygon dengan waktu minimum 0.08 detik, waktu maksimum 0.09 detik, dan memori minimum 4.4 MB, memori maksimum 4.7 MB.
+\item Reduksi poligon terbukti efektif untuk mencari \textit{relative convex hull} dari sekumpulan titik di dalam poligon sederhana.
+\item Dikarenakan kumpulan segmen garis maupun polygon sederhana dapat dibuat menjadi kumpulan titik, maka algoritma reduksi polygon sendiri dapat digunakan untuk mencari \textit{relative convex hull} dari kumpulan segmen garis maupun polygon sederhana yang dibatasi oleh polygon sederhana lainnya.
 \end{enumerate}
 \section{ Saran}
 Pada Tugas Akhir kali ini tentunya terdapat kekurangan serta nilai-nilai yang dapat penulis ambil. Berikut adalah saran-saran yang dapat diambil melalui Tugas Akhir ini:
 \begin{enumerate}
- \item Untuk kedepannya, algoritma pada Tugas Akhir ini dapat menjadi bahan riset untuk mencari optimasi lebih lanjut.
- \item Metode reduksi polygon dengan menggunakan algoritma \textit{Melkman convex hull} yang dimodifikasi dapat digunakan untuk mencari \textit{relative convex hull} dengan polygon yang membatasi segmen garis ataupun polygon sederhana.
+ \item Untuk kedepannya, algoritma pencarian titik di dalam polygon dapat menjadi bahan riset untuk mencari optimasi lebih lanjut sehingga dapat memperkecil kompleksitas algoritma reduksi polygon.
+ \item Pada saat ini \textit{relative convex hull} sering digunakan pada bidang robotik maupun grafika. Namun besaran nilai $M$ dan $N$ yang digunakan lebih besar. Maka untuk kedepannya dapat melakukan riset menggunakan nilai $M$ dan $N$ yang lebih besar.
 \end{enumerate}
